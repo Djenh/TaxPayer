@@ -1,3 +1,7 @@
+import 'package:bes_mobile/components/infoCard.dart';
+import 'package:bes_mobile/screens/try.dart';
+
+import '../components/Diagram/barDiagram.dart';
 import 'package:bes_mobile/screens/createCompanyScreen.dart';
 import 'package:flutter/material.dart';
 import 'screens/homeScreen.dart';
@@ -15,7 +19,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "",
-      home: HomeScreen(),
+      home: Scaffold(
+        body: HomeScreen(),
+      ),
     );
   }
 }
