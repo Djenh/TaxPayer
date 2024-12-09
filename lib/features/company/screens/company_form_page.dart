@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:invoice_app/features/home/screens/home_page.dart';
 
-import '../../../commons/widgets/kcontainer.dart';
-import '../../../commons/widgets/kelevatedbutton.dart';
-import '../../../commons/widgets/kinput.dart';
+import 'package:invoice_app/commons/ui/ui.dart';
 
 class CompanyFormPage extends StatelessWidget {
   const CompanyFormPage({super.key});
@@ -126,7 +124,7 @@ class CompanyFormPage extends StatelessWidget {
               ),
               (route) => false);
         },
-        child: Text(
+        child: const Text(
           "Next",
         ),
       )),

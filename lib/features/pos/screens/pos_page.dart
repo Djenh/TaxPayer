@@ -10,25 +10,25 @@ class PosPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Points de vente"),
+        title: const Text("Points de vente"),
 
       ),
       body: ListView.builder(itemBuilder: (context, index) => ListTile(
         onTap: (){
 
-          Get.to(()=>PosDetail());
+          Get.to(()=>const PosDetail());
         },
-        leading: CircleAvatar(child: Icon(Iconsax.building_3)),
-        title: Text("Erevan Akpkpa"),
-        subtitle: Text("Cotonou - PTT "),
-        trailing: Icon(Iconsax.arrow_right_3),
+        leading: const CircleAvatar(child: Icon(Iconsax.building_3)),
+        title: const Text("Erevan Akpkpa"),
+        subtitle: const Text("Cotonou - PTT "),
+        trailing: const Icon(Iconsax.arrow_right_3),
 
       ),),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
 
         },
-        child: Icon(Iconsax.add),
+        child: const Icon(Iconsax.add),
       ),
     );
   }

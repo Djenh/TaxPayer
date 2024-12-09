@@ -10,8 +10,8 @@ class KContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      decoration: BoxDecoration(
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      decoration: const BoxDecoration(
    /* //      color: color == null ? Colors.white : color,
           boxShadow: [
             BoxShadow(
@@ -28,8 +28,8 @@ class KContainer extends StatelessWidget {
                       color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.w700),
                 )
-              : SizedBox.shrink(),
-          Container(width: double.infinity, child: child)
+              : const SizedBox.shrink(),
+          SizedBox(width: double.infinity, child: child)
         ],
       ),
     );

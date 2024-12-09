@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:invoice_app/commons/widgets/kTextgray.dart';
+import 'package:invoice_app/commons/ui/ui.dart';
 import 'package:invoice_app/style/e_style.dart';
 
 class DashboardPage extends StatelessWidget {
@@ -26,7 +26,7 @@ class DashboardPage extends StatelessWidget {
                 Builder(
                builder: (context) {
                  return IconButton(
-                   icon: CircleAvatar(
+                   icon: const CircleAvatar(
                      child: Center(
                        child: Icon(Iconsax.user),
                      ),
@@ -36,14 +36,14 @@ class DashboardPage extends StatelessWidget {
                  );
                },
                 ),
-                SizedBox(
+                const SizedBox(
                   width: PADDING,
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Bonjour"),
+                    const Text("Bonjour"),
                     Text(
                       "OMEGA NUMERIC IT",
                       style: Theme.of(context)
@@ -56,10 +56,10 @@ class DashboardPage extends StatelessWidget {
               ],
             ),
             IconButton(
-                onPressed: () {}, icon: CircleAvatar(child: Icon(Iconsax.scan)))
+                onPressed: () {}, icon: const CircleAvatar(child: Icon(Iconsax.scan)))
           ],
         ),
-        SizedBox(
+        const SizedBox(
           height: PADDING,
         ),
         Container(
@@ -73,11 +73,11 @@ class DashboardPage extends StatelessWidget {
                  Theme.of(context).colorScheme.primary.withOpacity(0.9),
                  Theme.of(context).colorScheme.primary,
                ],
-               transform:GradientRotation(pi/5)
+               transform:const GradientRotation(pi/5)
              ),
               borderRadius: BorderRadius.circular(PADDING)),
         ),
-        SizedBox(
+        const SizedBox(
           height: PADDING,
         ),
         Row(
@@ -90,10 +90,10 @@ class DashboardPage extends StatelessWidget {
                   .bodyLarge!
                   .copyWith(fontWeight: FontWeight.bold),
             ),
-            TextButton(onPressed: () {}, child: Text("voir tout"))
+            TextButton(onPressed: () {}, child: const Text("voir tout"))
           ],
         ),
-        SizedBox(
+        const SizedBox(
           height: PADDING,
         ),
         Container(
@@ -110,7 +110,7 @@ class DashboardPage extends StatelessWidget {
             length: 3,
             child: Column (
               children: [
-                TabBar(tabs: [
+                const TabBar(tabs: [
                   Tab(
                 //    icon: Icon(Iconsax.wallet),
                     text: "Ventes",
@@ -124,10 +124,10 @@ class DashboardPage extends StatelessWidget {
                   ),
                 ]),
                 Expanded(
-                  child: TabBarView(physics: NeverScrollableScrollPhysics(), children: [
+                  child: TabBarView(physics: const NeverScrollableScrollPhysics(), children: [
                     Container(
-                      padding: EdgeInsets.all(PADDING),
-                      child: Column(
+                      padding: const EdgeInsets.all(PADDING),
+                      child: const Column(
                         children: [
                           Text("Ventes")
                         ],
@@ -144,20 +144,20 @@ class DashboardPage extends StatelessWidget {
         ...List.generate(
             4,
             (index) => Padding(
-                  padding: EdgeInsets.only(bottom: PADDING),
+                  padding: const EdgeInsets.only(bottom: PADDING),
                   child: Container(
-                    padding: EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                         horizontal: PADDING / 2, vertical: PADDING),
-                    decoration: BoxDecoration(color: Colors.white),
+                    decoration: const BoxDecoration(color: Colors.white),
                     child: Row(
                       children: [
-                        CircleAvatar(
+                        const CircleAvatar(
                           radius: PADDING * 2.7,
                           child: Center(
                             child: Icon(Iconsax.bill),
                           ),
                         ),
-                        SizedBox(width: PADDING),
+                        const SizedBox(width: PADDING),
                         Expanded(
                           flex: 2,
                           child: Column(
@@ -169,11 +169,11 @@ class DashboardPage extends StatelessWidget {
                                       .textTheme
                                       .bodySmall!
                                       .copyWith(fontWeight: FontWeight.bold)),
-                              KtextGray("4 articles"),
+                              const KtextGray("4 articles"),
                             ],
                           ),
                         ),
-                        Expanded(
+                        const Expanded(
                           flex: 1,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,

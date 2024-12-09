@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:invoice_app/commons/widgets/kelevatedbutton.dart';
-
-import '../../../commons/widgets/kcontainer.dart';
-import '../../../commons/widgets/kinput.dart';
+import 'package:invoice_app/commons/ui/ui.dart';
 
 class ClientCreatePage extends StatelessWidget {
   const ClientCreatePage({super.key});
@@ -11,8 +8,8 @@ class ClientCreatePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Client Creation"),
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.more_horiz))],
+        title: const Text("Client Creation"),
+        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.more_horiz))],
       ),
       body: ListView(
         children: [
@@ -108,7 +105,7 @@ class ClientCreatePage extends StatelessWidget {
 
       bottomNavigationBar: BottomAppBar(
         child:KElevatedButton(
-          child: Text("Add client", style: TextStyle(color: Colors.white),),
+          child: const Text("Add client", style: TextStyle(color: Colors.white),),
           onPressed: () {
 
           },

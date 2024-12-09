@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:invoice_app/commons/ui/ui.dart';
 
-import '../../../../../commons/widgets/KMenuItem.dart';
+
 import '../../screens/invoice_recuring_page.dart';
 import '../../screens/invoice_template_choice_page.dart';
 import '../../screens/invoice_view_print_page.dart';
@@ -27,12 +28,12 @@ class FullMenu extends StatelessWidget {
                 KMenuItem(
                   icon: Icons.remove_red_eye_outlined,
                   title: "View ",
-                  next: InvoicePrintViewPage(),
+                  next: const InvoicePrintViewPage(),
                 ),
                 KMenuItem(
                   icon: Icons.refresh,
                   title: "Recurring",
-                  next: InvoiceRecurringPage(),
+                  next: const InvoiceRecurringPage(),
                 ),
               ]).toList(),
             )),
@@ -46,7 +47,7 @@ class FullMenu extends StatelessWidget {
                 KMenuItem(
                   icon: Icons.dashboard_outlined,
                   title: "Change Template",
-                  next: InvoiceTemplateChoicePage(),
+                  next: const InvoiceTemplateChoicePage(),
                 ),
                 KMenuItem(
                   icon: Icons.copy,
@@ -66,13 +67,13 @@ class FullMenu extends StatelessWidget {
           color: Colors.white,
           height: 5,
         ),
-        Container(child: ExportMenu(totalInfo: false)),
+        Container(child: const ExportMenu(totalInfo: false)),
        Container(
          color: Colors.white,
          height: 5,
        ),
         Container(
-          child: DeleteMenu(),
+          child: const DeleteMenu(),
         ),
       ],
     );

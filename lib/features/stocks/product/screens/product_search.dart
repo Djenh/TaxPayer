@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:invoice_app/commons/widgets/kcontainer.dart';
-import 'package:invoice_app/commons/widgets/kinput.dart';
+import 'package:invoice_app/commons/ui/ui.dart';
 
 import '../widgets/product_item.dart';
 
@@ -24,7 +23,7 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                 keyboardType: TextInputType.text,
                 showclearButton: true,
               )),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           Expanded(
@@ -37,8 +36,8 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                        Navigator.pop(context, "PRO");
                      },
                       child: Container(
-                          padding: EdgeInsets.all(10),
-                          child: ProductItem())),
+                          padding: const EdgeInsets.all(10),
+                          child: const ProductItem())),
             
             
                 // ... other ProductItem widgets

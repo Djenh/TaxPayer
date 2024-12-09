@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:invoice_app/commons/widgets/kTextgray.dart';
-import 'package:invoice_app/commons/widgets/kcontainer.dart';
+import 'package:invoice_app/commons/ui/ui.dart';
 
-import '../../../../commons/widgets/kelevatedbutton.dart';
 
 
 class InvoiceRecurringPage extends StatefulWidget {
@@ -17,8 +15,8 @@ class _InvoiceRecurringPageState extends State<InvoiceRecurringPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Make a recurring "),
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.more_horiz))],
+        title: const Text("Make a recurring "),
+        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.more_horiz))],
       ),
       body: ListView(
         children: [
@@ -28,9 +26,9 @@ class _InvoiceRecurringPageState extends State<InvoiceRecurringPage> {
                 children: ListTile.divideTiles(context: context, tiles: [
                   ListTile(
                     contentPadding: EdgeInsets.zero,
-                    title: KtextGray("Date"),
+                    title: const KtextGray("Date"),
                     trailing: Container(
-                      child: SizedBox(
+                      child: const SizedBox(
                         width: 80,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
@@ -47,9 +45,9 @@ class _InvoiceRecurringPageState extends State<InvoiceRecurringPage> {
                   ),
                   ListTile(
                     contentPadding: EdgeInsets.zero,
-                    title: KtextGray("Time"),
+                    title: const KtextGray("Time"),
                     trailing: Container(
-                      child: SizedBox(
+                      child: const SizedBox(
                         width: 80,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
@@ -61,10 +59,10 @@ class _InvoiceRecurringPageState extends State<InvoiceRecurringPage> {
                       openTimeModal();
                     },
                   ),
-                  SizedBox()
+                  const SizedBox()
                 ]).toList(),
               )),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           KContainer(
@@ -73,36 +71,36 @@ class _InvoiceRecurringPageState extends State<InvoiceRecurringPage> {
                 ...ListTile.divideTiles(context: context, tiles: [
                   ListTile(
                     contentPadding: EdgeInsets.zero,
-                    title: Text("Every Day"),
-                    trailing: Icon(Icons.check),
+                    title: const Text("Every Day"),
+                    trailing: const Icon(Icons.check),
                     onTap: () {},
                   ),
                   ListTile(
                     contentPadding: EdgeInsets.zero,
-                    title: Text("Every Week"),
-                    trailing: Icon(Icons.check),
+                    title: const Text("Every Week"),
+                    trailing: const Icon(Icons.check),
                     onTap: () {},
                   ),
                   ListTile(
                     contentPadding: EdgeInsets.zero,
-                    title: Text("Every Month"),
-                    trailing: Icon(Icons.check),
+                    title: const Text("Every Month"),
+                    trailing: const Icon(Icons.check),
                     onTap: () {},
                   ),
                   ListTile(
                     contentPadding: EdgeInsets.zero,
-                    title: Text("Every year"),
-                    trailing: Icon(Icons.check),
+                    title: const Text("Every year"),
+                    trailing: const Icon(Icons.check),
                     onTap: () {},
                   ),
-                  SizedBox(),
-                ]).toList(),
+                  const SizedBox(),
+                ]),
               ])),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -120,7 +118,7 @@ class _InvoiceRecurringPageState extends State<InvoiceRecurringPage> {
                         "Send Invoice Automatically",
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
-                      KtextGray(
+                      const KtextGray(
                           "Send Invoice in perfect period  to this client \nunless stop manually"),
                     ],
                   ),
@@ -133,7 +131,7 @@ class _InvoiceRecurringPageState extends State<InvoiceRecurringPage> {
       bottomNavigationBar: BottomAppBar(
         child: KElevatedButton(
           onPressed: () {},
-          child: Text("Save"),
+          child: const Text("Save"),
         ),
       ),
     );

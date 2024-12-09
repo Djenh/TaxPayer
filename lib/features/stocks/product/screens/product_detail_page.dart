@@ -21,11 +21,11 @@ class ProductDetailPage extends StatelessWidget {
         ],
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: PADDING * 2),
+        padding: const EdgeInsets.symmetric(horizontal: PADDING * 2),
         child: Column(
           children: [
             const ProductItem(),
-            SizedBox(
+            const SizedBox(
               height: PADDING,
             ),
             const Divider(
@@ -50,11 +50,11 @@ class ProductDetailPage extends StatelessWidget {
                           icon: Icon(Iconsax.setting),
                         ),
                       ]),
-                      Container(
+                      SizedBox(
                         height: MediaQuery.of(context).size.height * 0.6,
                         child: TabBarView(children: [
                           Container(
-                            padding: EdgeInsets.symmetric(vertical: PADDING),
+                            padding: const EdgeInsets.symmetric(vertical: PADDING),
                             child: ListView(
                               children: [
                                 Row(
@@ -113,7 +113,7 @@ class ProductDetailPage extends StatelessWidget {
                                                   ),
                                                 ],
                                               ),
-                                            ))).toList()
+                                            )))
                               ],
                             ),
                           ),

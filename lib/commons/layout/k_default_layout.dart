@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../style/e_style.dart';
-import 'k_flag_banner.dart';
-import 'logo.dart';
+
+import '../ui/logo.dart';
 
 class KDefaultLayout extends StatelessWidget {
   final String? imagePath;
@@ -49,7 +49,7 @@ class KDefaultLayout extends StatelessWidget {
       ),
       Expanded(
         child: Padding(
-          padding: EdgeInsets.all(PADDING * 3),
+          padding: const EdgeInsets.all(10 * 3),
           child: Container(
             child: ListView(
               children: [
@@ -57,42 +57,13 @@ class KDefaultLayout extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
-                    Logo(),
-                    SizedBox(
-                      height: PADDING * 2,
-                    ),
-                    Text(
-                      "$title",
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .headlineMedium!
-                          .copyWith(fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: PADDING,
-                    ),
-                    Text(
-                      "$subtitle",
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .bodyMedium,
-                    ),
-                    SizedBox(
-                      height: PADDING * 2,
-                    ),
-                    Container(
-                        width: MediaQuery
-                            .of(context)
-                            .size
-                            .width / 3,
-                        child: FlagBanner()),
-                    SizedBox(
-                      height: PADDING * 2,
+                    const Logo(),
+                    
+                    const SizedBox(
+                      height: 10 * 2,
                     ),
                     child ?? Container()
                   ],

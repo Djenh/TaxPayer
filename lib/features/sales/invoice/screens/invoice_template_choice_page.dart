@@ -7,10 +7,10 @@ class InvoiceTemplateChoicePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Change Template"),
+        title: const Text("Change Template"),
       ),
       body: Container(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -21,7 +21,7 @@ class InvoiceTemplateChoicePage extends StatelessWidget {
                   .bodyLarge!
                   .copyWith(color: Theme.of(context).primaryColor),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             GridView.count(

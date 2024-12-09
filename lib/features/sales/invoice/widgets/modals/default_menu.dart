@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:invoice_app/commons/widgets/KMenuItem.dart';
+import 'package:invoice_app/commons/ui/ui.dart';
 
 import '../../screens/invoice_recuring_page.dart';
 import '../../screens/invoice_view_print_page.dart';
@@ -16,12 +16,12 @@ class DefaultMenu extends StatelessWidget {
           KMenuItem(
             icon: Icons.remove_red_eye_outlined,
             title: "View Invoice",
-            next: InvoicePrintViewPage(),
+            next: const InvoicePrintViewPage(),
           ),
           KMenuItem(
             icon: Icons.refresh,
             title: "Recuring",
-            next: InvoiceRecurringPage(),
+            next: const InvoiceRecurringPage(),
           ),
           KMenuItem(
             icon: Icons.folder_shared_outlined,
@@ -30,7 +30,7 @@ class DefaultMenu extends StatelessWidget {
             routed: false,
 
           ),
-          DeleteMenu(),
+          const DeleteMenu(),
           Container()
         ]).toList(),
       ),

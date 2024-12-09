@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:invoice_app/commons/widgets/kinput.dart';
-import 'package:invoice_app/commons/widgets/knotfound.dart';
+import 'package:invoice_app/commons/ui/ui.dart';
 
-
-import '../../../../commons/widgets/kcontainer.dart';
 import '../widgets/invoice_item.dart';
 import 'invoice_detail_page.dart';
 
@@ -20,7 +17,7 @@ class InvoiceSearchPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             KContainer(child: KInput(name: "Invoice Tlo")),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Expanded(
@@ -33,7 +30,7 @@ class InvoiceSearchPage extends StatelessWidget {
                           onPressed: () {
 
                           },
-                          child: Text("Add item"),
+                          child: const Text("Add item"),
                         ),
                       ),
                     )
@@ -46,10 +43,10 @@ class InvoiceSearchPage extends StatelessWidget {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => InvoiceDetailPage(),
+                                      builder: (context) => const InvoiceDetailPage(),
                                     ));
                               },
-                              child: InvoiceItem()))
+                              child: const InvoiceItem()))
                           .toList()),
             )
           ],

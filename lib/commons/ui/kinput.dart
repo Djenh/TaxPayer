@@ -8,7 +8,7 @@ class KInput extends StatelessWidget {
   final Widget? suffixIcon;
   final dynamic initialValue;
 
-  KInput(
+  const KInput(
       {super.key,
       required this.name,
       this.keyboardType,
@@ -35,7 +35,7 @@ class KInput extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
 
           ),
-          suffixIcon: showclearButton ? Icon(Icons.close) : suffixIcon),
+          suffixIcon: showclearButton ? const Icon(Icons.close) : suffixIcon),
     );
   }
 }

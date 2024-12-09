@@ -1,11 +1,11 @@
 /*
-import 'package:e_voting/commons/e_button.dart';
+import 'package:e_voting/commons/kbutton.dart';
 import 'package:e_voting/commons/logo.dart';
 import 'package:e_voting/features/registration/screens/registration_page.dart';
 import 'package:e_voting/style/e_style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/ui.dart';
 
 class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});

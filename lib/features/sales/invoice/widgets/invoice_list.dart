@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:invoice_app/style/e_style.dart';
 
@@ -29,23 +29,18 @@ class InvoiceList extends StatelessWidget {
             ),
             Row(
               children: [
-                IconButton(onPressed: () {}, icon: Icon(Iconsax.search_normal)),
                 IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => InvoiceCreatePage(),
-                          ));
-                    },
-                    icon:
-                        CircleAvatar(child: Center(child: Icon(Iconsax.add)))),
+                    onPressed: () {}, icon: const Icon(Iconsax.search_normal)),
+                IconButton(
+                    onPressed: () => Get.to(() => InvoiceCreatePage()),
+                    icon: const CircleAvatar(
+                        child: Center(child: Icon(Iconsax.add)))),
               ],
             ),
           ],
         ),
-        SizedBox(
-          height: PADDING*2,
+        const SizedBox(
+          height: KStyles.elevationMedium * 2,
         ),
         ...List.generate(
             4,
@@ -53,7 +48,7 @@ class InvoiceList extends StatelessWidget {
                   onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => InvoiceDetailPage(),
+                        builder: (context) => const InvoiceDetailPage(),
                       )),
                 ))
       ],

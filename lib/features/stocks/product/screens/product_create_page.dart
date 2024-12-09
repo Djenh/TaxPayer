@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:invoice_app/commons/ui/ui.dart';
 import 'package:invoice_app/features/stocks/product/category/screens/category_search_page.dart';
 import 'package:invoice_app/style/e_style.dart';
 
-import '../../../../commons/widgets/kelevatedbutton.dart';
-import '../../../../commons/widgets/kinput.dart';
+
 
 class ProductCreatePage extends StatelessWidget {
-  ProductCreatePage();
+  const ProductCreatePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Product Creation"),
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.more_horiz))],
+        title: const Text("Product Creation"),
+        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.more_horiz))],
       ),
       body: Padding(
         padding:
-            EdgeInsets.symmetric(horizontal: PADDING * 2, vertical: PADDING),
+            const EdgeInsets.symmetric(horizontal: PADDING * 2, vertical: PADDING),
         child: Form(
           child: ListView(
             children: [
@@ -29,7 +29,7 @@ class ProductCreatePage extends StatelessWidget {
                   height: MediaQuery.of(context).size.width / 2,
                   width: 60,
                   decoration: BoxDecoration(
-                    color: Color(0XFFEEEEEE),
+                    color: const Color(0XFFEEEEEE),
                     borderRadius: BorderRadius.circular(PADDING),
                     border: Border.all(color: Colors.black12),
                   ),
@@ -42,7 +42,7 @@ class ProductCreatePage extends StatelessWidget {
                         children: [
                           IconButton(
                               onPressed: () {},
-                              icon: CircleAvatar(
+                              icon: const CircleAvatar(
                                   backgroundColor: Colors.red,
                                   child: Icon(
                                     Iconsax.trash,
@@ -50,7 +50,7 @@ class ProductCreatePage extends StatelessWidget {
                                   ))),
                         ],
                       ),
-                      Column(
+                      const Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(Iconsax.image),
@@ -64,64 +64,64 @@ class ProductCreatePage extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: PADDING,
               ),
               Text(
                 "Désignation",
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
-              SizedBox(
+              const SizedBox(
                 height: PADDING,
               ),
               KInput(
                 name: "Name ",
                 keyboardType: TextInputType.name,
-                prefixIcon: Icon(Iconsax.menu_board),
+                prefixIcon: const Icon(Iconsax.menu_board),
               ),
-              SizedBox(
+              const SizedBox(
                 height: PADDING,
               ),
               Text(
                 "Unité de mesure",
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
-              SizedBox(
+              const SizedBox(
                 height: PADDING,
               ),
               KInput(
                 name: "Unité de mesure",
                 keyboardType: TextInputType.number,
                 initialValue: '0',
-                prefixIcon: Icon(Iconsax.icon),
+                prefixIcon: const Icon(Iconsax.icon),
               ),
-              SizedBox(
+              const SizedBox(
                 height: PADDING,
               ),
               Text(
                 "Catégorie",
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
-              SizedBox(
+              const SizedBox(
                 height: PADDING,
               ),
               Container(
-                padding: EdgeInsets.all(PADDING),
+                padding: const EdgeInsets.all(PADDING),
                 decoration: BoxDecoration(
                   border: Border.all( color: Theme.of(context).unselectedWidgetColor),
                   borderRadius: BorderRadius.circular(PADDING)
                 ),
                 child: ListTile(
                   contentPadding: EdgeInsets.zero,
-                  leading: Icon(Iconsax.import_2),
-                  title: Text(
+                  leading: const Icon(Iconsax.import_2),
+                  title: const Text(
                     "Non défini",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  subtitle: Text("Sélectionner une categorie"),
-                  trailing: Icon(Iconsax.arrow_down_14),
+                  subtitle: const Text("Sélectionner une categorie"),
+                  trailing: const Icon(Iconsax.arrow_down_14),
                   onTap: () {
-                    Get.to(() => CategorySeachPage(), fullscreenDialog: true);
+                    Get.to(() => const CategorySeachPage(), fullscreenDialog: true);
                   },
                 ),
               ),
@@ -134,7 +134,7 @@ class ProductCreatePage extends StatelessWidget {
       ),
       bottomNavigationBar: BottomAppBar(
         child: KElevatedButton(
-          child: Text(
+          child: const Text(
             "Ajouter",
             style: TextStyle(color: Colors.white),
           ),
@@ -142,6 +142,5 @@ class ProductCreatePage extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }

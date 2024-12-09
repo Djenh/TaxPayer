@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:invoice_app/commons/widgets/kcontainer.dart';
+
+import 'kcontainer.dart';
+
 
 class KnotFound extends StatelessWidget {
 
   final Widget child;
 
-  KnotFound({super.key,  required this.child});
+  const KnotFound({super.key,  required this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -14,14 +16,14 @@ class KnotFound extends StatelessWidget {
         children: [
           Icon(Icons.receipt_long_outlined,
               color: Theme.of(context).primaryColor, size: 60),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Text(
             "Not found",
             style: Theme.of(context).textTheme.headlineMedium,
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Text(
@@ -31,7 +33,7 @@ class KnotFound extends StatelessWidget {
 
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           child

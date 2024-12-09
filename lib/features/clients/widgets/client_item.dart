@@ -10,20 +10,20 @@ class ClientItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: onTap,
-      leading: CircleAvatar(
+      leading: const CircleAvatar(
         child: Center(
           child: Icon(Iconsax.building),
         ),
       ),
-      title: Text("Jorge Row"),
-      subtitle: Column(
+      title: const Text("Jorge Row"),
+      subtitle: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text("10/23/30"),
           Text("97078697"),
         ],
       ),
-      trailing: Column(
+      trailing: const Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Text("360 USD"),

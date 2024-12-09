@@ -2,10 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:invoice_app/commons/ui/ui.dart';
 import 'package:invoice_app/style/e_style.dart';
 
-import '../../../../commons/widgets/kTextgray.dart';
-import '../screens/product_create_page.dart';
+
 
 class ProductItem extends StatelessWidget {
   final void Function()? onTap;
@@ -29,10 +29,10 @@ class ProductItem extends StatelessWidget {
                       color: Theme.of(context).colorScheme.inversePrimary,
                       borderRadius: BorderRadius.circular(PADDING)),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: PADDING,
                 ),
-                Column(
+                const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
@@ -51,10 +51,10 @@ class ProductItem extends StatelessWidget {
                 ),
               ],
             )),
-            SizedBox(
+            const SizedBox(
               width: PADDING,
             ),
-            Column(
+            const Column(
               children: [
                 Icon(
                   Iconsax.box,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:invoice_app/features/registration/screens/registration_page.dart';
 
-import '../../../commons/widgets/kelevatedbutton.dart';
+import 'package:invoice_app/commons/ui/ui.dart';
 import '../../../style/e_style.dart';
 import '../components/onboarding_item.dart';
 
@@ -16,7 +16,28 @@ class OnboardingPage extends StatefulWidget {
 class _OnboardingPageState extends State<OnboardingPage> {
   PageController controller = PageController();
   int selected = 0;
-
+ var items=[
+   {
+     "title": "Bienvenue dans une facturation simplifiée !",
+     "description": "Gérez vos factures en toute simplicité et conformité avec notre application moderne et intuitive."
+   },
+   {
+     "title": "Restez conforme, restez serein",
+     "description": "Générez des factures électroniques certifiées en quelques clics et respectez les réglementations en vigueur."
+   },
+   {
+     "title": "Des données sécurisées, à portée de main",
+     "description": "Vos factures sont stockées en toute sécurité, accessibles à tout moment, où que vous soyez."
+   },
+   {
+     "title": "Une meilleure gestion pour votre entreprise",
+     "description": "Suivez vos ventes et accédez à vos rapports en temps réel pour prendre les bonnes décisions."
+   },
+   {
+     "title": "Un support à votre écoute",
+     "description": "Besoin d'aide ? Notre équipe est là pour vous accompagner à chaque étape."
+   }
+ ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,10 +53,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 onPressed: () => Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => RegistrationPage(),
+                      builder: (context) => const RegistrationPage(),
                     ),
                     (route) => false),
-                child: Text("Ignorer")),
+                child: const Text("Ignorer")),
           )
         ],
       ),
@@ -74,7 +95,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
             description:
                 "Trouvez l'équilibre financier parfait pour votre entreprise grâce à nos outils de suivi des revenus et des dépenses. Avec des graphiques clairs et des rapports détaillés, vous aurez une vue d'ensemble de votre situation financière en un clin d'œil.",
             action: KElevatedButton(
-                child: Text("Commencer"), onPressed: () => print("$selected")),
+                child: const Text("Commencer"), onPressed: () => print("$selected")),
           ),
         ],
       ),
@@ -82,7 +103,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
           elevation: 0,
           color: Colors.transparent,
           child: Padding(
-            padding: EdgeInsets.all(PADDING),
+            padding: const EdgeInsets.all(PADDING),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -95,7 +116,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                               curve: Curves.easeInCirc);
                         },
                         child: Container(
-                          margin: EdgeInsets.all(PADDING / 5),
+                          margin: const EdgeInsets.all(PADDING / 5),
                           child: CircleAvatar(
                             radius: selected == index ? 20 : 8,
                             backgroundColor: selected == index

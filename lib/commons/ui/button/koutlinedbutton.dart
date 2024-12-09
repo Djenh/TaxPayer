@@ -5,13 +5,12 @@ class KOutlinedButton extends StatelessWidget {
 
   final VoidCallback onPressed;
 
-  KOutlinedButton({super.key, required this.child, required this.onPressed});
+  const KOutlinedButton({super.key, required this.child, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return OutlinedButton(
       onPressed: onPressed,
-      child: child,
       style: OutlinedButton.styleFrom(
         elevation: 2, // button's elevation when it's pressed
         side: BorderSide( color: Theme.of(context).primaryColor),
@@ -19,8 +18,9 @@ class KOutlinedButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
         //minimumSize: Size(constraints.maxWidth, 50), // Make it responsive
-        padding: EdgeInsets.all( 10),
+        padding: const EdgeInsets.all( 10),
       ),
+      child: child,
     );
   }
 }

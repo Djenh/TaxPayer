@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:invoice_app/commons/widgets/KMenuItem.dart';
+import 'package:invoice_app/commons/ui/KMenuItem.dart';
 
 class DeleteMenu extends StatelessWidget {
   const DeleteMenu({super.key});

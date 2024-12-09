@@ -11,7 +11,7 @@ class InvoiceItem extends StatelessWidget {
     return ListTile(
       onTap: onTap,
       contentPadding: EdgeInsets.zero,
-      leading:  CircleAvatar(
+      leading:  const CircleAvatar(
 
         child: Center(
           child: Icon(Iconsax.bill),
@@ -39,7 +39,7 @@ class InvoiceItem extends StatelessWidget {
                   .copyWith(color: Theme.of(context).dividerColor)),
         ],
       ),
-      trailing: Column(
+      trailing: const Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Text("360 USD"),

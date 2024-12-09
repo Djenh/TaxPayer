@@ -27,7 +27,7 @@ class SideMenu extends StatelessWidget {
                           borderRadius: BorderRadius.circular(PADDING),
                           color: Theme.of(context).colorScheme.inversePrimary),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: PADDING,
                     ),
                     Text(
@@ -44,7 +44,7 @@ class SideMenu extends StatelessWidget {
               Iconsax.building,
               color: Theme.of(context).primaryColor,
             ),
-            title: Text("Mon entreprise"),
+            title: const Text("Mon entreprise"),
             onTap: () {},
           ),
           ListTile(
@@ -52,9 +52,9 @@ class SideMenu extends StatelessWidget {
               Iconsax.card_pos,
               color: Theme.of(context).primaryColor,
             ),
-            title: Text("Points de vente"),
+            title: const Text("Points de vente"),
             onTap: () {
-              Get.to(()=>PosPage());
+              Get.to(()=>const PosPage());
             },
           ),
           ListTile(
@@ -62,9 +62,9 @@ class SideMenu extends StatelessWidget {
               Iconsax.people,
               color: Theme.of(context).primaryColor,
             ),
-            title: Text("Clients"),
+            title: const Text("Clients"),
             onTap: () {
-              Get.to(() => ClientPage() );
+              Get.to(() => const ClientPage() );
             },
           ),
           ListTile(
@@ -72,9 +72,9 @@ class SideMenu extends StatelessWidget {
               Iconsax.bag_2,
               color: Theme.of(context).primaryColor,
             ),
-            title: Text("Produits"),
+            title: const Text("Produits"),
             onTap: () {
-              Get.to(() => ProductPage() );
+              Get.to(() => const ProductPage() );
             },
           ),
           ListTile(
@@ -82,7 +82,7 @@ class SideMenu extends StatelessWidget {
               Iconsax.status_up,
               color: Theme.of(context).primaryColor,
             ),
-            title: Text("Fiscalités"),
+            title: const Text("Fiscalités"),
             onTap: () {},
           ),
           ListTile(
@@ -90,7 +90,7 @@ class SideMenu extends StatelessWidget {
               Iconsax.status_up,
               color: Theme.of(context).primaryColor,
             ),
-            title: Text("Caisse"),
+            title: const Text("Caisse"),
             onTap: () {},
           )
         ],

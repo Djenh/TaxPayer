@@ -12,23 +12,23 @@ class ClientPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Les clients"),
+        title: const Text("Les clients"),
         centerTitle: false,
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Iconsax.search_normal))
+          IconButton(onPressed: () {}, icon: const Icon(Iconsax.search_normal))
         ],
       ),
       body: ListView.builder(
         itemBuilder: (context, index) => ClientItem(
-          onTap: () => Get.to(() => ClientDetailPage()),
+          onTap: () => Get.to(() => const ClientDetailPage()),
         ),
 
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Get.to(()=>ClientCreatePage());
+          Get.to(()=>const ClientCreatePage());
         },
-        child: Icon(Iconsax.add),
+        child: const Icon(Iconsax.add),
       ),
     );
   }

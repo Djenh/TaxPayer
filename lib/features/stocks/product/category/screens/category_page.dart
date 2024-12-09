@@ -8,9 +8,9 @@ class CategoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
        appBar: AppBar(
-         title: Text("Product Category"),
+         title: const Text("Product Category"),
        ),
-      body: KCategoryList()
+      body: const KCategoryList()
 
     );
   }

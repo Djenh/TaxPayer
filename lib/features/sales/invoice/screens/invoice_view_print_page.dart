@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:invoice_app/commons/widgets/kTextgray.dart';
-import 'package:invoice_app/commons/widgets/kelevatedbutton.dart';
+import 'package:invoice_app/commons/ui/ui.dart';
+
 
 import 'invoice_template_choice_page.dart';
 
@@ -12,21 +12,21 @@ class InvoicePrintViewPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Column(
+        title: const Column(
           children: [
             Text(" Invoice #12345 "),
             KtextGray("Joyeix rons"),
           ],
         ),
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.download))],
+        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.download))],
       ),
       body: ListView(
         children: [
           // Company info
           Container(
-            padding: EdgeInsets.all(10 * 2),
+            padding: const EdgeInsets.all(10 * 2),
             color: Colors.white,
-            child: Row(
+            child: const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Brand"),
@@ -43,13 +43,13 @@ class InvoicePrintViewPage extends StatelessWidget {
           ),
           // Invoice and Client infos
           Container(
-            padding: EdgeInsets.all(10 * 2),
+            padding: const EdgeInsets.all(10 * 2),
             color: Colors.white,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  child: Column(
+                  child: const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("Invoice To"),
@@ -57,10 +57,10 @@ class InvoicePrintViewPage extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -102,9 +102,9 @@ class InvoicePrintViewPage extends StatelessWidget {
           ),
           // Invoice items
           Container(
-            padding: EdgeInsets.all(10 * 2),
+            padding: const EdgeInsets.all(10 * 2),
             color: Colors.white,
-            child: Column(
+            child: const Column(
               children: [],
             ),
           ),
@@ -118,10 +118,10 @@ class InvoicePrintViewPage extends StatelessWidget {
       ),
       bottomNavigationBar: BottomAppBar(
         child: KElevatedButton(
-          child: Text("Change theme"),
+          child: const Text("Change theme"),
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(
-              builder: (context) => InvoiceTemplateChoicePage(),));
+              builder: (context) => const InvoiceTemplateChoicePage(),));
           },
         ),
       ),

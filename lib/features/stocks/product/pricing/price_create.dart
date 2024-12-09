@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:invoice_app/commons/ui/ui.dart';
 
-import '../../../../commons/widgets/kinput.dart';
+
 import '../../../../style/e_style.dart';
 
 
@@ -23,7 +24,7 @@ class Price_create extends StatelessWidget {
                   initialValue: '0',
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: PADDING,
               ),
               Expanded(
@@ -33,7 +34,7 @@ class Price_create extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: PADDING,),
+          const SizedBox(height: PADDING,),
           KInput(
             name: "Price ",
             keyboardType: TextInputType.name,

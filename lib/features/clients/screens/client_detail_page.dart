@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../commons/widgets/kcontainer.dart';
+import '../../../commons/ui/kcontainer.dart';
+
 
 class ClientDetailPage extends StatelessWidget {
   const ClientDetailPage({super.key});
@@ -9,14 +10,14 @@ class ClientDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Jean Louis"),
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.more_horiz))],
+        title: const Text("Jean Louis"),
+        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.more_horiz))],
       ),
       body: ListView(
         children: [
           KContainer(
             title: "Clients",
-            child: Column(
+            child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
@@ -56,12 +57,12 @@ class ClientDetailPage extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           KContainer(
             title: "Client Items",
-            child: Column(
+            child: const Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -80,12 +81,12 @@ class ClientDetailPage extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           KContainer(
 title: "Subtotal",
-            child: Column(
+            child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(

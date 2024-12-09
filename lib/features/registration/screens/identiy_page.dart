@@ -3,14 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:invoice_app/commons/widgets/k_default_layout.dart';
-import 'package:invoice_app/commons/widgets/logo.dart';
+import 'package:invoice_app/commons/layout/layout.dart';
+import 'package:invoice_app/commons/ui/ui.dart';
 import 'package:invoice_app/features/registration/screens/verifying_page.dart';
+import 'package:invoice_app/style/e_style.dart';
 
-import '../../../commons/widgets/e_button.dart';
-import '../../../commons/widgets/k_flag_banner.dart';
-import '../../../style/e_style.dart';
-import 'first_pos_page.dart';
 
 
 class IdentityPage extends StatelessWidget {
@@ -22,7 +19,7 @@ class IdentityPage extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.more_vert))],
+        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert))],
       ),
       extendBodyBehindAppBar: true,
       body:  KDefaultLayout(
@@ -45,7 +42,7 @@ class IdentityPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("IFU"),
+                          const Text("IFU"),
                           Text("1234567890123",
                               style: Theme.of(context)
                                   .textTheme
@@ -55,7 +52,7 @@ class IdentityPage extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: PADDING / 2,
                     ),
                     Container(
@@ -63,7 +60,7 @@ class IdentityPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Raison sociale"),
+                          const Text("Raison sociale"),
                           Text("OMEGA NUMERIC IT",
                               style: Theme.of(context)
                                   .textTheme
@@ -73,7 +70,7 @@ class IdentityPage extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: PADDING / 2,
                     ),
                     Container(
@@ -81,7 +78,7 @@ class IdentityPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Type"),
+                          const Text("Type"),
                           Text("SOCIETE",
                               style: Theme.of(context)
                                   .textTheme
@@ -91,7 +88,7 @@ class IdentityPage extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: PADDING / 2,
                     ),
                     Container(
@@ -99,7 +96,7 @@ class IdentityPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Email"),
+                          const Text("Email"),
                           Text("con**@omeganumeric.tech",
                               style: Theme.of(context)
                                   .textTheme
@@ -109,7 +106,7 @@ class IdentityPage extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: PADDING / 2,
                     ),
                     Container(
@@ -117,7 +114,7 @@ class IdentityPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Téléphone"),
+                          const Text("Téléphone"),
                           Text("67 ** ** 90",
                               style: Theme.of(context)
                                   .textTheme
@@ -129,28 +126,28 @@ class IdentityPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                Icon(
+                const Icon(
                   Iconsax.user,
                   size: 60,
                   color: Colors.black45,
                 )
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: PADDING * 2,
             ),
             Row(
               children: [
-                EButton(
+                KButton(
                   child: Row(
                     children: [
-                      Icon(Iconsax.check),
-                      SizedBox(
+                      const Icon(Iconsax.check),
+                      const SizedBox(
                         width: PADDING,
                       ),
                       Text(
                         "Terminer".toUpperCase(),
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),

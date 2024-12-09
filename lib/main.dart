@@ -11,10 +11,11 @@ void main() {
     debugShowCheckedModeBanner: false,
     theme: ThemeData(
       textTheme: GoogleFonts.poppinsTextTheme(),
-     colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal)
+     scaffoldBackgroundColor: Colors.white,
+     colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue)
     // colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo)
     ),
     themeMode: ThemeMode.system,
-    home: OnboardingPage(),
+    home: HomePage(),
   ));
 }

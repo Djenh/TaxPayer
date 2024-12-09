@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:invoice_app/commons/widgets/kTextgray.dart';
+
+import '../../../../commons/ui/kTextgray.dart';
 
 class TaxgroupPage extends StatelessWidget {
   const TaxgroupPage({super.key});
@@ -8,7 +9,7 @@ class TaxgroupPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Column(
+        title: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("Les groupes de taxation"),
@@ -18,14 +19,14 @@ class TaxgroupPage extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          SizedBox(height: 10,),
+          const SizedBox(height: 10,),
           ListTile(
-            leading: CircleAvatar(
+            leading: const CircleAvatar(
               child: Text("A"),
             ),
-            title: Text("Exonerés"),
-            subtitle: Text("Concerne les prooduits exonérés"),
-            trailing: Column(
+            title: const Text("Exonerés"),
+            subtitle: const Text("Concerne les prooduits exonérés"),
+            trailing: const Column(
               children: [
                 Text("Taux"),
                 SizedBox(
@@ -43,12 +44,12 @@ class TaxgroupPage extends StatelessWidget {
             onTap: () {
               Navigator.pop(context,"result");
             },
-            leading: CircleAvatar(
+            leading: const CircleAvatar(
               child: Text("B"),
             ),
-            title: Text("TAXABLE ( TVA)"),
-            subtitle: Text("Concerne les prooduits taxables "),
-            trailing: Column(
+            title: const Text("TAXABLE ( TVA)"),
+            subtitle: const Text("Concerne les prooduits taxables "),
+            trailing: const Column(
               children: [
                 Text("Taux"),
                 SizedBox(

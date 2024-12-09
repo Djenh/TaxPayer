@@ -13,7 +13,7 @@ class KMenuItem extends StatelessWidget {
    */
   final Widget? next;
 
-  KMenuItem(
+  const KMenuItem(
       {super.key,
       required this.icon,
       this.color,
@@ -28,8 +28,8 @@ class KMenuItem extends StatelessWidget {
     return ListTile(
 
       leading: Icon(icon,
-          color: color != null ? color : Theme.of(context).primaryColor),
-      title: Text("$title".trim()),
+          color: color ?? Theme.of(context).primaryColor),
+      title: Text(title.trim()),
       onTap: () {
         if (pop) {
           Navigator.pop(context);

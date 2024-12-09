@@ -10,9 +10,9 @@ class KCategoryList extends StatelessWidget {
     return ListView.builder(
       shrinkWrap: true,
       itemBuilder: (context, index) => ListTile(
-        leading: CircleAvatar(child: Icon(Iconsax.menu_board)),
-        title: Text("Produit laitier",) ,
-        subtitle: Text("PL", style: TextStyle(fontWeight: FontWeight.bold)),
+        leading: const CircleAvatar(child: Icon(Iconsax.menu_board)),
+        title: const Text("Produit laitier",) ,
+        subtitle: const Text("PL", style: TextStyle(fontWeight: FontWeight.bold)),
         onTap: () {
           Get.back( result:"Produit laitier");
         },

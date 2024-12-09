@@ -1,24 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:invoice_app/commons/widgets/kTextgray.dart';
-import 'package:invoice_app/commons/widgets/kelevatedbutton.dart';
-import 'package:invoice_app/commons/widgets/kinput.dart';
-
-import '../../../../commons/widgets/kcontainer.dart';
+import 'package:invoice_app/commons/ui/ui.dart';
 import '../../../stocks/product/screens/product_create_page.dart';
 import '../../../stocks/product/taxgroup/tax_group.dart';
 
 class InvoiceItemPage extends StatelessWidget {
-  InvoiceItemPage({super.key});
+  const InvoiceItemPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add Item"),
+        title: const Text("Add Item"),
       ),
       body: ListView(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           KContainer(
@@ -26,17 +22,17 @@ class InvoiceItemPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 ListTile(
                   contentPadding: EdgeInsets.zero,
-                  title: KtextGray(
+                  title: const KtextGray(
                     "Produuct",
                   ),
-                  subtitle: Text("Select a product",
+                  subtitle: const Text("Select a product",
                       style: TextStyle(fontWeight: FontWeight.bold)),
-                  trailing: Icon(Icons.arrow_drop_down),
+                  trailing: const Icon(Icons.arrow_drop_down),
                   onTap: () {
                     Navigator.push(
                         context,
@@ -46,11 +42,11 @@ class InvoiceItemPage extends StatelessWidget {
                         ));
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
-                Divider(),
-                SizedBox(
+                const Divider(),
+                const SizedBox(
                   height: 5,
                 ),
                 Row(
@@ -63,7 +59,7 @@ class InvoiceItemPage extends StatelessWidget {
                         initialValue: '0',
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10 * 2.5,
                     ),
                     Expanded(
@@ -77,7 +73,7 @@ class InvoiceItemPage extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           KContainer(
@@ -87,15 +83,15 @@ class InvoiceItemPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ListTile(
-                  title: Text("Tax Group"),
-                  trailing: Icon(Icons.arrow_drop_down),
-                  subtitle: KtextGray("A-ex (0%) -EXONERATE"),
+                  title: const Text("Tax Group"),
+                  trailing: const Icon(Icons.arrow_drop_down),
+                  subtitle: const KtextGray("A-ex (0%) -EXONERATE"),
                   contentPadding: EdgeInsets.zero,
                   onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => TaxgroupPage(),
+                            builder: (context) => const TaxgroupPage(),
                             fullscreenDialog: true
                         ));
                   },
@@ -108,7 +104,7 @@ class InvoiceItemPage extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           KContainer(
@@ -118,8 +114,8 @@ class InvoiceItemPage extends StatelessWidget {
               children: [
                 ...ListTile.divideTiles(context: context, tiles: [
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: 10.0),
-                    child: Row(
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         KtextGray("Subtotal"),
@@ -128,8 +124,8 @@ class InvoiceItemPage extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: 10.0),
-                    child: Row(
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         KtextGray("Subtotal"),
@@ -138,8 +134,8 @@ class InvoiceItemPage extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: 10.0),
-                    child: Row(
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         KtextGray("Subtotal"),
@@ -148,7 +144,7 @@ class InvoiceItemPage extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: 10.0),
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -161,7 +157,7 @@ class InvoiceItemPage extends StatelessWidget {
                                   color: Theme.of(context).primaryColor,
                                   fontWeight: FontWeight.bold),
                         ),
-                        Text("Qte: Z"),
+                        const Text("Qte: Z"),
                       ],
                     ),
                   ),
@@ -177,7 +173,7 @@ class InvoiceItemPage extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                KtextGray("Total Amount"),
+                const KtextGray("Total Amount"),
                 Text(
                   "2000",
                   style: Theme.of(context).textTheme.bodyLarge!.copyWith(
@@ -186,12 +182,12 @@ class InvoiceItemPage extends StatelessWidget {
                 )
               ],
             ),
-            SizedBox(
+            const SizedBox(
               width: 10 * 3,
             ),
             Expanded(
               child: KElevatedButton(
-                  child: Text(
+                  child: const Text(
                     "Add item",
                   ),
                   onPressed: () {}),

@@ -17,13 +17,13 @@ class FlagBanner extends StatelessWidget {
         Expanded(
           child: Container(
             height: 7,
-            decoration: BoxDecoration(color: Colors.black45),
+            decoration: const BoxDecoration(color: Colors.black45),
           ),
         ),
         Expanded(
           child: Container(
             height: 7,
-            decoration: BoxDecoration(color: Colors.black),
+            decoration: const BoxDecoration(color: Colors.black),
           ),
         ),
       ],

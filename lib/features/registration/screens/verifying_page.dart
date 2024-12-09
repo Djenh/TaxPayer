@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:invoice_app/commons/widgets/k_default_layout.dart';
-import 'package:invoice_app/commons/widgets/kinput.dart';
+import 'package:invoice_app/commons/layout/layout.dart';
+import 'package:invoice_app/commons/ui/ui.dart';
 import 'package:invoice_app/features/home/screens/home_page.dart';
 
-import '../../../commons/widgets/e_button.dart';
 import '../../../style/e_style.dart';
-import 'identiy_page.dart';
+
 
 class VerifyingPage extends StatelessWidget {
-    VerifyingPage({super.key});
+  VerifyingPage({super.key});
+
   final scaffoldState = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,21 +24,19 @@ class VerifyingPage extends StatelessWidget {
       body: KDefaultLayout(
         isReversed: false,
         title: 'Vérifier votre Identité  ',
-        subtitle:
-        "Bonjour OMEGA NUMERIC IT",
+        subtitle: "Bonjour OMEGA NUMERIC IT",
         imagePath: "assets/images/3.jpg",
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             Container(
               child: DefaultTabController(
                   length: 2,
                   child: Column(
                     children: [
                       Container(
-                        child: TabBar(tabs: [
+                        child: const TabBar(tabs: [
                           Tab(
                             text: "Téléphone",
                           ),
@@ -46,10 +45,10 @@ class VerifyingPage extends StatelessWidget {
                           ),
                         ]),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: PADDING,
                       ),
-                      Container(
+                      SizedBox(
                         height: 220,
                         child: TabBarView(children: [
                           Column(
@@ -61,89 +60,99 @@ class VerifyingPage extends StatelessWidget {
                                 children: [
                                   Expanded(
                                       child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start
-                                        ,
-                                        children: [
-                                          Text(
-                                              "Whatsapp", style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                            fontWeight: FontWeight.bold
-                                          ),),
-                                          SizedBox(
-                                            height: PADDING/2,
-                                          ),
-                                          Text(
-                                              "Un code vous a été envoyé",style: Theme.of(context).textTheme.bodySmall!.copyWith(
-
-                                          ),),
-                                        ],
-                                      )),
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Whatsapp",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium!
+                                            .copyWith(
+                                                fontWeight: FontWeight.bold),
+                                      ),
+                                      const SizedBox(
+                                        height: PADDING / 2,
+                                      ),
+                                      Text(
+                                        "Un code vous a été envoyé",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall!
+                                            .copyWith(),
+                                      ),
+                                    ],
+                                  )),
                                   Expanded(
                                     child: TextButton(
                                         onPressed: () {
-                                     showBottomSheet(
+                                          showBottomSheet(
                                             enableDrag: true,
-
                                             elevation: 2,
-                                           builder: (context) {
-                                            return Wrap(
-                                              children:[
-                                                Container(
-
-                                                  height: MediaQuery.of(context).size.height/4,
-
-                                                  child: ListView(
-                                                    children: [
-                                                      "SMS",
-                                                      "Whatsapp"
-                                                    ].map((e) => ListTile(
-                                                      title: Text("$e"),
-
-                                                      subtitle: Text("Les coûts supplementaires peuvent s'appliquer"),
-                                                      onTap: (){
-
-                                                      },
-                                                      leading: CircleAvatar(),
-                                                    )).toList(),
-                                                  ),
-                                                )
-                                              ]
-                                          ,
-                                            );
-                                          }, context: context,);
+                                            builder: (context) {
+                                              return Wrap(
+                                                children: [
+                                                  SizedBox(
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height /
+                                                            4,
+                                                    child: ListView(
+                                                      children: [
+                                                        "SMS",
+                                                        "Whatsapp"
+                                                      ]
+                                                          .map((e) => ListTile(
+                                                                title:
+                                                                    Text(e),
+                                                                subtitle: const Text(
+                                                                    "Les coûts supplementaires peuvent s'appliquer"),
+                                                                onTap: () {},
+                                                                leading:
+                                                                    const CircleAvatar(),
+                                                              ))
+                                                          .toList(),
+                                                    ),
+                                                  )
+                                                ],
+                                              );
+                                            },
+                                            context: context,
+                                          );
                                         },
-                                        child: Text("Changer de canal")),
+                                        child: const Text("Changer de canal")),
                                   )
                                 ],
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: PADDING,
                               ),
                               Row(
                                 children: [
                                   Expanded(child: KInput(name: "")),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: PADDING / 2,
                                   ),
                                   Expanded(child: KInput(name: "")),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: PADDING / 2,
                                   ),
                                   Expanded(child: KInput(name: "")),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: PADDING / 2,
                                   ),
                                   Expanded(child: KInput(name: "")),
-
                                 ],
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  TextButton(onPressed: () {
-
-                                  }, child: Text("Renvoyer le code")),
-                                  Text("00:90 "),
+                                  TextButton(
+                                      onPressed: () {},
+                                      child: const Text("Renvoyer le code")),
+                                  const Text("00:90 "),
                                 ],
                               )
                             ],
@@ -154,34 +163,33 @@ class VerifyingPage extends StatelessWidget {
                     ],
                   )),
             ),
-            EButton(
+            KButton(
               child: Center(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Iconsax.check),
-                    SizedBox(
+                    const Icon(Iconsax.check),
+                    const SizedBox(
                       width: PADDING,
                     ),
                     Text(
                       "Verifier".toUpperCase(),
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
               ),
-              onPressed: () =>
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => HomePage( ),
-                      )),
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomePage(),
+                  )),
             ),
-            SizedBox(
+            const SizedBox(
               height: PADDING * 2,
             ),
-            Text(
+            const Text(
               "En utilisant cette application, vous acceptez les conditions d'utilisation",
             ),
           ],

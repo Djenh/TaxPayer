@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:invoice_app/commons/widgets/k_default_layout.dart';
+import 'package:invoice_app/commons/layout/layout.dart';
+
 
 import '../../../style/e_style.dart';
 
@@ -13,7 +14,7 @@ class OnboardingItem extends StatelessWidget {
 
   final Widget? action;
 
-  OnboardingItem(
+  const OnboardingItem(
       {super.key,
       required this.title,
       this.iconData,
@@ -33,7 +34,7 @@ class OnboardingItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               height: PADDING * 5,
             ),
             Row(
@@ -43,11 +44,11 @@ class OnboardingItem extends StatelessWidget {
                   size: 70,
                   color: Colors.black45,
                 ),
-                SizedBox(
+                const SizedBox(
                   width: PADDING * 2,
                 ),
                 Expanded(
-                  child: Text("$title",
+                  child: Text(title,
                       style: Theme.of(context)
                           .textTheme
                           .bodyMedium!
@@ -55,12 +56,12 @@ class OnboardingItem extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: PADDING * 5,
             ),
-            Text("$description",
+            Text(description,
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith()),
-            SizedBox(
+            const SizedBox(
               height: PADDING * 2,
             ),
             action ?? Container()

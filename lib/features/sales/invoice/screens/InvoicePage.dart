@@ -9,16 +9,16 @@ class InvoicePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Invoices"),
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.search))],
+        title: const Text("Invoices"),
+        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.search))],
       ),
       drawer: Drawer(
         child: Container(),
       ),
-      body: InvoiceList(),
+      body: const InvoiceList(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }

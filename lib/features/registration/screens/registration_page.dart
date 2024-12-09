@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:invoice_app/commons/widgets/k_default_layout.dart';
-import 'package:invoice_app/commons/widgets/k_flag_banner.dart';
-import 'package:invoice_app/commons/widgets/kinput.dart';
-import 'package:invoice_app/commons/widgets/logo.dart';
+import 'package:invoice_app/commons/layout/layout.dart';
+import 'package:invoice_app/commons/ui/ui.dart';
 
-import '../../../commons/widgets/e_button.dart';
 import '../../../style/e_style.dart';
 import 'identiy_page.dart';
 
@@ -30,30 +27,30 @@ class RegistrationPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
 
           children: [
-            Text(
+            const Text(
               "Identifiant Fiscal Unique",
             ),
-            SizedBox(
+            const SizedBox(
               height: PADDING * 2,
             ),
             KInput(name: "IFU"),
-            SizedBox(
+            const SizedBox(
               height: PADDING * 2,
             ),
 
-            EButton(
+            KButton(
               child: Center(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Iconsax.check),
-                    SizedBox(
+                    const Icon(Iconsax.check),
+                    const SizedBox(
                       width: PADDING,
                     ),
                     Text(
                       "Verifier".toUpperCase(),
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -61,14 +58,14 @@ class RegistrationPage extends StatelessWidget {
               onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => IdentityPage(),
+                    builder: (context) => const IdentityPage(),
                   )),
             ),
 
-            SizedBox(
+            const SizedBox(
               height: PADDING*2,
             ),
-            Text(
+            const Text(
               "En utilisant cette application, vous acceptez les conditions d'utilisation",
             ),
           ],

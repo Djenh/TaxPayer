@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:invoice_app/commons/widgets/kTextgray.dart';
-import 'package:invoice_app/commons/widgets/koutlinedbutton.dart';
+import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:invoice_app/commons/ui/k_list_tile.dart';
+import 'package:invoice_app/commons/ui/ui.dart';
 import 'package:invoice_app/features/clients/screens/client_search_page.dart';
+import 'package:invoice_app/features/sales/invoice/security_tax/security_tax_page.dart';
+import 'package:invoice_app/features/sales/invoice/type_invoice/type_invoice_page.dart';
 
-import '../../../../commons/widgets/kTextwhite.dart';
-import '../../../../commons/widgets/kcontainer.dart';
-import '../../../../commons/widgets/kelevatedbutton.dart';
 import '../widgets/modals/default_menu.dart';
 import 'invoice_item_page.dart';
 
-
 class InvoiceCreatePage extends StatelessWidget {
-  InvoiceCreatePage({super.key});
+  const InvoiceCreatePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,11 +20,11 @@ class InvoiceCreatePage extends StatelessWidget {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Facture"),
+            const Text("Facture"),
             Row(
               children: [
-                KtextGray("12344"),
-                SizedBox(
+                const Text("12344"),
+                const SizedBox(
                   width: 5.0,
                 ),
                 Icon(
@@ -36,7 +36,10 @@ class InvoiceCreatePage extends StatelessWidget {
             )
           ],
         ),
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.more_horiz))],
+        actions: [
+          IconButton(
+              onPressed: () {}, icon: const Icon(Iconsax.document_download))
+        ],
       ),
       body: ListView(
         children: [
@@ -45,57 +48,29 @@ class InvoiceCreatePage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: Column(
-                        children: [
-                          ListTile(
-                            contentPadding: EdgeInsets.zero,
-                            title: KtextGray(
-                              "Type Invoice",
-                            ),
-                            subtitle: Text(
-                              "Facture de vente - FV",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            onTap: () {},
-                            trailing: Icon(Icons.arrow_drop_down),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Divider(),
-                        ],
+                      child: KListTile(
+                        title: "Type de facture",
+                        subtitle: "Facture de vente",
+                        onTap: () => Get.to(() => TypeInvoicePage(),
+                            fullscreenDialog: true),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10.0 * 4,
                     ),
                     Expanded(
-                      child: Column(
-                        children: [
-                          ListTile(
-                            contentPadding: EdgeInsets.zero,
-                            title: KtextGray(
-                              "Security Tax",
-                            ),
-                            subtitle: Text(
-                              "AIB 1%",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            onTap: () {},
-                            trailing: Icon(Icons.arrow_drop_down),
-                          ),
-                          SizedBox(
-                            height: 5.0,
-                          ),
-                          Divider()
-                        ],
+                      child: KListTile(
+                        title: "Secutrity tax",
+                        subtitle: "20%",
+                        onTap: () => Get.to(() => SecurityTaxPage(),
+                            fullscreenDialog: true),
                       ),
                     ),
                   ],
@@ -103,7 +78,7 @@ class InvoiceCreatePage extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           KContainer(
@@ -118,17 +93,17 @@ class InvoiceCreatePage extends StatelessWidget {
                       fullscreenDialog: true),
                 );
               },
-              title: KtextGray(
+              title: const KtextGray(
                 "Invoice To",
               ),
-              subtitle: Text(
+              subtitle: const Text(
                 "Select  a client",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              trailing: Icon(Icons.arrow_drop_down),
+              trailing: const Icon(Icons.arrow_drop_down),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           KContainer(
@@ -138,19 +113,19 @@ class InvoiceCreatePage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ...ListTile.divideTiles(context: context, tiles: [
-                  ListTile(
+                  const ListTile(
                     title: Text("Lait djado"),
                     subtitle: KtextGray("Qte: Z"),
                     trailing: Text("2000 XOD"),
                     contentPadding: EdgeInsets.zero,
                   ),
-                  ListTile(
+                  const ListTile(
                     title: Text("Lait djado"),
                     subtitle: KtextGray("Qte: Z"),
                     trailing: Text("2000 XOD"),
                     contentPadding: EdgeInsets.zero,
                   ),
-                ]).toList(),
+                ]),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(
@@ -161,12 +136,12 @@ class InvoiceCreatePage extends StatelessWidget {
                       ),
                     );
                   },
-                  child: Text("Add Item"),
+                  child: const Text("Add Item"),
                 )
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           KContainer(
@@ -176,8 +151,8 @@ class InvoiceCreatePage extends StatelessWidget {
               children: [
                 ...ListTile.divideTiles(context: context, tiles: [
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: 10.0),
-                    child: Row(
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         KtextGray("Subtotal"),
@@ -186,8 +161,8 @@ class InvoiceCreatePage extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: 10.0),
-                    child: Row(
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         KtextGray("Subtotal"),
@@ -196,8 +171,8 @@ class InvoiceCreatePage extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: 10.0),
-                    child: Row(
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         KtextGray("Subtotal"),
@@ -206,7 +181,7 @@ class InvoiceCreatePage extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: 10.0),
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -219,7 +194,7 @@ class InvoiceCreatePage extends StatelessWidget {
                                   color: Theme.of(context).primaryColor,
                                   fontWeight: FontWeight.bold),
                         ),
-                        Text("Qte: Z"),
+                        const Text("Qte: Z"),
                       ],
                     ),
                   ),
@@ -236,12 +211,12 @@ class InvoiceCreatePage extends StatelessWidget {
             Expanded(
                 child: KElevatedButton(
                     onPressed: () {},
-                    child: KTextWhite(
+                    child: const KTextWhite(
                       "Create Invoice",
                     ))),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             KOutlinedButton(
-              child: Icon(Icons.more_horiz),
+              child: const Icon(Icons.more_horiz),
               onPressed: () {
                 showMoreMenu(context);
               },
@@ -260,8 +235,7 @@ class InvoiceCreatePage extends StatelessWidget {
           child: SizedBox(
             height: MediaQuery.of(context).size.height / 3,
             width: double.infinity,
-            child: DefaultMenu()
-            ,
+            child: const DefaultMenu(),
           ),
         );
       },

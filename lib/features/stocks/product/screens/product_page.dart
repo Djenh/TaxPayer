@@ -14,23 +14,23 @@ class ProductPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Produits"),
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.more_vert))],
+        title: const Text("Produits"),
+        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert))],
       ),
       body: Container(
         padding:
-            EdgeInsets.symmetric(horizontal: PADDING * 2, vertical: PADDING),
+            const EdgeInsets.symmetric(horizontal: PADDING * 2, vertical: PADDING),
         child: ListView.builder(
           itemBuilder: (context, index) => Container(
-              padding: EdgeInsets.only(bottom: PADDING), child: ProductItem(
+              padding: const EdgeInsets.only(bottom: PADDING), child: ProductItem(
             onTap:  () {
-              Get.to(() => ProductDetailPage());
+              Get.to(() => const ProductDetailPage());
             },
           )),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Iconsax.add),
+        child: const Icon(Iconsax.add),
         onPressed: () => Get.to(() => ProductCreatePage()),
       ),
     );

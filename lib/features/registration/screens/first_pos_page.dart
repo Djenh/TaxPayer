@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:invoice_app/commons/widgets/k_default_layout.dart';
-import 'package:invoice_app/commons/widgets/kelevatedbutton.dart';
-import 'package:invoice_app/commons/widgets/kinput.dart';
+import 'package:invoice_app/commons/layout/layout.dart';
+import 'package:invoice_app/commons/ui/ui.dart';
 import 'package:invoice_app/features/home/screens/home_page.dart';
 import 'package:invoice_app/style/e_style.dart';
 
-import '../../../commons/widgets/e_button.dart';
+
 
 class FirstPosPage extends StatelessWidget {
   const FirstPosPage({super.key});
@@ -29,40 +28,40 @@ class FirstPosPage extends StatelessWidget {
                   fontWeight: FontWeight.bold,
 
                 ),),
-                SizedBox(height: PADDING*2,
+                const SizedBox(height: PADDING*2,
                 ),
                 KInput(name: "Point de vente",
-                  prefixIcon: Icon(Iconsax.buliding),
+                  prefixIcon: const Icon(Iconsax.buliding),
 
                 ),
-                SizedBox(height: PADDING,
+                const SizedBox(height: PADDING,
                 ),
                 KInput(name: "Téléphone",
-                  prefixIcon: Icon(Iconsax.call),
+                  prefixIcon: const Icon(Iconsax.call),
                 ),
-                SizedBox(height: PADDING,),
+                const SizedBox(height: PADDING,),
                 KInput(name: "Email",
-                  prefixIcon: Icon(Iconsax.message),
+                  prefixIcon: const Icon(Iconsax.message),
                 ),
-                SizedBox(height: PADDING,),
+                const SizedBox(height: PADDING,),
                 KInput(name: "Localisation",
-                  prefixIcon: Icon(Iconsax.location),
+                  prefixIcon: const Icon(Iconsax.location),
                 ),
-                SizedBox(height: PADDING*2,),
+                const SizedBox(height: PADDING*2,),
 
                 Row(
                  // mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    EButton(
+                    KButton(
                       child: Row(
                         children: [
-                          Icon(Iconsax.check),
-                          SizedBox(
+                          const Icon(Iconsax.check),
+                          const SizedBox(
                             width: PADDING,
                           ),
                           Text(
                             "Terminer".toUpperCase(),
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),

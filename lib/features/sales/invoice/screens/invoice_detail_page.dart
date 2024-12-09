@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:invoice_app/features/sales/invoice/widgets/modals/full_menu.dart';
 
 
-import '../../../../commons/widgets/kTextgray.dart';
-import '../../../../commons/widgets/kcontainer.dart';
-import '../widgets/modals/full_menu.dart';
+import '../../../../commons/ui/kTextgray.dart';
+import '../../../../commons/ui/kcontainer.dart';
+
 
 class InvoiceDetailPage extends StatelessWidget {
   const InvoiceDetailPage({super.key});
@@ -184,8 +185,8 @@ class InvoiceDetailPage extends StatelessWidget {
       builder: (context) {
         return SafeArea(
             child: SizedBox(
-          child:  FullMenu(),
           height: MediaQuery.of(context).size.height*0.60,
+          child:  FullMenu(),
         ));
       },
     );

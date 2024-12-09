@@ -4,7 +4,7 @@ import 'package:invoice_app/features/clients/widgets/client_item.dart';
 class ClientList extends StatelessWidget {
   final List? items;
 
-  ClientList({super.key, this.items});
+  const ClientList({super.key, this.items});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class ClientList extends StatelessWidget {
         children: items != null
             ? items!
                 .map((e) => InkWell(
-                      child: ClientItem(),
+                      child: const ClientItem(),
                       onTap: () {},
                     ))
                 .toList()
