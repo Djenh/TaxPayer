@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 
 class KContainer extends StatelessWidget {
-  late Widget child;
+  final Widget child;
+  final Widget? action;
   final String? title;
   final Color? color;
 
-  KContainer({super.key, required this.child, this.title, this.color});
+  KContainer({super.key, required this.child,    this.title, this.color, this.action});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      padding: const EdgeInsets.all(12),
       decoration: const BoxDecoration(
    /* //      color: color == null ? Colors.white : color,
           boxShadow: [
@@ -21,14 +22,17 @@ class KContainer extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          title != null
-              ? Text(
-                  title ?? "",
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      color: Theme.of(context).primaryColor,
-                      fontWeight: FontWeight.w700),
-                )
-              : const SizedBox.shrink(),
+         Row(
+           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+           children: [
+           if (title != null) Text(
+             title ?? "",
+             style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                 color: Theme.of(context).primaryColor,
+                 fontWeight: FontWeight.w700),
+           ) else const SizedBox.shrink(),
+           if (action!= null) SizedBox(child: action,) else const SizedBox.shrink(),
+         ],),
           SizedBox(width: double.infinity, child: child)
         ],
       ),

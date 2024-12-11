@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:invoice_app/commons/ui/K_invoice_item.dart';
 import 'package:invoice_app/commons/ui/k_list_tile.dart';
 import 'package:invoice_app/commons/ui/ui.dart';
 import 'package:invoice_app/features/clients/screens/client_search_page.dart';
 import 'package:invoice_app/features/sales/invoice/security_tax/security_tax_page.dart';
 import 'package:invoice_app/features/sales/invoice/type_invoice/type_invoice_page.dart';
+import 'package:invoice_app/features/sales/invoice/widgets/invoice_item.dart';
 
 import '../widgets/modals/default_menu.dart';
 import 'invoice_item_page.dart';
@@ -49,7 +51,7 @@ class InvoiceCreatePage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(
-                  height: 10,
+                  height: 5,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -63,7 +65,7 @@ class InvoiceCreatePage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(
-                      width: 10.0 * 4,
+                      width: 5.0 * 4,
                     ),
                     Expanded(
                       child: KListTile(
@@ -78,80 +80,59 @@ class InvoiceCreatePage extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(
-            height: 10,
-          ),
           KContainer(
             title: "Client",
-            child: ListTile(
-              contentPadding: EdgeInsets.zero,
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ClientSearchPage(),
-                      fullscreenDialog: true),
-                );
-              },
-              title: const KtextGray(
-                "Invoice To",
-              ),
-              subtitle: const Text(
-                "Select  a client",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              trailing: const Icon(Icons.arrow_drop_down),
+            child: KListTile(
+              title: "Facture adressée à",
+              subtitle: "Client Divers",
+              onTap: () =>
+                  Get.to(() => ClientSearchPage(), fullscreenDialog: true),
             ),
           ),
-          const SizedBox(
-            height: 10,
-          ),
           KContainer(
-            title: "Invoice Items",
+            title: "Contenu de la factture",
+            action: TextButton(
+              onPressed: ()=> Get.to( ()=>InvoiceItemPage(), fullscreenDialog: true ),
+              child: Text("Ajouter"),
+            ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ...ListTile.divideTiles(context: context, tiles: [
-                  const ListTile(
-                    title: Text("Lait djado"),
-                    subtitle: KtextGray("Qte: Z"),
-                    trailing: Text("2000 XOD"),
-                    contentPadding: EdgeInsets.zero,
-                  ),
-                  const ListTile(
-                    title: Text("Lait djado"),
-                    subtitle: KtextGray("Qte: Z"),
-                    trailing: Text("2000 XOD"),
-                    contentPadding: EdgeInsets.zero,
-                  ),
+                  KInvoiceItem(),
+                  KInvoiceItem(),
+                  KInvoiceItem(),
+
                 ]),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => InvoiceItemPage(),
-                        fullscreenDialog: true,
-                      ),
-                    );
-                  },
-                  child: const Text("Add Item"),
-                )
+
               ],
             ),
           ),
           const SizedBox(
-            height: 10,
+            height: 5,
           ),
           KContainer(
-            title: "Subtotal",
+            title: "Répartiton des taxes",
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ...ListTile.divideTiles(context: context, tiles: [
                   Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        KtextGray("Subtotal"),
+                        Text(
+                          "100.000",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 5.0),
                     child: const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -161,7 +142,7 @@ class InvoiceCreatePage extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    padding: const EdgeInsets.symmetric(vertical: 5.0),
                     child: const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -171,17 +152,7 @@ class InvoiceCreatePage extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0),
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        KtextGray("Subtotal"),
-                        Text("Qte: Z"),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    padding: const EdgeInsets.symmetric(vertical: 5.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -214,7 +185,7 @@ class InvoiceCreatePage extends StatelessWidget {
                     child: const KTextWhite(
                       "Create Invoice",
                     ))),
-            const SizedBox(width: 10),
+            const SizedBox(width: 5),
             KOutlinedButton(
               child: const Icon(Icons.more_horiz),
               onPressed: () {

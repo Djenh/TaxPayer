@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 
 import 'kTextgray.dart';
 
@@ -15,25 +16,38 @@ class KListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ListTile(
-          contentPadding: EdgeInsets.zero,
-          title: KtextGray(
-            "${title}",
-          ),
-          subtitle: Text(
-            "${subtitle}",
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          onTap: onTap,
-          trailing: const Icon(Icons.arrow_drop_down),
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.only(bottom: 4),
+
+        decoration: BoxDecoration(
+
+          color: Colors.white,
+          border: Border(bottom: BorderSide(color: Colors.black38, width: 1)),
         ),
-        const SizedBox(
-          height: 5,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+
+                KtextGray(
+                  "${title}",
+                ),
+                Text(
+                  "${subtitle}",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+
+              ],
+            ),
+            Icon(Icons.arrow_drop_down)
+          ],
         ),
-        const Divider(),
-      ],
+      ),
     );
   }
 }
