@@ -16,6 +16,6 @@ void main() {
     // colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo)
     ),
     themeMode: ThemeMode.system,
-    home: HomePage(),
+    home: OnboardingPage(),
   ));
 }

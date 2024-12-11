@@ -18,7 +18,7 @@ class Logo extends StatelessWidget {
 
                 color: Colors.white
             ),
-            child: SvgPicture.asset("assets/images/armoiries.svg", width: 60, height: 60,),
+            child: Image.asset("assets/images/companyIcon.png", width: 60, height: 60,),
           ),
           const SizedBox(width: 10,),
           Expanded(
@@ -27,11 +27,11 @@ class Logo extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Gabon 🇬🇦",
+                  "Byte Innov IT",
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w400),
                 ),
                 const SizedBox(height: 5,),
-                const Text("Système Intégré de Facturation Electronique Certifiée")
+                const Text("Plateforme de Facturation Electronique Unifiée")
               ],
             ),
           )
