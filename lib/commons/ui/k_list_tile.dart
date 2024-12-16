@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
 
-import 'kTextgray.dart';
+import 'k_text_gray.dart';
 
 class KListTile extends StatelessWidget {
   final String title;
   final String subtitle;
   final VoidCallback onTap;
 
-  KListTile(
+  const KListTile(
       {super.key,
       required this.title,
       required this.subtitle,
@@ -19,9 +18,9 @@ class KListTile extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.only(bottom: 4),
+        padding: const EdgeInsets.only(bottom: 4),
 
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
 
           color: Colors.white,
           border: Border(bottom: BorderSide(color: Colors.black38, width: 1)),
@@ -35,16 +34,16 @@ class KListTile extends StatelessWidget {
               children: [
 
                 KtextGray(
-                  "${title}",
+                  title,
                 ),
                 Text(
-                  "${subtitle}",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  subtitle,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
 
               ],
             ),
-            Icon(Icons.arrow_drop_down)
+            const Icon(Icons.arrow_drop_down)
           ],
         ),
       ),

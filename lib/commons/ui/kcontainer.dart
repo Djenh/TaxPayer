@@ -6,7 +6,7 @@ class KContainer extends StatelessWidget {
   final String? title;
   final Color? color;
 
-  KContainer({super.key, required this.child,    this.title, this.color, this.action});
+  const KContainer({super.key, required this.child, this.title, this.color, this.action});
 
   @override
   Widget build(BuildContext context) {

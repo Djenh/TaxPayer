@@ -7,7 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:invoice_app/features/onboarding/screens/onboarding_page.dart';
+import 'package:invoice_app/presentation/features/onboarding/screens/onboarding_page.dart';
 
 
 void main() {

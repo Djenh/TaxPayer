@@ -1,20 +1,22 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.byteinnov.sifec">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+
     <application
-<<<<<<< HEAD
-        android:label="invoice_app"
-=======
-        android:label="bes_mobile"
->>>>>>> 73f04165ff79e17c2418c6721f2f9b14065b8b8c
+        android:label="Sifec"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
-<<<<<<< HEAD
-=======
             android:taskAffinity=""
->>>>>>> 73f04165ff79e17c2418c6721f2f9b14065b8b8c
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
@@ -24,13 +26,14 @@
                  while the Flutter UI initializes. After that, this theme continues
                  to determine the Window background behind the Flutter UI. -->
             <meta-data
-              android:name="io.flutter.embedding.android.NormalTheme"
-              android:resource="@style/NormalTheme"
-              />
+                android:name="io.flutter.embedding.android.NormalTheme"
+                android:resource="@style/NormalTheme"
+                />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+
         </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
@@ -38,8 +41,6 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
-<<<<<<< HEAD
-=======
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and
          https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.
@@ -51,5 +52,4 @@
             <data android:mimeType="text/plain"/>
         </intent>
     </queries>
->>>>>>> 73f04165ff79e17c2418c6721f2f9b14065b8b8c
 </manifest>

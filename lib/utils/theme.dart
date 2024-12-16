@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class kTheme {
+class KTheme {
   static getDividedTextTheme(BuildContext context) {
     return Theme.of(context)
         .textTheme

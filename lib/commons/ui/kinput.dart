@@ -28,7 +28,7 @@ class KInput extends StatelessWidget {
       decoration: InputDecoration(
           prefixIcon: prefixIcon,
           constraints: BoxConstraints(
-            maxWidth: this.width ?? double.infinity,
+            maxWidth: width ?? double.infinity,
           ),
 
           //  contentPadding: EdgeInsets.zero,

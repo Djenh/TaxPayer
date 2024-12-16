@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../presentation/res/style/e_style.dart';
+
 class KElevatedButton extends StatelessWidget {
   final Widget child;
 
@@ -13,7 +15,7 @@ class KElevatedButton extends StatelessWidget {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         elevation: 2, // button's elevation when it's pressed
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: KStyles.primaryColor,
         foregroundColor: Colors.white,
         textStyle: const TextStyle(  fontSize: 16),
 
