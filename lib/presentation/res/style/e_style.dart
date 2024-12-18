@@ -19,6 +19,7 @@ class  KStyles {
   static const Color fieldGrey = Color(0xFFE4E4E7);
   static const Color yellowI = Color(0xFFFAD115);
   static const Color greenOp = Color(0xFFF0FFF7);
+  static const Color icColors = Color(0xFF292D32);
 
 
 

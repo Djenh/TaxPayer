@@ -10,6 +10,7 @@ import '../../core/configs/environment_config.dart';
 import '../../core/configs/injection_container.dart';
 import '../../core/services/app_service.dart';
 import '../datasource/remote/api_auth.dart';
+import '../datasource/remote/api_invoice.dart';
 
 
 class AppDioService {
@@ -23,6 +24,7 @@ class AppDioService {
   //late final Dio _tokenDio = Dio();
   static AppDioService? appDioService;
   static ApiAuth? apiAuth;
+  static ApiInvoice? apiInvoice;
 
   // Retry configuration
   static const int maxRetries = 3;
@@ -61,6 +63,18 @@ class AppDioService {
     }
     return apiAuth!;
   }
+
+
+  static ApiInvoice getApiInvoice() {
+    if (apiInvoice == null) {
+      AppDioService.getInstance();
+      apiInvoice = ApiInvoice(dio, baseUrl: locator<EnvironmentConfig>().baseUrlApi);
+    }
+    return apiInvoice!;
+  }
+
+
+
 
   AppDioService._() {
     _initializeService();

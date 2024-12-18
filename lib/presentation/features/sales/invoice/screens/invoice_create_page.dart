@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
-import 'package:invoice_app/presentation/res/app_input_styles.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 import '../../../../_widgets/app_bar_custom.dart';
+import '../../../../_widgets/build_dropdown_str.dart';
+import '../../../../_widgets/simple_btn.dart';
 import '../../../clients/screens/client_search_page.dart';
 import '../security_tax/security_tax_page.dart';
 import '../type_invoice/type_invoice_page.dart';
+import 'invoice_item_page.dart';
 
 
 
@@ -236,44 +238,6 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
   }
 
 
-
-  Widget _buildDropdown({
-    required String label,
-    required String hint,
-    required List<String> items,
-    required Function()? onTap
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        buildText(context, label, 12, Colors.grey, fontWeight: FontWeight.w400),
-        GestureDetector(
-          onTap: onTap,
-          child: AbsorbPointer(
-            child: DropdownButtonFormField<String>(
-              hint: buildText(context, hint, 12, Colors.black54,
-                  fontWeight: FontWeight.w600),
-              isExpanded: true,
-              decoration: AppInputStyles.dropDownInputDecoration(),
-              value: null,
-              items: items.map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: buildText(context, value, 12, Colors.black54),
-                );
-              }).toList(),
-              onChanged: (String? value) {
-                // TODO : Ajouter la logique pour la sélection
-              },
-              icon: const Icon(Icons.arrow_drop_down, color: Colors.grey, size: 32),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-
   Widget _buildBtnAddInvoice(){
     return Container(
       height: 100,
@@ -286,22 +250,8 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: ElevatedButton(
-                  onPressed: () {
-                    // TODO: Action du bouton
-                    debugPrint("Créer une facture");
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: KStyles.primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 16),
-                  ),
-                  child: buildText(context, "Créer une facture",
-                      16, Colors.white, fontWeight: FontWeight.w500),
-                ),
+                child: SimpleBtn(titleBtn: "Créer une facture", sizeFont: 14,
+                  onPressed: (){}),
               ),
               const SizedBox(width: 16),
               Container(
@@ -328,6 +278,127 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
   }
 
 
+
+  /// item produit/service facture
+  final List<Map<String, dynamic>> _items = [
+    {"title": "Exonéré", "subtitle": "Honoraire du consultants", "price": 2000, "quantity": 10},
+    {"title": "Riz Gino", "subtitle": "Honoraire du consultants", "price": 5000, "quantity": 10},
+  ];
+
+  void _incrementQuantity(int index) {
+    setState(() {
+      _items[index]["quantity"] += 1;
+    });
+  }
+
+  void _decrementQuantity(int index) {
+    setState(() {
+      if (_items[index]["quantity"] > 1) {
+        _items[index]["quantity"] -= 1;
+      }
+    });
+  }
+
+
+  Widget _buildProductRow({
+    required int index,
+    required String title,
+    required String subtitle,
+    required int price,
+    required int quantity,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 10.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          buildText(context, title, 14, Colors.black54,
+             fontWeight: FontWeight.w400),
+         Row(
+           children: [
+             Expanded(
+               child: buildText(context, subtitle, 12, Colors.black,
+                   fontWeight: FontWeight.w600, maxLine: 3),
+             ),
+             //const SizedBox(width: 8),
+             Row(
+               children: [
+                 IconButton(
+                   icon: const Icon(Icons.remove, size: 20),
+                   onPressed: () => _decrementQuantity(index),
+                 ),
+                 Container(
+                   width: 30,
+                   height: 30,
+                   alignment: Alignment.center,
+                   decoration: BoxDecoration(
+                     border: Border.all(color: Colors.grey.shade400),
+                     borderRadius: BorderRadius.circular(4),
+                   ),
+                   child: Text(
+                     "$quantity",
+                     style: const TextStyle(fontSize: 14),
+                   ),
+                 ),
+                 IconButton(
+                   icon: const Icon(Icons.add, size: 20),
+                   onPressed: () => _incrementQuantity(index),
+                 ),
+               ],
+             ),
+             const SizedBox(width: 8),
+             buildText(context, "${price * quantity} Fcfa", 12, Colors.black,
+                fontWeight: FontWeight.w300),
+             /*IconButton(
+               icon: const Icon(Icons.more_horiz, color: Colors.black54),
+               onPressed: () => _removeItem(index),
+             ),*/
+           ],
+         )
+        ],
+      ),
+    );
+  }
+
+  Widget _itemServiceProd(){
+    return SizedBox(
+      height: 200,
+      child: ListView.separated(
+        itemCount: _items.length,
+        separatorBuilder: (context, index) =>
+        const Divider(thickness: 1, height: 1),
+        itemBuilder: (context, index) {
+          final item = _items[index];
+          return _buildProductRow(
+            index: index,
+            title: item["title"],
+            subtitle: item["subtitle"],
+            price: item["price"],
+            quantity: item["quantity"],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _noItems(){
+    return Column(
+      children: [
+        Center(
+          child: buildText(context, "Aucun item ne figure sur cette facture", 12,
+              Colors.black, fontWeight: FontWeight.w300, textAlign: TextAlign.center),
+        ),
+        const SizedBox(height: 10),
+        SimpleBtn(titleBtn: "Ajouter un item", sizeFont: 12, onPressed:(){
+          Get.to( ()=>const InvoiceItemPage(), fullscreenDialog: true );
+        })
+      ],
+    );
+  }
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -350,10 +421,10 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
             Row(
               children: [
                 Expanded(
-                  child: _buildDropdown(
+                  child: BuildDropdownString(
                     label: "Type de facture",
                     hint: typeInvoice,
-                    items: [],
+                    items: const [],
                     onTap: () async {
                       await Get.to(() => const TypeInvoicePage(),
                           fullscreenDialog: true)?.then((val){
@@ -366,10 +437,10 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
                 ),
                 const SizedBox(width: 16),
                 Expanded(
-                  child: _buildDropdown(
+                  child: BuildDropdownString(
                     label: "Taxe de sécurité",
                     hint: typeTax,
-                    items: [],
+                    items: const [],
                     onTap: () async {
                       await Get.to(() => const SecurityTaxPage(),
                           fullscreenDialog: true)?.then((val){
@@ -383,10 +454,10 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
               ],
             ),
             const SizedBox(height: 30),
-            _buildDropdown(
+            BuildDropdownString(
               label: "Client concerné",
               hint: typeCustomer,
-              items: [],
+              items: const [],
               onTap: () async {
                 await Get.to(() => const ClientSearchPage(),
                     fullscreenDialog: true)?.then((val){
@@ -400,6 +471,8 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
             buildText(context, "Produit/Service de la facture", 14, Colors.black,
                 fontWeight: FontWeight.w600),
             const SizedBox(height: 20),
+            //_noItems(),
+            _itemServiceProd(),
             const SizedBox(height: 40),
             buildText(context, "Détails de la facture", 14, Colors.black,
                 fontWeight: FontWeight.w600),

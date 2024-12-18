@@ -1,9 +1,13 @@
 import 'package:get_it/get_it.dart';
 import 'package:invoice_app/data/datasource/remote/api_auth.dart';
+import 'package:invoice_app/data/datasource/remote/api_invoice.dart';
 import 'package:invoice_app/data/network/dio_service.dart';
 import 'package:invoice_app/data/repositories_impl/auth_impl.dart';
+import 'package:invoice_app/data/repositories_impl/invoice_impl.dart';
 import 'package:invoice_app/domain/usecases/auth_uc.dart';
+import 'package:invoice_app/domain/usecases/invoice_uc.dart';
 import 'package:invoice_app/presentation/controllers/auth_ctrl.dart';
+import 'package:invoice_app/presentation/controllers/invoice_ctrl.dart';
 import 'environment_config.dart';
 
 
@@ -20,10 +24,15 @@ void setupLocator() {
 
   //Repositories
 
-  ///Auth---Repositories
+  ///Auth--- Repositories
   final ApiAuth apiAuth = AppDioService.getApiAuth();
   locator.registerLazySingleton(() => AuthRemoteRepository(apiAuth: apiAuth));
   locator.registerLazySingleton(() => AuthUc(locator<AuthRemoteRepository>()));
+
+  ///Invoice--- Repositories
+  final ApiInvoice apiInvoice = AppDioService.getApiInvoice();
+  locator.registerLazySingleton(() => InvoiceRemoteRepository(apiInvoice: apiInvoice));
+  locator.registerLazySingleton(() => InvoiceUc(locator<InvoiceRemoteRepository>()));
 
 
 
@@ -32,6 +41,7 @@ void setupLocator() {
 
   //Ctrl spécifiques à certaines pages
   locator.registerFactory(() => AuthCtrl(authUc: locator<AuthUc>()));
+  locator.registerFactory(() => InvoiceCtrl(invoiceUc: locator<InvoiceUc>()));
 
 
 }

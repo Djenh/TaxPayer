@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:invoice_app/commons/ui/ui.dart';
-import '../../../stocks/product/screens/product_create_page.dart';
+import 'package:get/get.dart';
+import 'package:invoice_app/presentation/_widgets/build_text.dart';
+import 'package:invoice_app/presentation/res/style/e_style.dart';
+import '../../../../_widgets/app_bar_custom.dart';
+import '../../../../_widgets/build_dropdown_str.dart';
+import '../../../../_widgets/simple_btn.dart';
+import '../../../../res/app_input_styles.dart';
+import '../../../../res/input_formaters.dart';
+import '../../../stocks/product/screens/product_page.dart';
 import '../../../stocks/product/taxgroup/tax_group.dart';
 
-class InvoiceItemPage extends StatelessWidget {
+/*class InvoiceItemPage extends StatelessWidget {
   const InvoiceItemPage({super.key});
 
   @override
@@ -197,4 +204,229 @@ class InvoiceItemPage extends StatelessWidget {
       ),
     );
   }
+}*/
+
+
+class InvoiceItemPage extends StatefulWidget {
+  const InvoiceItemPage({super.key});
+
+  @override
+  State<InvoiceItemPage> createState() => _InvoiceItemPageState();
+}
+
+
+class _InvoiceItemPageState extends State<InvoiceItemPage> {
+
+  String productSelect = "Selectionner";
+  TextEditingController? qteController;
+  TextEditingController? priceController;
+  TextEditingController? additionalTaxController;
+  String typeTax = "Selectionner une taxe";
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    additionalTaxController = TextEditingController();
+    qteController = TextEditingController();
+    priceController = TextEditingController();
+  }
+
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    additionalTaxController?.dispose();
+    qteController?.dispose();
+    priceController?.dispose();
+  }
+
+
+  Widget padChild({required Widget child}){
+    return Padding(
+      padding: const EdgeInsets.all(4.0).copyWith(bottom: 15, top: 15),
+      child: child,
+    );
+  }
+
+
+  Widget _buildItemDetail(){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        padChild(child: buildText(context, "Item Detail", 14, Colors.black,
+            fontWeight: FontWeight.w600)),
+        const SizedBox(height: 10),
+        BuildDropdownString(
+            label: "Produit",
+            hint: productSelect,
+            items: const [],
+            onTap: () async {
+              await Get.to(() => const ProductPage(),
+                  fullscreenDialog: true)?.then((val){
+                setState(() {
+                  productSelect = val;
+                });
+              });
+            }
+        ),
+        const SizedBox(height: 30),
+        Row(
+          children: [
+            Expanded(
+              child: TextFormField(
+                controller: qteController,
+                textInputAction: TextInputAction.done,
+                keyboardType: TextInputType.number,
+                inputFormatters: noSpaceNoEmoji,
+                decoration: AppInputStyles.defaultInputDecoration(labelText: "Quantité"),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: TextFormField(
+                controller: priceController,
+                textInputAction: TextInputAction.done,
+                keyboardType: TextInputType.number,
+                inputFormatters: noSpaceNoEmoji,
+                decoration: AppInputStyles.defaultInputDecoration(labelText: "Prix"),
+              ),
+            ),
+          ],
+        )
+      ],
+    );
+  }
+
+
+  Widget _buildAdditionalTax(){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        padChild(child: buildText(context, "Taxe description", 14, Colors.black,
+            fontWeight: FontWeight.w600)),
+        const SizedBox(height: 10),
+        BuildDropdownString(
+            label: "Groupe de taxation",
+            hint: typeTax,
+            items: const [],
+            onTap: () async {
+              await Get.to(() => const TaxGroupPage(),
+                  fullscreenDialog: true)?.then((val){
+                setState(() {
+                  typeTax = val;
+                });
+              });
+            }
+        ),
+        const SizedBox(height: 20),
+        buildText(context, "Additional Taxe", 14, Colors.black,
+            fontWeight: FontWeight.w300),
+        const SizedBox(height: 10),
+        TextFormField(
+          controller: additionalTaxController,
+          textInputAction: TextInputAction.done,
+          keyboardType: TextInputType.text,
+          inputFormatters: noSpaceNoEmoji,
+          decoration: AppInputStyles.defaultInputDecoration(labelText: ""),
+        )
+      ],
+    );
+  }
+
+
+  Widget _buildAmountContainer(){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        padChild(child: buildText(context, "Montant", 14, Colors.black,
+            fontWeight: FontWeight.w600)),
+        padChild(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              buildText(context, "Total Hors Taxes",
+                  14, Colors.black, fontWeight: FontWeight.w300),
+              buildText(context, "0", 14, Colors.black,
+                  fontWeight: FontWeight.w600),
+            ],
+          ),
+        ),
+        const Divider(height: 1, thickness: 1),
+        padChild(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              buildText(context, "Total appliquées",
+                  14, Colors.black, fontWeight: FontWeight.w300),
+              buildText(context, "0", 14,
+                  Colors.black, fontWeight: FontWeight.w600),
+            ],
+          ),
+        ),
+        const Divider(height: 1, thickness: 1),
+        padChild(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              buildText(context, "Grand total",
+                  14, Colors.black, fontWeight: FontWeight.w600),
+              buildText(context, "0", 14, Colors.black,
+                  fontWeight: FontWeight.w600),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: appBarOther(context, "Ajouter un item"),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildItemDetail(),
+            _buildAdditionalTax(),
+            const SizedBox(height: 20),
+            _buildAmountContainer()
+          ],
+        ),
+      ),
+      bottomNavigationBar: Container(
+        height: 80,
+        padding: const EdgeInsets.all(12),
+        color: KStyles.primaryColor.withOpacity(0.2),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              children: [
+                buildText(context, "Total", 14, Colors.black, fontWeight: FontWeight.w400),
+                const SizedBox(height: 10),
+                buildText(context, "0 XOF", 14, Colors.black, fontWeight: FontWeight.bold),
+              ],
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width / 2 + 50,
+              child: SimpleBtn(
+                    titleBtn: "Ajouter",
+                    sizeFont: 12,
+                    onPressed:(){})
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+
 }

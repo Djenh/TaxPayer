@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:invoice_app/commons/ui/ui.dart';
+import 'package:iconsax/iconsax.dart';
 
 
-import '../../screens/invoice_recuring_page.dart';
-import '../../screens/invoice_template_choice_page.dart';
-import '../../screens/invoice_view_print_page.dart';
-import 'delete_menu.dart';
-import 'export_menu.dart';
 
-class FullMenu extends StatelessWidget {
+
+ /*class FullMenu extends StatelessWidget {
   const FullMenu({super.key});
 
   @override
@@ -72,6 +68,56 @@ class FullMenu extends StatelessWidget {
        ),
         const DeleteMenu(),
       ],
+    );
+  }
+}*/
+
+class FullMenu extends StatelessWidget {
+  const FullMenu({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+
+    final List<Map<String, dynamic>> actions = [
+      {"icon": Iconsax.edit, "label": "Modifier"},
+      {"icon": Iconsax.eye, "label": "Visualiser"},
+      {"icon": Iconsax.refresh, "label": "Recurring"},
+      {"icon": Iconsax.edit, "label": "Change Template"},
+      {"icon": Iconsax.copy, "label": "Dupliquer la facture"},
+      {"icon": Iconsax.tick_circle, "label": "Marquer comme payer"},
+      {"icon": Iconsax.export, "label": "Exporter PDF"},
+      {"icon": Iconsax.sms, "label": "Envoyer par Email"},
+      {"icon": Iconsax.save_2, "label": "Savegarder"},
+      {"icon": Iconsax.trash, "label": "Supprimer"},
+    ];
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: actions.map((action) {
+          return Column(
+            children: [
+              ListTile(
+                leading: Icon(action["icon"], color: Colors.black),
+                title: Text(
+                  action["label"],
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.black,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  debugPrint("${action["label"]} cliqué !");
+                },
+              ),
+              const Divider(height: 1),
+            ],
+          );
+        }).toList(),
+      ),
     );
   }
 }

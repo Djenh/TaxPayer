@@ -9,6 +9,7 @@ class AppInputStyles {
   static InputDecoration defaultInputDecoration(
       {String? hintText,
       String? labelText,
+      Widget? prefixIcon,
       Widget? suffixIcon,
       double? radius,
       String? errorText,
@@ -18,6 +19,7 @@ class AppInputStyles {
       hintText: hintText,
       label: Text(labelText ?? ""),
       fillColor: fillColor ?? Colors.transparent,
+      prefixIcon: prefixIcon,
       suffixIcon: suffixIcon,
       errorText: errorText,
       errorMaxLines: 2,
