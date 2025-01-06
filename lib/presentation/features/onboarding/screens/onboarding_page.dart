@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:invoice_app/core/services/app_service.dart';
+import 'package:invoice_app/presentation/features/home/screens/home_page.dart';
 import 'package:invoice_app/presentation/features/registration/screens/login_page.dart';
+import 'package:invoice_app/presentation/features/sales/invoice/screens/verify_invoice/manual_check_page.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 import '../../../../commons/ui/button/kelevatedbutton.dart';
 import '../_strings/onboarding_strings.dart';
@@ -146,9 +151,16 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
 
   void navigateToRegister() {
-    Navigator.pushAndRemoveUntil(context,
-        MaterialPageRoute(builder: (context) =>
-        const LoginPage()), (route) => false);
+    if(AppServices.instance.currentCompany.value != null){
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (context) =>
+          HomePage()), (route) => false);
+    } else {
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (context) =>
+          const LoginPage()), (route) => false);
+    }
+
   }
 
   @override
@@ -201,29 +213,58 @@ class _OnboardingPageState extends State<OnboardingPage> {
         elevation: 0,
         color: Colors.transparent,
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(4.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: List.generate(
-              OnboardingStrings.pageItems.length,
-                  (index) => GestureDetector(
-                onTap: () => controller.animateToPage(
-                  index,
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOut,
-                ),
+            mainAxisAlignment: (selected == 0 || selected == 2)
+                ? MainAxisAlignment.end
+                : MainAxisAlignment.start,
+            children: [
+              GestureDetector(
+                onTap: (){
+                  Get.to(() => const ManualCheckPage());
+                },
                 child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 8),
-                  child: CircleAvatar(
-                    radius: selected == index ? 10 : 6,
-                    backgroundColor: selected == index
-                        ? KStyles.primaryColor
-                        : KStyles.blackColor,
-                        //: Theme.of(context).primaryColor.withOpacity(0.4),
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: KStyles.primaryColor),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Iconsax.scan_barcode, size: 18),
+                      const SizedBox(width: 3),
+                      Text(
+                        "Vérifier une facture",
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          color: KStyles.primaryColor, fontWeight: FontWeight.w500,
+                          fontSize: 12
+                        )
+                      )
+                    ],
                   ),
                 ),
               ),
-            ),
+              const SizedBox(width: 10),
+              ...List.generate(
+                OnboardingStrings.pageItems.length,
+                    (index) => GestureDetector(
+                  onTap: () => controller.animateToPage(
+                    index,
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                  ),
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 3),
+                    child: CircleAvatar(
+                      radius: selected == index ? 10 : 6,
+                      backgroundColor: selected == index
+                          ? KStyles.primaryColor
+                          : KStyles.blackColor,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),

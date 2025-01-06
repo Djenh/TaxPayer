@@ -1,9 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
-import 'package:invoice_app/presentation/_widgets/simple_btn.dart';
 import 'package:invoice_app/presentation/features/stocks/product/screens/product_create_page.dart';
+import 'package:invoice_app/presentation/features/stocks/product/screens/product_detail_page.dart';
+import 'package:invoice_app/presentation/features/stocks/product/screens/product_search.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 
 import '../../../../_widgets/app_bar_custom.dart';
@@ -91,8 +93,8 @@ class _ProductPageState extends State<ProductPage> {
           padding: const EdgeInsets.all(10.0),
           child: GestureDetector(
             onTap: (){
-              Get.back(result: prod["name"]);
-              //Get.to(() => const ProductDetailPage());
+              //Get.back(result: prod["name"]);
+              Get.to(() => const ProductDetailPage());
             },
             child: Row(
               children: [
@@ -150,88 +152,24 @@ class _ProductPageState extends State<ProductPage> {
     );
   }
 
-  Widget _noItem(){
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const Icon(Iconsax.document_text, color: KStyles.icColors, size: 64),
-        const SizedBox(height: 10),
-        buildText(context, "Aucun résultat", 18, Colors.black,
-            fontWeight: FontWeight.w400),
-        const SizedBox(height: 10),
-        buildText(context, "Il n'existe aucun produit portant ce nom.",
-            12, Colors.black, fontWeight: FontWeight.w300,
-            textAlign: TextAlign.center),
-        const SizedBox(height: 10),
-        SizedBox(
-          width: MediaQuery.of(context).size.width/2+50,
-          child: SimpleBtn(
-            titleBtn: "Créer un produit",
-            sizeFont: 14,
-            onPressed: () async {
-              await Get.to(() => const ProductCreatePage(),
-                  fullscreenDialog: true);
-            },
-          ),
-        )
-      ],
-    );
-  }
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: appBarOther(context, "Sélectionner un produit"),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              controller: searchController,
-              decoration: InputDecoration(
-                hintText: "Rechercher produit",
-                //prefixIcon: const Icon(Icons.search),
-                suffixIcon: IconButton(
-                  icon: const Icon(Iconsax.search_normal),
-                  onPressed: () {
-                    // TODO: Implémenter la recherche
-                  },
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  borderSide: const BorderSide(color: Colors.grey, width: 0.5),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  borderSide: const BorderSide(color: Colors.grey, width: 0.5),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  borderSide: const BorderSide(color: KStyles.primaryColor,
-                      width: 0.5),
-                ),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-              ),
+      appBar: appBarOther(context, "Produits",
+          actionList: [
+            IconButton(
+                onPressed: () {
+                  Get.to(() => const ProductSearchPage(isManage: true));
+                }, icon: const Icon(Iconsax.search_normal)),
+            IconButton(
+                onPressed: () => Get.to(() => const ProductCreatePage()),
+                icon: const Icon(CupertinoIcons.add_circled_solid,
+                    color: KStyles.primaryColor, size: 32)
             ),
-          ),
-          const SizedBox(height: 8),
-          Expanded(
-            //child: _noItem(),
-            child: _buildProductList(),
-          )
-        ],
+          ],
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: KStyles.primaryColor,
-        child: const Icon(Iconsax.add, color: Colors.white),
-        onPressed: () async {
-          await Get.to(() => const ProductCreatePage(),
-              fullscreenDialog: true);
-        },
-      ),
+      body: _buildProductList()
     );
   }
 

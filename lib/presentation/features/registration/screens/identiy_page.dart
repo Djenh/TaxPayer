@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:invoice_app/commons/layout/layout.dart';
-import 'package:invoice_app/presentation/controllers/auth_ctrl.dart';
+import 'package:invoice_app/core/constants/strings.dart';
+import 'package:invoice_app/core/services/app_service.dart';
+import 'package:invoice_app/core/services/app_storage.dart';
+import 'package:invoice_app/domain/entities/company/company_tin_response.dart';
+import 'package:invoice_app/presentation/controllers/company_ctrl.dart';
 import 'package:invoice_app/presentation/features/registration/_strings/register_str.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 
@@ -10,14 +14,15 @@ import '../../../../core/configs/injection_container.dart';
 import '../../../_widgets/action_btn.dart';
 import '../../../_widgets/enum_title.dart';
 import '../../../res/assets/app_assets.dart';
+import '../../home/screens/home_page.dart';
 import '../_widgets/footer_container.dart';
 import '../_widgets/header_container.dart';
-import 'choosing_method_page.dart';
-
 
 
 class IdentityPage extends StatefulWidget {
-  const IdentityPage({super.key});
+  const IdentityPage({super.key, required this.dataCompany});
+
+  final CompanyTinResponse dataCompany;
 
   @override
   State<IdentityPage> createState() => _IdentityPageState();
@@ -25,7 +30,7 @@ class IdentityPage extends StatefulWidget {
 
 class _IdentityPageState extends State<IdentityPage> {
 
-  final authCtr = locator<AuthCtrl>();
+  final companyCtr = locator<CompanyCtrl>();
 
 
   @override
@@ -48,53 +53,51 @@ class _IdentityPageState extends State<IdentityPage> {
       ),
       child: Column(
         children: [
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               EnumTitle(
                 title: RegisterStr.typeI,
-                value: "Societé",
-                style1: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-                style2: TextStyle(fontSize: 12, fontWeight: FontWeight.bold,
-                    color: Colors.black),
+                value: widget.dataCompany.legalForm?.name ?? "---",
+                style1: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                style2: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.black),
               ),
-              SizedBox(width: 10),
-              EnumTitle(
-                title: "Ville",
+              const SizedBox(width: 10),
+              /*EnumTitle(
+                title: RegisterStr.city,
                 value: "Libreville",
                 style1: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-                style2: TextStyle(fontSize: 12, fontWeight: FontWeight.bold,
-                    color: Colors.black),
-              ),
+                style2: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.black),
+              ),*/
             ],
           ),
           const SizedBox(height: 8),
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               EnumTitle(
                 title: RegisterStr.rs,
-                value: "OMEGA NUMERIC IT",
-                style1: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-                style2: TextStyle(fontSize: 12, fontWeight: FontWeight.bold,
+                value: widget.dataCompany.name ?? "---",
+                style1: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                style2: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold,
                     color: Colors.black),
               ),
             ],
           ),
           const SizedBox(height: 8),
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               EnumTitle(
                 title: RegisterStr.ifu,
-                value: "1234567890123",
-                style1: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-                style2: TextStyle(fontSize: 12, fontWeight: FontWeight.bold,
+                value: widget.dataCompany.tin ?? "---",
+                style1: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                style2: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold,
                     color: Colors.black),
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          /*const SizedBox(height: 8),
           const Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -106,14 +109,14 @@ class _IdentityPageState extends State<IdentityPage> {
                     color: Colors.black),
               ),
             ],
-          ),
+          ),*/
           const SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               EnumTitle(
                 title: RegisterStr.phone,
-                value: authCtr.hashPhone("66085678"),
+                value: companyCtr.hashPhone("${widget.dataCompany.phoneNumber}"),
                 style1: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
                 style2: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold,
                     color: Colors.black),
@@ -126,17 +129,39 @@ class _IdentityPageState extends State<IdentityPage> {
             children: [
               EnumTitle(
                 title: RegisterStr.email,
-                value: authCtr.hashEmail("contact@omeganumeric.tech"),
+                value: companyCtr.hashEmail("${widget.dataCompany.email}"),
                 style1: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
                 style2: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold,
                     color: Colors.black),
               )
             ],
           ),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              EnumTitle(
+                title: RegisterStr.webSite,
+                value: widget.dataCompany.websiteUrl ?? "---",
+                style1: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                style2: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold,
+                    color: Colors.black),
+              ),
+            ],
+          ),
         ],
       ),
     );
   }
+
+
+  Future<void> saveDataCompanyToLocal() async {
+    await AppStorage.instance.setInstance(key: dataCompany, value: widget.dataCompany);
+    await AppServices.instance.checkCompanyData();
+    Get.to(() => HomePage());
+    //Get.to(() => const ChoosingMethodPage());
+  }
+
 
 
   @override
@@ -172,10 +197,9 @@ class _IdentityPageState extends State<IdentityPage> {
                 title: "Continuer",
                 icon: Iconsax.check,
                 onPressed: (){
-                  // TODO: implement control to navigate next page
-                  Get.to(() => const ChoosingMethodPage());
+                  saveDataCompanyToLocal();
                 },
-                loading: authCtr.isLoading,
+                loading: companyCtr.isLoading,
               ),
             ),
             const SizedBox(height: 60),

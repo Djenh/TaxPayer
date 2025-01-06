@@ -10,6 +10,7 @@ import '../../../../_widgets/app_bar_custom.dart';
 import '../../../../_widgets/simple_btn.dart';
 import '../../../../res/app_input_styles.dart';
 import '../../../../res/input_formaters.dart';
+import '../category/screens/category_page.dart';
 import '../category/screens/category_search_page.dart';
 
 
@@ -379,8 +380,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
               keyboardType: TextInputType.text,
               inputFormatters: noSpaceNoEmoji,
               onTap: () async {
-                await Get.to(() => const CategorySearchPage(),
-                    fullscreenDialog: true)?.then((val){
+                await Get.to(() => const CategoryPage())?.then((val){
                       setState(() {
                         ctgController?.text = val;
                       });

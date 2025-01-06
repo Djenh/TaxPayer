@@ -90,5 +90,16 @@ class AppInputStyles {
     );
   }
 
+  static InputDecoration dropDownInputDecoration1() {
+    return  InputDecoration(
+      enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: KStyles.fieldGrey, width: 1.5)
+      ),
+      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: KStyles.primaryColor)),
+    );
+  }
+
 }
 

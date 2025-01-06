@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:invoice_app/commons/layout/layout.dart';
 import 'package:invoice_app/core/configs/injection_container.dart';
-import 'package:invoice_app/presentation/controllers/auth_ctrl.dart';
+import 'package:invoice_app/presentation/controllers/company_ctrl.dart';
 import 'package:invoice_app/presentation/res/app_input_styles.dart';
 import 'package:invoice_app/presentation/res/assets/app_assets.dart';
 import '../../../_widgets/action_btn.dart';
@@ -22,7 +22,9 @@ class RegistrationPage extends StatefulWidget {
 }
 
 class _RegistrationPageState extends State<RegistrationPage> {
-  final authCtr = locator<AuthCtrl>();
+
+  //final authCtr = locator<AuthCtrl>();
+  final companyCtr = locator<CompanyCtrl>();
   TextEditingController? ifuController;
   Rx<String?> ifuError = Rx<String?>(null);
 
@@ -30,14 +32,14 @@ class _RegistrationPageState extends State<RegistrationPage> {
   void initState() {
     super.initState();
     ifuController = TextEditingController();
-    ifuController?.addListener(() {
+    /*ifuController?.addListener(() {
       if (ifuController!.text.length > 13) {
         ifuController!.text = ifuController!.text.substring(0, 13);
         ifuController!.selection = TextSelection.fromPosition(
           TextPosition(offset: ifuController!.text.length),
         );
       }
-    });
+    });*/
   }
 
   @override
@@ -68,7 +70,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 TextFormField(
                   controller: ifuController,
                   textInputAction: TextInputAction.done,
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.text,
                   inputFormatters: noSpaceNoEmoji,
                   onChanged: (String v) => ifuError.value = null,
                   decoration: AppInputStyles.defaultInputDecoration(
@@ -82,10 +84,14 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   child: ActionBtn(
                     title: "Vérifier",
                     icon: Iconsax.check,
-                    onPressed: () {
-                      Get.to(() => const IdentityPage());
+                    onPressed: () async {
+                      await companyCtr.dataCompanyByTin(context, ifuController!.text.trim()).then((val){
+                        if(val != null){
+                          Get.to(() => IdentityPage(dataCompany: val));
+                        }
+                      });
                     },
-                    loading: authCtr.isLoading,
+                    loading: companyCtr.isLoading,
                   ),
                 ),
                 const SizedBox(height: 30),

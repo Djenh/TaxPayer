@@ -28,7 +28,7 @@ class HomePage extends StatelessWidget {
                 const InvoiceList(),
                 Container(),
                 Container(),
-                Container(),
+                //Container(),
               ],
             ),
           ),
@@ -63,23 +63,23 @@ class HomePage extends StatelessWidget {
                 _buildNavItem(
                   index: 2,
                   icon: Iconsax.shop,
-                  label: "Stock",
+                  label: "Agence",
                   isSelected: controller.selectedIndex.value == 2,
                   onTap: () => controller.selectedIndex.value = 2,
                 ),
-                _buildNavItem(
+                /*_buildNavItem(
                   index: 3,
                   icon: Iconsax.activity,
                   label: "Rapports",
                   isSelected: controller.selectedIndex.value == 3,
                   onTap: () => controller.selectedIndex.value = 3,
-                ),
+                ),*/
                 _buildNavItem(
-                  index: 4,
+                  index: 3,
                   icon: Iconsax.setting,
                   label: "Paramètres",
-                  isSelected: controller.selectedIndex.value == 4,
-                  onTap: () => controller.selectedIndex.value = 4,
+                  isSelected: controller.selectedIndex.value == 3,
+                  onTap: () => controller.selectedIndex.value = 3,
                 ),
               ],
             ),

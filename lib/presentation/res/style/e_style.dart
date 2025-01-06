@@ -20,6 +20,9 @@ class  KStyles {
   static const Color yellowI = Color(0xFFFAD115);
   static const Color greenOp = Color(0xFFF0FFF7);
   static const Color icColors = Color(0xFF292D32);
+  static const Color warningInvoice = Color(0xFFFEE7EF);
+  static const Color dangerColor = Color(0xFFC20E4D);
+  static const Color dangerColor1 = Color(0xFFF31260);
 
 
 

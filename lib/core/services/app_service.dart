@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:invoice_app/core/constants/strings.dart';
 import 'package:invoice_app/core/services/app_storage.dart';
+import 'package:invoice_app/domain/entities/company/company_tin_response.dart';
 import 'package:invoice_app/utils/logger_util.dart';
 
 
@@ -8,15 +11,27 @@ class AppServices extends GetxService {
   static AppServices get instance => Get.find();
 
   Rx<String?> currentUser = Rx<String?>(null);
+  Rx<CompanyTinResponse?> currentCompany = Rx<CompanyTinResponse?>(null);
   String? authTokenUser;
 
   Future<AppServices> init() async {
     await AppStorage.instance.storage;
+    await checkCompanyData();
     await checkUser();
     await checkUserToken();
     return this;
   }
 
+
+  Future<void> checkCompanyData() async {
+    if (AppStorage.instance.exist(dataCompany)) {
+      currentCompany.value = CompanyTinResponse.fromJson(
+          json.decode(await AppStorage.instance.getDataStorage(dataCompany)));
+      AppLogger.info("current company info : ${currentCompany.toJson()}");
+    } else {
+      currentCompany.value = null;
+    }
+  }
 
   Future<void> checkUser() async {
     if (AppStorage.instance.exist(dataUser)) {

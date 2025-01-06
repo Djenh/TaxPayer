@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:invoice_app/presentation/features/sales/invoice/screens/invoice_recuring_page.dart';
 
 
 
@@ -79,16 +81,16 @@ class FullMenu extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final List<Map<String, dynamic>> actions = [
-      {"icon": Iconsax.edit, "label": "Modifier"},
-      {"icon": Iconsax.eye, "label": "Visualiser"},
-      {"icon": Iconsax.refresh, "label": "Recurring"},
-      {"icon": Iconsax.edit, "label": "Change Template"},
-      {"icon": Iconsax.copy, "label": "Dupliquer la facture"},
-      {"icon": Iconsax.tick_circle, "label": "Marquer comme payer"},
-      {"icon": Iconsax.export, "label": "Exporter PDF"},
-      {"icon": Iconsax.sms, "label": "Envoyer par Email"},
-      {"icon": Iconsax.save_2, "label": "Savegarder"},
-      {"icon": Iconsax.trash, "label": "Supprimer"},
+      {"icon": Iconsax.edit, "label": "Modifier", "action": () => _navigateToEdit(context)},
+      {"icon": Iconsax.eye, "label": "Visualiser", "action": () => _navigateToView(context)},
+      {"icon": Iconsax.refresh, "label": "Recurring", "action": () => _navigateToRecurring(context)},
+      {"icon": Iconsax.edit, "label": "Change Template", "action": () => _navigateToTemplate(context)},
+      {"icon": Iconsax.copy, "label": "Dupliquer la facture", "action": () => _navigateToDuplicate(context)},
+      {"icon": Iconsax.tick_circle, "label": "Marquer comme payer", "action": () => _markAsPaid(context)},
+      {"icon": Iconsax.export, "label": "Exporter PDF", "action": () => _exportPdf(context)},
+      {"icon": Iconsax.sms, "label": "Envoyer par Email", "action": () => _sendEmail(context)},
+      {"icon": Iconsax.save_2, "label": "Savegarder", "action": () => _save(context)},
+      {"icon": Iconsax.trash, "label": "Supprimer", "action": () => _delete(context)},
     ];
 
     return Padding(
@@ -111,6 +113,7 @@ class FullMenu extends StatelessWidget {
                 onTap: () {
                   Navigator.pop(context);
                   debugPrint("${action["label"]} cliqué !");
+                  action["action"]();
                 },
               ),
               const Divider(height: 1),
@@ -120,4 +123,39 @@ class FullMenu extends StatelessWidget {
       ),
     );
   }
+
+
+  // Fonctions de navigation pour chaque action
+  void _navigateToEdit(BuildContext context) {}
+
+  void _navigateToView(BuildContext context) {}
+
+  void _navigateToRecurring(BuildContext context) {
+    Get.to(() => const InvoiceRecurringPage());
+  }
+
+  void _navigateToTemplate(BuildContext context) {}
+
+  void _navigateToDuplicate(BuildContext context) {}
+
+  void _markAsPaid(BuildContext context) {
+    debugPrint("Marquer comme payé !");
+  }
+
+  void _exportPdf(BuildContext context) {
+    debugPrint("Exporter en PDF !");
+  }
+
+  void _sendEmail(BuildContext context) {
+    debugPrint("Envoyer par Email !");
+  }
+
+  void _save(BuildContext context) {
+    debugPrint("Sauvegarder !");
+  }
+
+  void _delete(BuildContext context) {
+    debugPrint("Supprimer !");
+  }
+
 }

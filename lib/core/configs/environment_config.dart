@@ -10,13 +10,19 @@ class EnvironmentConfig {
 
   String get baseUrl => _getEnvValue('BASE_URL');
   String get baseUrlApi => _getEnvValue('BASE_URL_API');
+  String get baseUrlCompany => _getEnvValue('URL_COMPANY');
+  String get baseUrlCustomers => _getEnvValue('URL_CUSTOMERS');
+  String get baseUrlProducts => _getEnvValue('URL_PRODUCTS');
+  String get baseUrlInvoices => _getEnvValue('URL_INVOICES');
+
 
   String _getEnvValue(String key) {
     switch (currentEnvironment) {
       case Environment.dev:
         return dotenv.get(key);
       case Environment.prod:
-        return dotenv.get('${key}_PROD');
+        //return dotenv.get('${key}_PROD');
+        return dotenv.get(key);
     }
   }
 

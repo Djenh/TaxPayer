@@ -10,7 +10,10 @@ import '../../core/configs/environment_config.dart';
 import '../../core/configs/injection_container.dart';
 import '../../core/services/app_service.dart';
 import '../datasource/remote/api_auth.dart';
+import '../datasource/remote/api_company.dart';
+import '../datasource/remote/api_customers.dart';
 import '../datasource/remote/api_invoice.dart';
+import '../datasource/remote/api_products.dart';
 
 
 class AppDioService {
@@ -25,6 +28,9 @@ class AppDioService {
   static AppDioService? appDioService;
   static ApiAuth? apiAuth;
   static ApiInvoice? apiInvoice;
+  static ApiCompany? apiCompany;
+  static ApiProducts? apiProducts;
+  static ApiCustomers? apiCustomers;
 
   // Retry configuration
   static const int maxRetries = 3;
@@ -64,13 +70,36 @@ class AppDioService {
     return apiAuth!;
   }
 
-
   static ApiInvoice getApiInvoice() {
     if (apiInvoice == null) {
       AppDioService.getInstance();
-      apiInvoice = ApiInvoice(dio, baseUrl: locator<EnvironmentConfig>().baseUrlApi);
+      apiInvoice = ApiInvoice(dio, baseUrl: locator<EnvironmentConfig>().baseUrlInvoices);
     }
     return apiInvoice!;
+  }
+
+  static ApiCompany getApiCompany() {
+    if (apiCompany == null) {
+      AppDioService.getInstance();
+      apiCompany = ApiCompany(dio, baseUrl: locator<EnvironmentConfig>().baseUrlCompany);
+    }
+    return apiCompany!;
+  }
+
+  static ApiProducts getApiProduct() {
+    if (apiProducts == null) {
+      AppDioService.getInstance();
+      apiProducts = ApiProducts(dio, baseUrl: locator<EnvironmentConfig>().baseUrlProducts);
+    }
+    return apiProducts!;
+  }
+
+  static ApiCustomers getApiCustomer() {
+    if (apiCustomers == null) {
+      AppDioService.getInstance();
+      apiCustomers = ApiCustomers(dio, baseUrl: locator<EnvironmentConfig>().baseUrlCustomers);
+    }
+    return apiCustomers!;
   }
 
 

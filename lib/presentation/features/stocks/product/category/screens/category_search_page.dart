@@ -41,7 +41,9 @@ import '../../../../../_widgets/app_bar_custom.dart';
 }*/
 
 class CategorySearchPage extends StatefulWidget {
-  const CategorySearchPage({super.key});
+  const CategorySearchPage({super.key, required this.isManage});
+
+  final bool isManage;
 
   @override
   State<CategorySearchPage> createState() => _CategorySearchPageState();
@@ -73,7 +75,10 @@ class _CategorySearchPageState extends State<CategorySearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: appBarOther(context, "Choisir une catégorie"),
+      appBar: appBarOther(context, widget.isManage
+          ? "Rechercher une categorie"
+          : "Choisir une catégorie"
+      ),
       body: Column(
         children: [
           Padding(
@@ -81,7 +86,7 @@ class _CategorySearchPageState extends State<CategorySearchPage> {
             child: TextField(
               controller: searchController,
               decoration: InputDecoration(
-                hintText: "Rechercher categorie",
+                hintText: widget.isManage ? "Recherhcer": "Rechercher categorie",
                 //prefixIcon: const Icon(Icons.search),
                 suffixIcon: IconButton(
                   icon: const Icon(Iconsax.search_normal),
@@ -127,7 +132,9 @@ class _CategorySearchPageState extends State<CategorySearchPage> {
                     style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
                   ),
                   onTap: () {
-                    Get.back(result: "Catégorie $ctg");
+                    if(!widget.isManage){
+                      Get.back(result: "Catégorie $ctg");
+                    }
                   },
                 );
               },

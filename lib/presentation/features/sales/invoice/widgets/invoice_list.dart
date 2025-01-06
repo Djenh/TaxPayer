@@ -7,6 +7,7 @@ import 'package:invoice_app/presentation/res/style/e_style.dart';
 import '../../../../_widgets/app_bar_custom.dart';
 import '../screens/invoice_create_page.dart';
 import '../screens/invoice_detail_page.dart';
+import '../screens/invoice_search_page.dart';
 import 'invoice_item.dart';
 
 
@@ -58,7 +59,6 @@ class _InvoiceListState extends State<InvoiceList> {
   Widget itemList(){
     return ListView.builder(
         itemCount: 4,
-        shrinkWrap: true,
         itemBuilder: (BuildContext context, int inv){
           return InvoiceItem(
             onTap: () => Get.to(() => const InvoiceDetailPage()),
@@ -77,7 +77,9 @@ class _InvoiceListState extends State<InvoiceList> {
         appBar: appBarHome(context, "Les Factures",
           actionList: [
           IconButton(
-              onPressed: () {}, icon: const Icon(Iconsax.search_normal)),
+              onPressed: () {
+                Get.to(() => const InvoiceSearchPage());
+              }, icon: const Icon(Iconsax.search_normal)),
           IconButton(
               onPressed: () => Get.to(() => const InvoiceCreatePage()),
               icon: const Icon(CupertinoIcons.add_circled_solid,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:invoice_app/presentation/features/clients/screens/customer_page.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 
 import '../../../clients/screens/client_page.dart';
@@ -62,7 +63,8 @@ class SideMenu extends StatelessWidget {
             ),
             title: const Text("Clients"),
             onTap: () {
-              Get.to(() => const ClientPage() );
+              //Get.to(() => const ClientPage());
+              Get.to(() => const CustomerPage());
             },
           ),
           ListTile(

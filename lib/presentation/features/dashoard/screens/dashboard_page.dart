@@ -1,7 +1,10 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:invoice_app/commons/ui/ui.dart';
+import 'package:invoice_app/core/services/app_service.dart';
+import 'package:invoice_app/presentation/features/sales/invoice/screens/verify_invoice/scan_verify_page.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 
 class DashboardPage extends StatelessWidget {
@@ -10,7 +13,7 @@ class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(10.0),
       child: ListView(
         children: [
           Row(
@@ -44,7 +47,7 @@ class DashboardPage extends StatelessWidget {
                     children: [
                       const Text("Bonjour"),
                       Text(
-                        "OMEGA NUMERIC IT",
+                        "${AppServices.instance.currentCompany.value?.name}",
                         style: Theme.of(context)
                             .textTheme
                             .bodyMedium!
@@ -55,7 +58,9 @@ class DashboardPage extends StatelessWidget {
                 ],
               ),
               IconButton(
-                  onPressed: () {}, icon: const CircleAvatar(child: Icon(Iconsax.scan)))
+                  onPressed: () {
+                    Get.to(() => const ScanVerifyPage());
+                  }, icon: const CircleAvatar(child: Icon(Iconsax.scan)))
             ],
           ),
           const SizedBox(

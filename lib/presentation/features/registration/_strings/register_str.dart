@@ -23,8 +23,10 @@ class RegisterStr {
   static const String ifu = 'IFU';
   static const String rs = 'Raison sociale';
   static const String typeI = 'Type';
+  static const String city = 'Ville';
   static const String email = 'Email';
   static const String phone = 'Téléphone';
+  static const String webSite = 'Site web';
 
   // choosing method page ---
   static const String headerSubTitleC = 'Comment souhaitez vous créer votre compte contribuable';

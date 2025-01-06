@@ -27,6 +27,11 @@ dependencies:
   flutter_regex:
   diacritic:
   pinput:
+  dotted_dashed_line:
+  qr_flutter:
+  mobile_scanner:
+  toastification:
+
 
 
   #Injection Dependance

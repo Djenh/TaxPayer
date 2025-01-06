@@ -468,7 +468,7 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
               }
             ),
             const SizedBox(height: 40),
-            buildText(context, "Produit/Service de la facture", 14, Colors.black,
+            buildText(context, "Items de la facture", 14, Colors.black,
                 fontWeight: FontWeight.w600),
             const SizedBox(height: 20),
             //_noItems(),

@@ -4,6 +4,8 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:invoice_app/core/services/app_service.dart';
+import 'package:invoice_app/presentation/features/home/screens/home_page.dart';
 import 'package:invoice_app/presentation/res/themes/overlay/app_overlay.dart';
 import 'package:invoice_app/presentation/res/themes/theme.dart';
 
@@ -56,7 +58,9 @@ class _AppInitPageState extends State<AppInitPage> with WidgetsBindingObserver {
               themeMode: ThemeMode.system,
               theme: KThemes.lightTheme(context),
               darkTheme: KThemes.darkTheme(context),
-              home: const OnboardingPage(),
+              home: AppServices.instance.currentCompany.value != null
+                  ? HomePage()
+                  : const OnboardingPage(),
               localizationsDelegates: const <LocalizationsDelegate>[
                 ...GlobalMaterialLocalizations.delegates,
               ],

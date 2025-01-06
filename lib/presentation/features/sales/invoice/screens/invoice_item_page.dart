@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
+import 'package:invoice_app/presentation/features/stocks/product/screens/product_search.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 import '../../../../_widgets/app_bar_custom.dart';
 import '../../../../_widgets/build_dropdown_str.dart';
 import '../../../../_widgets/simple_btn.dart';
 import '../../../../res/app_input_styles.dart';
 import '../../../../res/input_formaters.dart';
-import '../../../stocks/product/screens/product_page.dart';
 import '../../../stocks/product/taxgroup/tax_group.dart';
+
 
 /*class InvoiceItemPage extends StatelessWidget {
   const InvoiceItemPage({super.key});
@@ -264,7 +265,7 @@ class _InvoiceItemPageState extends State<InvoiceItemPage> {
             hint: productSelect,
             items: const [],
             onTap: () async {
-              await Get.to(() => const ProductPage(),
+              await Get.to(() => const ProductSearchPage(isManage: false),
                   fullscreenDialog: true)?.then((val){
                 setState(() {
                   productSelect = val;
