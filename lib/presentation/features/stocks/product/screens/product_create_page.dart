@@ -3,15 +3,19 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:invoice_app/core/services/app_service.dart';
+import 'package:invoice_app/data/dtos/add_product_dto.dart';
+import 'package:invoice_app/domain/entities/product/categories_entities.dart';
+import 'package:invoice_app/presentation/_widgets/action_btn.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 
+import '../../../../../core/configs/injection_container.dart';
 import '../../../../_widgets/app_bar_custom.dart';
-import '../../../../_widgets/simple_btn.dart';
+import '../../../../controllers/product_ctrl.dart';
 import '../../../../res/app_input_styles.dart';
 import '../../../../res/input_formaters.dart';
 import '../category/screens/category_page.dart';
-import '../category/screens/category_search_page.dart';
 
 
 /*class ProductCreatePage extends StatelessWidget {
@@ -161,6 +165,7 @@ class ProductCreatePage extends StatefulWidget {
 
 class _ProductCreatePageState extends State<ProductCreatePage> {
 
+  final prodCtr = locator<ProductCtrl>();
   File? _selectedImage;
   final ImagePicker _picker = ImagePicker();
   bool goods = false;
@@ -168,6 +173,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
   TextEditingController? codeController;
   TextEditingController? nameProdController;
   TextEditingController? ctgController;
+  String? codeCtg;
 
 
 
@@ -255,6 +261,24 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
         ),
       ),
     );
+  }
+
+
+  Future<void> _addProduct() async {
+    String? tin =  AppServices.instance.currentCompany.value!.tin;
+    AddProductDto params = AddProductDto(
+        code: codeController!.text.trim(),
+        name: nameProdController!.text.trim(),
+        categoryCode: codeCtg!,
+        productType: goods ? "goods" : "services",
+        companyTin: tin!,
+        posId: null);
+
+    await prodCtr.addProduct(context, params).then((val){
+      if(val != null){
+        Get.back(result: true);
+      }
+    });
   }
 
 
@@ -367,7 +391,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
               textInputAction: TextInputAction.done,
               textCapitalization: TextCapitalization.sentences,
               keyboardType: TextInputType.text,
-              inputFormatters: noSpaceNoEmoji,
+              //inputFormatters: noSpaceNoEmoji,
               decoration: AppInputStyles.defaultInputDecoration(
                   labelText: "Nom",
                   prefixIcon: const Icon(Iconsax.clipboard)
@@ -380,10 +404,13 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
               keyboardType: TextInputType.text,
               inputFormatters: noSpaceNoEmoji,
               onTap: () async {
-                await Get.to(() => const CategoryPage())?.then((val){
-                      setState(() {
-                        ctgController?.text = val;
-                      });
+                await Get.to(() => const CategoryPage(isManage: true))?.then((val){
+                      if(val is CategoriesEntities){
+                        setState(() {
+                          ctgController?.text = val.name!;
+                          codeCtg = val.code;
+                        });
+                      }
                 });
               },
               decoration: AppInputStyles.defaultInputDecoration(
@@ -400,10 +427,13 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
         height: 70,
         padding: const EdgeInsets.all(12),
         color: KStyles.primaryColor.withOpacity(0.2),
-        child: SimpleBtn(
-            titleBtn: "Ajouter",
-            sizeFont: 16,
-            onPressed:(){}),
+        child: ActionBtn(
+          title: 'Ajouter',
+          loading: prodCtr.isLoading,
+          onPressed: (){
+            _addProduct();
+          },
+        ),
       ),
     );
   }

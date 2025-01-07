@@ -5,7 +5,7 @@ class AddProductDto {
   String categoryCode;
   String productType;
   String companyTin;
-  String posId;
+  String? posId;
 
   AddProductDto({required this.code, required this.name,
     required this.categoryCode, required this.productType,

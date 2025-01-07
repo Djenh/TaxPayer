@@ -31,7 +31,7 @@ dependencies:
   qr_flutter:
   mobile_scanner:
   toastification:
-
+  infinite_scroll_pagination:
 
 
   #Injection Dependance

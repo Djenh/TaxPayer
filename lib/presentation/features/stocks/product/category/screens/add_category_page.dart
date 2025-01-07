@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:invoice_app/data/dtos/add_category_dto.dart';
+import 'package:invoice_app/presentation/_widgets/action_btn.dart';
+import 'package:invoice_app/presentation/controllers/product_ctrl.dart';
 
+import '../../../../../../core/configs/injection_container.dart';
 import '../../../../../_widgets/app_bar_custom.dart';
-import '../../../../../_widgets/simple_btn.dart';
 import '../../../../../res/app_input_styles.dart';
 import '../../../../../res/input_formaters.dart';
 
@@ -15,6 +19,7 @@ class AddCategoryPage extends StatefulWidget {
 
 class _AddCategoryPageState extends State<AddCategoryPage> {
 
+  final prodCtr = locator<ProductCtrl>();
   TextEditingController? codeController;
   TextEditingController? nameProdController;
 
@@ -34,6 +39,17 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
     super.dispose();
     codeController?.dispose();
     nameProdController?.dispose();
+  }
+
+
+  Future<void> _addCtg() async{
+    AddCategoryDto params = AddCategoryDto(code: codeController!.text.trim(),
+        name: nameProdController!.text.trim());
+    await prodCtr.addCategory(context, params).then((val){
+      if(val != null){
+        Get.back(result: true);
+      }
+    });
   }
 
 
@@ -76,10 +92,13 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
       bottomNavigationBar: Container(
         height: 70,
         padding: const EdgeInsets.all(12),
-        child: SimpleBtn(
-            titleBtn: "Ajouter",
-            sizeFont: 16,
-            onPressed:(){}),
+        child: ActionBtn(
+            title: "Ajouter",
+            loading: prodCtr.isLoading,
+            onPressed:(){
+              _addCtg();
+            }
+        ),
       ),
     );
   }

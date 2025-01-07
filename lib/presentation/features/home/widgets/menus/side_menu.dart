@@ -74,7 +74,7 @@ class SideMenu extends StatelessWidget {
             ),
             title: const Text("Produits"),
             onTap: () {
-              Get.to(() => const ProductPage() );
+              Get.to(() => const ProductPage(isManage: true));
             },
           ),
           ListTile(

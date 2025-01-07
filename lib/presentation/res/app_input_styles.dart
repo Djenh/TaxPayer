@@ -101,5 +101,31 @@ class AppInputStyles {
     );
   }
 
+  static InputDecoration searchInput(String? hintText){
+    return InputDecoration(
+      hintText: hintText,
+      suffixIcon: IconButton(
+        icon: const Icon(Iconsax.search_normal),
+        onPressed: () {
+          // TODO: Implémenter la recherche
+        },
+      ),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8.0),
+        borderSide: const BorderSide(color: Colors.grey, width: 0.5),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8.0),
+        borderSide: const BorderSide(color: Colors.grey, width: 0.5),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8.0),
+        borderSide: const BorderSide(color: KStyles.primaryColor,
+            width: 0.5),
+      ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+    );
+  }
+
 }
 
