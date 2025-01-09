@@ -100,7 +100,7 @@ class _ProductPageState extends State<ProductPage> {
           if(widget.isManage){
             //Get.to(() => const ProductDetailPage());
           }else{
-            //Get.back(result: prod["name"]);
+            Get.back(result: ctg);
           }
         },
         child: Row(

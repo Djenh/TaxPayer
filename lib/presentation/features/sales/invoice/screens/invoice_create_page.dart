@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:invoice_app/domain/entities/invoice/deposit_tax_response.dart';
+import 'package:invoice_app/domain/entities/invoice/type_invoice_response.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 import '../../../../_widgets/app_bar_custom.dart';
@@ -225,9 +227,15 @@ class InvoiceCreatePage extends StatefulWidget {
 
 class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
 
-  String typeInvoice = "Choisir facture";
-  String typeTax = "Choisir...";
+
+
   String typeCustomer = "Choisir un client";
+
+
+  TypeInvoiceEntities? dataTypeInvoice;
+  String hintTypeInvoice = "Choisir facture";
+  DepositTaxEntities? dataTaxDeposit;
+  String hintTypeTax = "Choisir...";
 
 
 
@@ -423,14 +431,16 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
                 Expanded(
                   child: BuildDropdownString(
                     label: "Type de facture",
-                    hint: typeInvoice,
+                    hint: (dataTypeInvoice != null) ? dataTypeInvoice!.name! : hintTypeInvoice,
                     items: const [],
                     onTap: () async {
                       await Get.to(() => const TypeInvoicePage(),
                           fullscreenDialog: true)?.then((val){
-                            setState(() {
-                              typeInvoice = val;
-                            });
+                            if(val is TypeInvoiceEntities){
+                              setState(() {
+                                dataTypeInvoice = val;
+                              });
+                            }
                       });
                     }
                   ),
@@ -439,14 +449,14 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
                 Expanded(
                   child: BuildDropdownString(
                     label: "Taxe de sécurité",
-                    hint: typeTax,
+                    hint: (dataTaxDeposit != null) ? dataTaxDeposit!.name! : hintTypeTax,
                     items: const [],
                     onTap: () async {
                       await Get.to(() => const SecurityTaxPage(),
                           fullscreenDialog: true)?.then((val){
-                            setState(() {
-                              typeTax = val;
-                            });
+                           if(val is DepositTaxEntities){
+                             dataTaxDeposit = val;
+                           }
                       });
                     }
                   ),
@@ -471,8 +481,8 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
             buildText(context, "Items de la facture", 14, Colors.black,
                 fontWeight: FontWeight.w600),
             const SizedBox(height: 20),
-            //_noItems(),
-            _itemServiceProd(),
+            _noItems(),
+            //_itemServiceProd(),
             const SizedBox(height: 40),
             buildText(context, "Détails de la facture", 14, Colors.black,
                 fontWeight: FontWeight.w600),

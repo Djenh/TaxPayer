@@ -19,7 +19,7 @@ class PagedNewPageError extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             buildText(context, "Une Erreur s'est produite lors du chargement", 16, Colors.black,
-                fontWeight: FontWeight.w600, textAlign: TextAlign.center),
+                fontWeight: FontWeight.w600, textAlign: TextAlign.center, maxLine: 2),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: Text("${pagingController?.error}",

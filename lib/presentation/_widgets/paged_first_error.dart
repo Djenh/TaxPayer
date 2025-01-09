@@ -22,7 +22,7 @@ class PagedFirstError extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           buildText(context, "Une Erreur s'est produite lors du chargement", 16, Colors.black,
-             fontWeight: FontWeight.w600, textAlign: TextAlign.center),
+             fontWeight: FontWeight.w600, textAlign: TextAlign.center, maxLine: 2),
           const SizedBox(height: 8),
           Text("${pagingController?.error}", textAlign: TextAlign.center),
           const SizedBox(height: 24),

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:invoice_app/domain/entities/invoice/tax_group_response.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
+import 'package:invoice_app/presentation/features/stocks/product/screens/product_page.dart';
 import 'package:invoice_app/presentation/features/stocks/product/screens/product_search.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
+import '../../../../../domain/entities/product/product_response.dart';
 import '../../../../_widgets/app_bar_custom.dart';
 import '../../../../_widgets/build_dropdown_str.dart';
 import '../../../../_widgets/simple_btn.dart';
@@ -218,11 +221,15 @@ class InvoiceItemPage extends StatefulWidget {
 
 class _InvoiceItemPageState extends State<InvoiceItemPage> {
 
-  String productSelect = "Selectionner";
+
+  ProductResponse? dataProductSelect;
+  String hintProductSelect = "Selectionner";
   TextEditingController? qteController;
   TextEditingController? priceController;
+  TaxGroupEntities? dataTaxGroup;
+  String hintTypeTax = "Selectionner une taxe";
   TextEditingController? additionalTaxController;
-  String typeTax = "Selectionner une taxe";
+
 
 
   @override
@@ -262,14 +269,16 @@ class _InvoiceItemPageState extends State<InvoiceItemPage> {
         const SizedBox(height: 10),
         BuildDropdownString(
             label: "Produit",
-            hint: productSelect,
+            hint: (dataProductSelect != null) ? dataProductSelect!.name! : hintProductSelect,
             items: const [],
             onTap: () async {
-              await Get.to(() => const ProductSearchPage(isManage: false),
+              await Get.to(() => const ProductPage(isManage: false),
                   fullscreenDialog: true)?.then((val){
-                setState(() {
-                  productSelect = val;
-                });
+                    if(val is ProductResponse){
+                      setState(() {
+                        dataProductSelect = val;
+                      });
+                    }
               });
             }
         ),
@@ -311,14 +320,16 @@ class _InvoiceItemPageState extends State<InvoiceItemPage> {
         const SizedBox(height: 10),
         BuildDropdownString(
             label: "Groupe de taxation",
-            hint: typeTax,
+            hint: (dataTaxGroup != null) ? dataTaxGroup!.name! : hintTypeTax,
             items: const [],
             onTap: () async {
               await Get.to(() => const TaxGroupPage(),
                   fullscreenDialog: true)?.then((val){
-                setState(() {
-                  typeTax = val;
-                });
+                  if(val is TaxGroupEntities){
+                    setState(() {
+                      dataTaxGroup = val;
+                    });
+                  }
               });
             }
         ),
@@ -396,9 +407,10 @@ class _InvoiceItemPageState extends State<InvoiceItemPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildItemDetail(),
+            const SizedBox(height: 20),
             _buildAdditionalTax(),
             const SizedBox(height: 20),
-            _buildAmountContainer()
+           // _buildAmountContainer()
           ],
         ),
       ),
@@ -407,15 +419,15 @@ class _InvoiceItemPageState extends State<InvoiceItemPage> {
         padding: const EdgeInsets.all(12),
         color: KStyles.primaryColor.withOpacity(0.2),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Column(
+            /*Column(
               children: [
                 buildText(context, "Total", 14, Colors.black, fontWeight: FontWeight.w400),
                 const SizedBox(height: 10),
                 buildText(context, "0 XOF", 14, Colors.black, fontWeight: FontWeight.bold),
               ],
-            ),
+            ),*/
             SizedBox(
               width: MediaQuery.of(context).size.width / 2 + 50,
               child: SimpleBtn(
