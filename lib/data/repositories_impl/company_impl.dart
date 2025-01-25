@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:invoice_app/data/dtos/add_pos_dto.dart';
+import 'package:invoice_app/domain/entities/company/localities_list_response.dart';
 import 'package:invoice_app/domain/entities/company/pos_data_response.dart';
 import 'package:retrofit/dio.dart';
 import 'package:invoice_app/core/errors/request_failures.dart';
@@ -85,6 +86,24 @@ class CompanyRemoteRepository implements ICompanyRepository{
     // TODO: implement updPosCompany
     try {
       final HttpResponse<PosDataResponse> httpResponse = await apiCompany.updatePosForCompany(id, params.toJson());
+      if (httpResponse.response.statusCode == HttpStatus.ok) {
+        return Right(httpResponse.data);
+      }
+    } on DioException catch (e) {
+      return DioErrorHandler.handle(error: e);
+    } catch (e) {
+      return Left(NetworkFailure(message: e.toString()));
+    }
+    return const Left(NetworkFailure(message: 'Une erreur inattendue s\'est produite.'));
+  }
+
+  @override
+  Future<Either<Failure, LocalitiesListResponse>> allLocalities(int page, int size) async {
+    // TODO: implement allLocalities
+    final Map<String, dynamic> pageable = {"page": page, "size": size};
+
+    try {
+      final HttpResponse<LocalitiesListResponse> httpResponse = await apiCompany.getAllLocalities(pageable);
       if (httpResponse.response.statusCode == HttpStatus.ok) {
         return Right(httpResponse.data);
       }

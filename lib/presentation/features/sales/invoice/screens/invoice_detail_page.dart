@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:invoice_app/presentation/features/sales/invoice/screens/template_invoice/modern_view_invoice_1_page.dart';
-import 'package:invoice_app/presentation/features/sales/invoice/screens/template_invoice/modern_view_invoice_page.dart';
 
 import '../../../../_widgets/app_bar_custom.dart';
 import '../widgets/modals/full_menu.dart';

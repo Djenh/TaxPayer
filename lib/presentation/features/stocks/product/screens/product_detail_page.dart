@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:invoice_app/presentation/features/stocks/product/screens/product_create_page.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 
 import '../widgets/product_item.dart';
@@ -16,7 +14,7 @@ class ProductDetailPage extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () {
-                Get.to(() => const ProductCreatePage());
+                //Get.to(() => const ProductCreatePage());
               },
               icon: const Icon(Iconsax.edit_2))
         ],

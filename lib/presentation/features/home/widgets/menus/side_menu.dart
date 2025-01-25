@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:invoice_app/core/services/app_service.dart';
 import 'package:invoice_app/presentation/features/clients/screens/customer_page.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 
-import '../../../clients/screens/client_page.dart';
 import '../../../pos/screens/pos_page.dart';
 import '../../../stocks/product/screens/product_page.dart';
 
@@ -13,6 +13,8 @@ class SideMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = AppServices.instance.currentCompany.value;
+
     return SafeArea(
       child: ListView(
         children: [
@@ -31,7 +33,7 @@ class SideMenu extends StatelessWidget {
                     height: padding,
                   ),
                   Text(
-                    "OMEGA NUMERIC IT",
+                    user?.name ?? "",
                     style: Theme.of(context).textTheme.bodyMedium,
                   )
                 ],
@@ -53,7 +55,7 @@ class SideMenu extends StatelessWidget {
             ),
             title: const Text("Points de vente"),
             onTap: () {
-              Get.to(()=>const PosPage());
+              Get.to(()=>const PosPage(isManage: true));
             },
           ),
           ListTile(
@@ -63,8 +65,7 @@ class SideMenu extends StatelessWidget {
             ),
             title: const Text("Clients"),
             onTap: () {
-              //Get.to(() => const ClientPage());
-              Get.to(() => const CustomerPage());
+              Get.to(() => const CustomerPage(isManage: true));
             },
           ),
           ListTile(
@@ -79,20 +80,20 @@ class SideMenu extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(
-              Iconsax.status_up,
+              Iconsax.chart,
               color: Theme.of(context).primaryColor,
             ),
-            title: const Text("Fiscalités"),
+            title: const Text("Rapport"),
             onTap: () {},
           ),
-          ListTile(
+          /*ListTile(
             leading: Icon(
               Iconsax.status_up,
               color: Theme.of(context).primaryColor,
             ),
             title: const Text("Caisse"),
             onTap: () {},
-          )
+          )*/
         ],
       ),
     );

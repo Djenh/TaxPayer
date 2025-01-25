@@ -20,7 +20,7 @@ class InvoiceList extends StatefulWidget {
 
 class _InvoiceListState extends State<InvoiceList> {
 
-  final List<String> filters = ["factures de ventes", "factures d’avoir", "payées"];
+  final List<String> filters = ["factures de ventes", "factures d’avoir"];
   int selectedFilter = 0;
 
 

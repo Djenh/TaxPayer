@@ -14,13 +14,18 @@ CompanyTinResponse _$CompanyTinResponseFromJson(Map<String, dynamic> json) =>
       tradeNo: json['tradeNo'] as String?,
       phoneNumber: json['phoneNumber'] as String?,
       email: json['email'] as String?,
-      address: json['address'] as String?,
+      address: json['address'] == null
+          ? null
+          : AddressEntities.fromJson(json['address'] as Map<String, dynamic>),
+      contact: json['contact'] == null
+          ? null
+          : ContactEntities.fromJson(json['contact'] as Map<String, dynamic>),
       legalForm: json['legalForm'] == null
           ? null
           : LegalFormEntities.fromJson(
               json['legalForm'] as Map<String, dynamic>),
       sectors: (json['sectors'] as List<dynamic>?)
-          ?.map((e) => LegalFormEntities.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => SectorEntities.fromJson(e as Map<String, dynamic>))
           .toList(),
       websiteUrl: json['websiteUrl'] as String?,
       status: json['status'] as String?,
@@ -35,7 +40,8 @@ Map<String, dynamic> _$CompanyTinResponseToJson(CompanyTinResponse instance) =>
       'tradeNo': instance.tradeNo,
       'phoneNumber': instance.phoneNumber,
       'email': instance.email,
-      'address': instance.address,
+      'address': instance.address?.toJson(),
+      'contact': instance.contact?.toJson(),
       'legalForm': instance.legalForm?.toJson(),
       'sectors': instance.sectors?.map((e) => e.toJson()).toList(),
       'websiteUrl': instance.websiteUrl,

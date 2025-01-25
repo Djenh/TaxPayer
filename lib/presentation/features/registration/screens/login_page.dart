@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:invoice_app/core/services/app_service.dart';
+import 'package:invoice_app/core/services/toast_service.dart';
 import 'package:invoice_app/presentation/features/registration/screens/registration_page.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 
@@ -81,7 +83,13 @@ class _LoginPageState extends State<LoginPage> {
         title: "Connexion",
         icon: Iconsax.check,
         onPressed: () {
-          Get.to(() => HomePage());
+          final user = AppServices.instance.currentCompany.value;
+          if(user != null){
+            Get.to(() => HomePage());
+          } else {
+            ToastService.showWarning(context, 'Vérification',
+                description: "Veuillez allez verifier votre tin.");
+          }
         },
         loading: authCtr.isLoading,
       ),

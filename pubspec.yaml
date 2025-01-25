@@ -32,7 +32,9 @@ dependencies:
   mobile_scanner:
   toastification:
   infinite_scroll_pagination:
-
+  geolocator:
+  dropdown_search:
+  flutter_spinkit:
 
   #Injection Dependance
   get_it:

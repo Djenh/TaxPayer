@@ -7,10 +7,10 @@ class NameVo {
   NameVo(this.value, {bool first = false}) {
     if (value.trim().isEmpty) {
       throw const FormatException("Champ requis");
-    } else if (!_valideName(value)) {
+    } /*else if (!_valideName(value)) {
       throw FormatException(
           first ? "Nom invalide" : "Prénom invalide");
-    }
+    }*/
   }
   static bool isValid(String name) {
     return validate(name) == null;

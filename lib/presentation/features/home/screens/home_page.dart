@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:invoice_app/presentation/features/pos/screens/pos_page.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 
 import '../../dashoard/screens/dashboard_page.dart';
@@ -26,7 +27,7 @@ class HomePage extends StatelessWidget {
               children: [
                 const DashboardPage(),
                 const InvoiceList(),
-                Container(),
+                const PosPage(isManage: false),
                 Container(),
                 //Container(),
               ],

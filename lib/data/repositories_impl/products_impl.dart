@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:invoice_app/core/errors/dio_failures.dart';
+import 'package:invoice_app/data/dtos/add_unit_dto.dart';
+import 'package:invoice_app/domain/entities/product/unit_m_list_response.dart';
 import 'package:retrofit/dio.dart';
 import 'package:invoice_app/core/errors/request_failures.dart';
 import 'package:invoice_app/data/datasource/remote/api_products.dart';
@@ -88,7 +90,61 @@ class ProductRemoteRepository implements IProductRepository{
     // TODO: implement createProduct
     try {
       final HttpResponse<ProductResponse> httpResponse = await apiProducts.createProduct(params.toJson());
+      if (httpResponse.response.statusCode == HttpStatus.ok
+          || httpResponse.response.statusCode == HttpStatus.created) {
+        return Right(httpResponse.data);
+      }
+    } on DioException catch (e) {
+      return DioErrorHandler.handle(error: e);
+    } catch (e) {
+      return Left(NetworkFailure(message: e.toString()));
+    }
+    return const Left(NetworkFailure(message: 'Une erreur inattendue s\'est produite.'));
+  }
+
+  @override
+  Future<Either<Failure, UnitMListResponse>> allListUnitM(int page, int size) async {
+    // TODO: implement allListUnitM
+    try {
+      final HttpResponse<UnitMListResponse> httpResponse =
+           await apiProducts.getAllUnitM(page, size);
       if (httpResponse.response.statusCode == HttpStatus.ok) {
+        return Right(httpResponse.data);
+      }
+    } on DioException catch (e) {
+      return DioErrorHandler.handle(error: e);
+    } catch (e) {
+      return Left(NetworkFailure(message: e.toString()));
+    }
+    return const Left(NetworkFailure(message: 'Une erreur inattendue s\'est produite.'));
+  }
+
+  @override
+  Future<Either<Failure, UnitMEntities>> createUnitM(AddUnitDto params) async {
+    // TODO: implement createUnitM
+    try {
+      final HttpResponse<UnitMEntities> httpResponse =
+               await apiProducts.createUnitM(params.toJson());
+      if (httpResponse.response.statusCode == HttpStatus.ok ||
+          httpResponse.response.statusCode == HttpStatus.created) {
+        return Right(httpResponse.data);
+      }
+    } on DioException catch (e) {
+      return DioErrorHandler.handle(error: e);
+    } catch (e) {
+      return Left(NetworkFailure(message: e.toString()));
+    }
+    return const Left(NetworkFailure(message: 'Une erreur inattendue s\'est produite.'));
+  }
+
+  @override
+  Future<Either<Failure, UnitMEntities>> updatedUnitM(String id, AddUnitDto params) async {
+    // TODO: implement updatedUnitM
+    try {
+      final HttpResponse<UnitMEntities> httpResponse =
+          await apiProducts.updatedUnitM(id, params.toJson());
+      if (httpResponse.response.statusCode == HttpStatus.ok ||
+          httpResponse.response.statusCode == HttpStatus.created) {
         return Right(httpResponse.data);
       }
     } on DioException catch (e) {

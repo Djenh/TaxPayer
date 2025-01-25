@@ -119,8 +119,12 @@ class _CategoryPageState extends State<CategoryPage> {
                               child: const Icon(Iconsax.building, color: KStyles.primaryColor),
                             ),
                             title: Text(
-                              "${ctg.name}",
+                              "${ctg.code}",
                               style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                            ),
+                            subtitle: Text(
+                              "${ctg.name}",
+                              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
                             ),
                             onTap: () {
                               Get.back(result: ctg);

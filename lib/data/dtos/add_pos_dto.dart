@@ -1,23 +1,22 @@
+import 'package:invoice_app/data/dtos/address_dto.dart';
+import 'package:invoice_app/data/dtos/contact_dto.dart';
+
 class AddPosDto {
 
   String name;
-  String description;
   String tin;
-  String phone;
-  String email;
-  String address;
+  AddressDto address;
+  ContactDto contact;
 
-  AddPosDto({required this.name, required this.description, required this.tin,
-    required this.phone, required this.email, required this.address});
+  AddPosDto({required this.name, required this.tin, required this.address,
+    required this.contact});
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{
       'name': name,
-      'description': description,
       'tin': tin,
-      'phone': phone,
-      'email': email,
-      'address': address
+      'address': address.toJson(),
+      'contact': contact.toJson()
     };
     return data;
   }
@@ -25,11 +24,9 @@ class AddPosDto {
   factory AddPosDto.fromJson(Map<String, dynamic> json) {
     return AddPosDto(
       name: json['name'],
-      description: json['description'],
       tin: json['tin'],
-      phone: json['phone'],
-      email: json['email'],
       address: json['address'],
+      contact: json['contact'],
     );
   }
 }

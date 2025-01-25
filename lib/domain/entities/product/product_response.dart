@@ -12,13 +12,15 @@ class ProductResponse {
   String? id;
   String? code;
   String? name;
+  String? officialProductNo;
   CategoriesEntities? category;
   String? productType;
   String? companyTin;
+  String? posCode;
 
 
-  ProductResponse({this.id, this.code, this.name, this.category,
-    this.productType, this.companyTin});
+  ProductResponse({this.id, this.code, this.name, this.officialProductNo,
+    this.category, this.productType, this.companyTin});
 
   factory ProductResponse.fromJson(Map<String, dynamic> json) =>
       _$ProductResponseFromJson(json);

@@ -5,7 +5,9 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:invoice_app/core/services/app_service.dart';
 import 'package:invoice_app/data/dtos/add_category_dto.dart';
 import 'package:invoice_app/data/dtos/add_product_dto.dart';
+import 'package:invoice_app/data/dtos/add_unit_dto.dart';
 import 'package:invoice_app/domain/entities/product/categories_entities.dart';
+import 'package:invoice_app/domain/entities/product/unit_m_list_response.dart';
 import 'package:invoice_app/domain/usecases/product_uc.dart';
 
 import '../../core/errors/request_failures.dart';
@@ -22,6 +24,8 @@ class ProductCtrl extends GetxController {
   RxBool isLoading = false.obs;
   static const _pageSize = 20;
   var currentPageC = 1.obs;
+  PagingController<int, UnitMEntities>? pagingUmController;
+  List<UnitMEntities> allUnitM = [];
   PagingController<int, CategoriesEntities>? pagingCtgController;
   List<CategoriesEntities> allCategories = [];
   PagingController<int, ProductResponse>? pagingProdController;
@@ -38,6 +42,110 @@ class ProductCtrl extends GetxController {
     }
     if (isLoading.isFalse) {
       Get.back();
+    }
+  }
+
+
+  ///func to create unit-of-measurements
+  Future<UnitMEntities?> addUnitM(BuildContext context, AddUnitDto params) async {
+    UnitMEntities? response;
+
+    try {
+      _setLoading(true);
+
+      final Either<Failure, UnitMEntities> result = await productUc.executeUnitMSave(params);
+
+      result.fold((Failure failure) {
+        AppLogger.error("data save failed: ${failure.message}");
+        ToastService.showError(context, 'Unité de mesure',
+            description: failure.message);
+      }, (UnitMEntities unitData) {
+        AppLogger.info("ctgData successful: ${unitData.toJson()}");
+        ToastService.showSuccess(context, 'Unité de mesure',
+            description: "Unité de mesure ajouté avec succès !");
+        response = unitData;
+      });
+    } catch (e) {
+      AppLogger.error('An error occurred during addUnitM: $e');
+      rethrow;
+    } finally {
+      _setLoading(false);
+    }
+
+    return response;
+  }
+
+  ///func to update unit-of-measurements
+  Future<UnitMEntities?> updUnitM(BuildContext context, String id, AddUnitDto params) async {
+    UnitMEntities? response;
+
+    try {
+      _setLoading(true);
+
+      final Either<Failure, UnitMEntities> result =
+                 await productUc.executeUnitMUpdate(id, params);
+
+      result.fold((Failure failure) {
+        AppLogger.error("data save failed: ${failure.message}");
+        ToastService.showError(context, 'Unité de mesure',
+            description: failure.message);
+      }, (UnitMEntities unitData) {
+        AppLogger.info("unitData successful: ${unitData.toJson()}");
+        ToastService.showSuccess(context, 'Unité de mesure',
+            description: "Unité de mesure modifier avec succès !");
+        response = unitData;
+      });
+    } catch (e) {
+      AppLogger.error('An error occurred during updUnitM : $e');
+      rethrow;
+    } finally {
+      _setLoading(false);
+    }
+
+    return response;
+  }
+
+  ///func to get all categories
+  Future<void> allUnitMData(int pageKey) async {
+    try {
+      final result = await productUc.executeAllUnitM(pageKey, _pageSize);
+
+      result.fold(
+            (failure) {
+              pagingUmController?.error = failure.message;
+        },
+            (response) {
+          final List<UnitMEntities> newItems = response.content ?? [];
+
+          if (pageKey == 0) {
+            allUnitM.clear();
+          }
+
+          allUnitM.addAll(newItems);
+
+          final isLastPage = pageKey >= (response.totalPages ?? 1) - 1;
+          if (isLastPage) {
+            pagingUmController?.appendLastPage(newItems);
+          } else {
+            final nextPageKey = pageKey + 1;
+            pagingUmController?.appendPage(newItems, nextPageKey);
+          }
+        },
+      );
+    } catch (error) {
+      pagingUmController?.error = error.toString();
+    }
+  }
+
+  void searchUnitM(String query) {
+    if (query.isEmpty) {
+      pagingUmController?.itemList = allUnitM;
+    } else {
+      final filteredUnit = allUnitM.where((unit) {
+        return unit.name!.toLowerCase().contains(query.toLowerCase());
+      }).toList();
+
+      pagingUmController?.itemList = filteredUnit;
     }
   }
 
@@ -106,7 +214,8 @@ class ProductCtrl extends GetxController {
       pagingCtgController?.itemList = allCategories;
     } else {
       final filteredCategories = allCategories.where((category) {
-        return category.name!.toLowerCase().contains(query.toLowerCase());
+        return category.name!.toLowerCase().contains(query.toLowerCase()) ||
+            category.code!.toLowerCase().contains(query.toLowerCase());
       }).toList();
 
       pagingCtgController?.itemList = filteredCategories;

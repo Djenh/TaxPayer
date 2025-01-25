@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
-import 'package:invoice_app/presentation/features/sales/invoice/screens/verify_invoice/result_verify_invoice_page.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 import '_widgets/error_scan_dialog.dart';

@@ -1,9 +1,23 @@
+import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:invoice_app/core/errors/request_failures.dart';
+import 'package:invoice_app/core/services/app_service.dart';
+import 'package:invoice_app/core/services/toast_service.dart';
+import 'package:invoice_app/data/dtos/add_invoice_dto.dart';
+import 'package:invoice_app/data/dtos/pricing_dto.dart';
 import 'package:invoice_app/domain/entities/invoice/deposit_tax_response.dart';
+import 'package:invoice_app/domain/entities/invoice/invoice_response.dart';
+import 'package:invoice_app/domain/entities/invoice/pricing_response.dart';
 import 'package:invoice_app/domain/entities/invoice/tax_group_response.dart';
 import 'package:invoice_app/domain/entities/invoice/type_invoice_response.dart';
 import 'package:invoice_app/domain/usecases/invoice_uc.dart';
+import 'package:invoice_app/presentation/_widgets/app_loader.dart';
+import 'dart:developer' as developer;
+
+import 'package:invoice_app/utils/logger_util.dart';
+
 
 
 class InvoiceCtrl extends GetxController {
@@ -31,6 +45,28 @@ class InvoiceCtrl extends GetxController {
     if (isLoading.isFalse) {
       Get.back();
     }
+  }
+
+  RxList<ItemInvoiceDto> finalItemInvoice = <ItemInvoiceDto>[].obs;
+
+  Rx<AddInvoiceDto> addInvoiceDto = AddInvoiceDto(
+      clientCode: "",
+      typeInvoiceCode: "",
+      tin: AppServices.instance.currentCompany.value!.tin!,
+      posCode: AppServices.instance.currentPos.value!.code!,
+      securityTaxCode: "",
+      items: []
+  ).obs;
+
+  restInvoiceDto(){
+    addInvoiceDto.value = AddInvoiceDto(
+        clientCode: "",
+        typeInvoiceCode: "",
+        tin: AppServices.instance.currentCompany.value!.tin!,
+        posCode: AppServices.instance.currentPos.value!.code!,
+        securityTaxCode: "",
+        items: []
+    );
   }
 
 
@@ -106,6 +142,11 @@ class InvoiceCtrl extends GetxController {
       result.fold(
             (failure) {
               pagingTaxGroupController?.error = failure.message;
+              developer.log(
+                'Unhandled Exception in Tax Group Data Fetch',
+                name: 'allTaxGroupData',
+                error: failure.message,
+              );
         },
             (response) {
           final List<TaxGroupEntities> newItems = response.content ?? [];
@@ -128,6 +169,104 @@ class InvoiceCtrl extends GetxController {
     } catch (error) {
       pagingTaxGroupController?.error = error.toString();
     }
+  }
+
+  ///func to add price product
+  Future<PricingResponse?> addPriceProd(BuildContext context,
+      PricingDto params, {String? nameProd}) async {
+    PricingResponse? response;
+
+    try {
+      _setLoading(true);
+
+      final Either<Failure, PricingResponse> result =
+            await invoiceUc.executeSetPricingTax(params);
+
+      result.fold((Failure failure) {
+        AppLogger.error("data save failed: ${failure.message}");
+        ToastService.showError(context, 'Prix',
+            description: failure.message);
+      }, (PricingResponse priceData) {
+        AppLogger.info("priceData successful: ${priceData.toJson()}");
+        ToastService.showSuccess(context, 'Prix',
+            description: "Prix du produit ${nameProd ?? ""} ajouté.");
+        response = priceData;
+      });
+    } catch (e) {
+      AppLogger.error('An error occurred during addPriceProd : $e');
+      rethrow;
+    } finally {
+      _setLoading(false);
+    }
+
+    return response;
+  }
+
+
+  ///func to calculate invoice item
+  Future<InvoiceResponse?> invoiceCalculation(BuildContext context,
+      AddInvoiceDto params) async {
+    InvoiceResponse? response;
+
+    try {
+      //_setLoading(true);
+      AppLoaderDialog.show(context);
+
+      final Either<Failure, InvoiceResponse> result =
+      await invoiceUc.executeCalculationInvoice(params);
+
+      result.fold((Failure failure) {
+        AppLogger.error("calculation invoice failed: ${failure.message}");
+        ToastService.showError(context, 'Facturation',
+            description: failure.message);
+      }, (InvoiceResponse invData) {
+        AppLogger.info("calculation invoice successful: ${invData.toJson()}");
+        //ToastService.showSuccess(context, 'Facturation', description: "");
+        response = invData;
+      });
+    } catch (e) {
+      AppLogger.error('An error occurred during invoiceCalculation: $e');
+      rethrow;
+    } finally {
+      if(context.mounted) {
+        AppLoaderDialog.dismiss(context);
+      }
+      _setLoading(false);
+    }
+
+    return response;
+  }
+
+
+  ///func to create invoice
+  Future<InvoiceResponse?> invoiceSetData(BuildContext context,
+      AddInvoiceDto params) async {
+    InvoiceResponse? response;
+
+    try {
+      _setLoading(true);
+
+      final Either<Failure, InvoiceResponse> result =
+               await invoiceUc.executeAddInvoice(params);
+
+      result.fold((Failure failure) {
+        AppLogger.error("create invoice failed: ${failure.message}");
+        ToastService.showError(context, 'Facturation',
+            description: failure.message);
+      }, (InvoiceResponse invData) {
+        AppLogger.info("create invoice successful: ${invData.toJson()}");
+        ToastService.showSuccess(context, 'Facturation',
+            description: "Facture crée avec succès.");
+        response = invData;
+      });
+    } catch (e) {
+      AppLogger.error('An error occurred during invoiceSetData : $e');
+      rethrow;
+    } finally {
+      _setLoading(false);
+    }
+
+    return response;
   }
 
 }

@@ -55,7 +55,7 @@ class InvoiceItem extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         _buildText(context, "400000 XOF", 14, Colors.black, FontWeight.w500),
-        const SizedBox(height: 4),
+        /*const SizedBox(height: 4),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           decoration: BoxDecoration(
@@ -67,7 +67,7 @@ class InvoiceItem extends StatelessWidget {
             context, "Payée", 12, Colors.green, FontWeight.w600,
             textAlign: TextAlign.center,
           ),
-        ),
+        ),*/
       ],
     );
   }

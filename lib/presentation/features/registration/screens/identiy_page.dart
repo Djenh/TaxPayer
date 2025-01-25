@@ -63,12 +63,12 @@ class _IdentityPageState extends State<IdentityPage> {
                 style2: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.black),
               ),
               const SizedBox(width: 10),
-              /*EnumTitle(
+              EnumTitle(
                 title: RegisterStr.city,
-                value: "Libreville",
-                style1: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-                style2: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.black),
-              ),*/
+                value: widget.dataCompany.address?.locality?.name ?? "---",
+                style1: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                style2: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.black),
+              ),
             ],
           ),
           const SizedBox(height: 8),
@@ -116,7 +116,8 @@ class _IdentityPageState extends State<IdentityPage> {
             children: [
               EnumTitle(
                 title: RegisterStr.phone,
-                value: companyCtr.hashPhone("${widget.dataCompany.phoneNumber}"),
+                //value: companyCtr.hashPhone("${widget.dataCompany.contact!.phoneNumber}"),
+                value: "${widget.dataCompany.contact!.phoneNumber}",
                 style1: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
                 style2: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold,
                     color: Colors.black),
@@ -129,7 +130,8 @@ class _IdentityPageState extends State<IdentityPage> {
             children: [
               EnumTitle(
                 title: RegisterStr.email,
-                value: companyCtr.hashEmail("${widget.dataCompany.email}"),
+                //value: companyCtr.hashEmail("${widget.dataCompany.contact!.email}"),
+                value: "${widget.dataCompany.contact!.email}",
                 style1: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
                 style2: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold,
                     color: Colors.black),
@@ -142,7 +144,7 @@ class _IdentityPageState extends State<IdentityPage> {
             children: [
               EnumTitle(
                 title: RegisterStr.webSite,
-                value: widget.dataCompany.websiteUrl ?? "---",
+                value: widget.dataCompany.contact!.websiteUrl ?? "---",
                 style1: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
                 style2: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold,
                     color: Colors.black),

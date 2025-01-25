@@ -63,12 +63,11 @@ void setupLocator() {
 
 
   //Ctrl globaux
-
+  locator.registerLazySingleton(() => InvoiceCtrl(invoiceUc: locator<InvoiceUc>()));
+  locator.registerLazySingleton(() => CompanyCtrl(companyUc: locator<CompanyUc>()));
 
   //Ctrl spécifiques à certaines pages
   locator.registerFactory(() => AuthCtrl(authUc: locator<AuthUc>()));
-  locator.registerFactory(() => InvoiceCtrl(invoiceUc: locator<InvoiceUc>()));
-  locator.registerFactory(() => CompanyCtrl(companyUc: locator<CompanyUc>()));
   locator.registerFactory(() => CustomerCtrl(customerUc: locator<CustomerUc>()));
   locator.registerFactory(() => ProductCtrl(productUc: locator<ProductUc>()));
 

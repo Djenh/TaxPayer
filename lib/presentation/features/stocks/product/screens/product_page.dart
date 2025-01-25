@@ -17,35 +17,6 @@ import '../../../../controllers/product_ctrl.dart';
 import '../../../../res/app_input_styles.dart';
 
 
-/*class ProductPage extends StatelessWidget {
-  const ProductPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Produits"),
-        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert))],
-      ),
-      body: Container(
-        padding:
-            const EdgeInsets.symmetric(horizontal: padding * 2, vertical: padding),
-        child: ListView.builder(
-          itemBuilder: (context, index) => Container(
-              padding: const EdgeInsets.only(bottom: padding), child: ProductItem(
-            onTap:  () {
-              Get.to(() => const ProductDetailPage());
-            },
-          )),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Iconsax.add),
-        onPressed: () => Get.to(() => const ProductCreatePage()),
-      ),
-    );
-  }
-}*/
 
 
 class ProductPage extends StatefulWidget {
@@ -125,7 +96,8 @@ class _ProductPageState extends State<ProductPage> {
                           borderRadius: BorderRadius.circular(4),
                         ),
                         padding: const EdgeInsets.all(4),
-                        child: buildText(context, "${typeProduct(ctg.productType!)}/${ctg.category!.name}", 10,
+                        //child: buildText(context, "${typeProduct(ctg.productType!)}/${ctg.category!.name}", 10,
+                        child: buildText(context, typeProduct(ctg.productType!), 10,
                             KStyles.primaryColor,
                             fontWeight: FontWeight.w400),
                       ),
@@ -179,7 +151,8 @@ class _ProductPageState extends State<ProductPage> {
             titleBtn: "Créer un produit",
             sizeFont: 14,
             onPressed: () async {
-              await Get.to(() => const ProductCreatePage(), fullscreenDialog: true)?.then((val){
+              await Get.to(() => ProductCreatePage(isManage: widget.isManage),
+                  fullscreenDialog: true)?.then((val){
                 if(val == true){
                   prodCtr.pagingProdController?.refresh();
                 }
@@ -208,7 +181,7 @@ class _ProductPageState extends State<ProductPage> {
             }, icon: const Icon(Iconsax.search_normal)),*/
         IconButton(
             onPressed: () async {
-              await Get.to(() => const ProductCreatePage())?.then((val){
+              await Get.to(() => ProductCreatePage(isManage: widget.isManage))?.then((val){
                 if(val == true){
                   prodCtr.pagingProdController?.refresh();
                 }

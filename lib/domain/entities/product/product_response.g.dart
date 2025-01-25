@@ -11,22 +11,25 @@ ProductResponse _$ProductResponseFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String?,
       code: json['code'] as String?,
       name: json['name'] as String?,
+      officialProductNo: json['officialProductNo'] as String?,
       category: json['category'] == null
           ? null
           : CategoriesEntities.fromJson(
               json['category'] as Map<String, dynamic>),
       productType: json['productType'] as String?,
       companyTin: json['companyTin'] as String?,
-    );
+    )..posCode = json['posCode'] as String?;
 
 Map<String, dynamic> _$ProductResponseToJson(ProductResponse instance) =>
     <String, dynamic>{
       'id': instance.id,
       'code': instance.code,
       'name': instance.name,
+      'officialProductNo': instance.officialProductNo,
       'category': instance.category?.toJson(),
       'productType': instance.productType,
       'companyTin': instance.companyTin,
+      'posCode': instance.posCode,
     };
 
 ProductListResponse _$ProductListResponseFromJson(Map<String, dynamic> json) =>

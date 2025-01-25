@@ -17,6 +17,7 @@ class  KStyles {
   static const Color textLightColor = Color(0xFF9E9E9E); // Texte clair
   static const Color blackColor = Color(0xFF454555);
   static const Color fieldGrey = Color(0xFFE4E4E7);
+  static const Color cardGrey = Color(0xFFF4F4F5);
   static const Color yellowI = Color(0xFFFAD115);
   static const Color greenOp = Color(0xFFF0FFF7);
   static const Color icColors = Color(0xFF292D32);

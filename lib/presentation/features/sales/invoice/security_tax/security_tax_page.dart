@@ -82,11 +82,11 @@ class _SecurityTaxPageState extends State<SecurityTaxPage> {
                         ),
                       ),
                       title: buildText(context, "${dps.name}(${dps.rate}%)",
-                            14, Colors.black, fontWeight: FontWeight.w600),
-                      /*subtitle: Text(
-                        tax["description"]!,
+                            14, Colors.black, fontWeight: FontWeight.w600, maxLine: 2),
+                      subtitle: Text(
+                        dps.description ?? "---",
                         style: const TextStyle(fontSize: 12, color: Colors.grey),
-                      ),*/
+                      ),
                       onTap: () {
                         Get.back(result: dps);
                       },

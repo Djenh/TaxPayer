@@ -57,7 +57,7 @@ class DioErrorHandler {
   }
 
   /// Gère les erreurs HTTP spécifiques comme 404, 500, etc.
-  static Either<Failure, T> _handleBadResponse<T>(DioException error) {
+ /* static Either<Failure, T> _handleBadResponse<T>(DioException error) {
     final Response<dynamic>? response = error.response;
     final int? statusCode = response?.statusCode;
 
@@ -65,12 +65,54 @@ class DioErrorHandler {
     String errorMessage = response?.data["message"] ?? 'Erreur lors du traitement. Statut: $statusCode';
 
     if (response?.data != null && response?.data is Map) {
-      final String? object = response?.data["object"];
+      final String? object = response?.data["type"];
       final String? value = response?.data["value"];
-      final String? property = response?.data["property"];
+      final String? property = response?.data["field"];
 
       if (object != null && value != null && property != null) {
         errorMessage = "$errorMessage (Objet : $object, Propriété : $property, Valeur : $value)";
+      }
+    }
+
+    switch (statusCode) {
+      case 400:
+        return Left(ServerFailure(message: errorMessage, errorCode: 'BAD_REQUEST'));
+      case 401:
+        return Left(ServerFailure(message: errorMessage, errorCode: 'UNAUTHORIZED'));
+      case 403:
+        return Left(ServerFailure(message: errorMessage, errorCode: 'FORBIDDEN'));
+      case 404:
+        return Left(ServerFailure(message: errorMessage, errorCode: 'NOT_FOUND'));
+      case 409:
+        return Left(ServerFailure(message: errorMessage, errorCode: 'CONFLICT'));
+      case 500:
+        return Left(ServerFailure(message: errorMessage, errorCode: 'INTERNAL_SERVER_ERROR'));
+      default:
+        return Left(NetworkFailure(message: errorMessage, statusCode: statusCode));
+    }
+  }*/
+  static Either<Failure, T> _handleBadResponse<T>(DioException error) {
+    final Response<dynamic>? response = error.response;
+    final int? statusCode = response?.statusCode;
+
+    String errorMessage = 'Erreur lors du traitement. Statut: $statusCode';
+
+    if (response?.data != null) {
+      if (response?.data is List) {
+        // Si response.data est une liste, extraire les messages d'erreur
+        final List<dynamic> errors = response?.data as List;
+        errorMessage = errors.map((e) => e["message"] ?? "Erreur inconnue").join(", ");
+      } else if (response?.data is Map) {
+        // Si response.data est une map, extraire le message d'erreur
+        errorMessage = response?.data["message"] ?? errorMessage;
+
+        final String? object = response?.data["type"];
+        final String? value = response?.data["value"];
+        final String? property = response?.data["field"];
+
+        if (object != null && value != null && property != null) {
+          errorMessage = "$errorMessage (Objet : $object, Propriété : $property, Valeur : $value)";
+        }
       }
     }
 
@@ -100,9 +142,9 @@ class DioErrorHandler {
     String errorMessage = data["message"] ?? "Erreur lors du traitement. Statut: $statusCode";
 
     if (data != null && data is Map) {
-      final String? object = data["object"];
+      final String? object = data["type"];
       final String? value = data["value"];
-      final String? property = data["property"];
+      final String? property = data["field"];
 
       if (object != null && value != null && property != null) {
         errorMessage = "$errorMessage (Objet : $object, Propriété : $property, Valeur : $value)";

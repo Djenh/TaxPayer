@@ -1,4 +1,7 @@
+import 'package:invoice_app/domain/entities/company/address_entities.dart';
+import 'package:invoice_app/domain/entities/company/contact_entities.dart';
 import 'package:invoice_app/domain/entities/company/legal_form_entities.dart';
+import 'package:invoice_app/domain/entities/company/sector_entities.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 
@@ -13,9 +16,10 @@ class CompanyTinResponse {
   String? tradeNo;
   String? phoneNumber;
   String? email;
-  String? address;
+  AddressEntities? address;
+  ContactEntities? contact;
   LegalFormEntities? legalForm;
-  List<LegalFormEntities>? sectors;
+  List<SectorEntities>? sectors;
   String? websiteUrl;
   String? status;
   int? totalPos;
@@ -27,6 +31,7 @@ class CompanyTinResponse {
     this.phoneNumber,
     this.email,
     this.address,
+    this.contact,
     this.legalForm,
     this.sectors,
     this.websiteUrl,

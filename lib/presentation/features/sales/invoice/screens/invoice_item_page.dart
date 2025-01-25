@@ -1,214 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:invoice_app/core/configs/injection_container.dart';
+import 'package:invoice_app/core/services/toast_service.dart';
+import 'package:invoice_app/data/dtos/add_invoice_dto.dart';
 import 'package:invoice_app/domain/entities/invoice/tax_group_response.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
+import 'package:invoice_app/presentation/controllers/invoice_ctrl.dart';
 import 'package:invoice_app/presentation/features/stocks/product/screens/product_page.dart';
-import 'package:invoice_app/presentation/features/stocks/product/screens/product_search.dart';
-import 'package:invoice_app/presentation/res/style/e_style.dart';
+import 'package:invoice_app/utils/logger_util.dart';
 import '../../../../../domain/entities/product/product_response.dart';
 import '../../../../_widgets/app_bar_custom.dart';
 import '../../../../_widgets/build_dropdown_str.dart';
 import '../../../../_widgets/simple_btn.dart';
 import '../../../../res/app_input_styles.dart';
 import '../../../../res/input_formaters.dart';
-import '../../../stocks/product/taxgroup/tax_group.dart';
-
-
-/*class InvoiceItemPage extends StatelessWidget {
-  const InvoiceItemPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Add Item"),
-      ),
-      body: ListView(
-        children: [
-          const SizedBox(
-            height: 10,
-          ),
-          KContainer(
-            title: "Item Detail",
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  height: 10,
-                ),
-                ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  title: const KtextGray(
-                    "Produuct",
-                  ),
-                  subtitle: const Text("Select a product",
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  trailing: const Icon(Icons.arrow_drop_down),
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const ProductCreatePage(),
-                          fullscreenDialog: true
-                        ));
-                  },
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                const Divider(),
-                const SizedBox(
-                  height: 5,
-                ),
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: KInput(
-                        name: "Quantity",
-                        keyboardType: TextInputType.number,
-                        initialValue: '0',
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10 * 2.5,
-                    ),
-                    Expanded(
-                      child: KInput(
-                        name: "Price",
-                        initialValue: '0',
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          KContainer(
-            title: "Taxe Description",
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ListTile(
-                  title: const Text("Tax Group"),
-                  trailing: const Icon(Icons.arrow_drop_down),
-                  subtitle: const KtextGray("A-ex (0%) -EXONERATE"),
-                  contentPadding: EdgeInsets.zero,
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const TaxgroupPage(),
-                            fullscreenDialog: true
-                        ));
-                  },
-                ),
-                const KInput(
-                  name: "Additional Tax",
-                  keyboardType: TextInputType.number,
-                  initialValue: '0',
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          KContainer(
-            title: "Subtotal",
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ...ListTile.divideTiles(context: context, tiles: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0),
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        KtextGray("Subtotal"),
-                        Text("Qte: Z"),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0),
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        KtextGray("Subtotal"),
-                        Text("Qte: Z"),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0),
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        KtextGray("Subtotal"),
-                        Text("Qte: Z"),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Grand total",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(
-                                  color: Theme.of(context).primaryColor,
-                                  fontWeight: FontWeight.bold),
-                        ),
-                        const Text("Qte: Z"),
-                      ],
-                    ),
-                  ),
-                ])
-              ],
-            ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const KtextGray("Total Amount"),
-                Text(
-                  "2000",
-                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                      color: Theme.of(context).primaryColor,
-                      fontWeight: FontWeight.bold),
-                )
-              ],
-            ),
-            const SizedBox(
-              width: 10 * 3,
-            ),
-            Expanded(
-              child: KElevatedButton(
-                  child: const Text(
-                    "Add item",
-                  ),
-                  onPressed: () {}),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}*/
 
 
 class InvoiceItemPage extends StatefulWidget {
@@ -221,7 +26,7 @@ class InvoiceItemPage extends StatefulWidget {
 
 class _InvoiceItemPageState extends State<InvoiceItemPage> {
 
-
+  final invCtr = locator<InvoiceCtrl>();
   ProductResponse? dataProductSelect;
   String hintProductSelect = "Selectionner";
   TextEditingController? qteController;
@@ -229,7 +34,9 @@ class _InvoiceItemPageState extends State<InvoiceItemPage> {
   TaxGroupEntities? dataTaxGroup;
   String hintTypeTax = "Selectionner une taxe";
   TextEditingController? additionalTaxController;
-
+  RxNum tH = RxNum(0);
+  RxNum tA = RxNum(0);
+  RxNum gT = RxNum(0);
 
 
   @override
@@ -291,6 +98,21 @@ class _InvoiceItemPageState extends State<InvoiceItemPage> {
                 textInputAction: TextInputAction.done,
                 keyboardType: TextInputType.number,
                 inputFormatters: noSpaceNoEmoji,
+                onFieldSubmitted: (_) async {
+                  invCtr.addInvoiceDto.value.items
+                      .add(ItemInvoiceDto(quantity: int.parse(_),
+                         productCode: dataProductSelect!.code!));
+                  AppLogger.info("invoiceDto => ${invCtr.addInvoiceDto.toJson()}");
+                  await invCtr.invoiceCalculation(context,
+                      invCtr.addInvoiceDto.value).then((val){
+                        if(val != null){
+                          tH.value = val.total!.baseTaxable!;
+                          tA.value = val.total!.tax!;
+                          gT.value = val.total!.ttc!;
+                          setState(() {});
+                        }
+                  });
+                },
                 decoration: AppInputStyles.defaultInputDecoration(labelText: "Quantité"),
               ),
             ),
@@ -298,6 +120,8 @@ class _InvoiceItemPageState extends State<InvoiceItemPage> {
             Expanded(
               child: TextFormField(
                 controller: priceController,
+                enabled: true,
+                readOnly: true,
                 textInputAction: TextInputAction.done,
                 keyboardType: TextInputType.number,
                 inputFormatters: noSpaceNoEmoji,
@@ -322,7 +146,8 @@ class _InvoiceItemPageState extends State<InvoiceItemPage> {
             label: "Groupe de taxation",
             hint: (dataTaxGroup != null) ? dataTaxGroup!.name! : hintTypeTax,
             items: const [],
-            onTap: () async {
+            onTap: () {  },
+            /*onTap: () async {
               await Get.to(() => const TaxGroupPage(),
                   fullscreenDialog: true)?.then((val){
                   if(val is TaxGroupEntities){
@@ -331,14 +156,16 @@ class _InvoiceItemPageState extends State<InvoiceItemPage> {
                     });
                   }
               });
-            }
+            }*/
         ),
         const SizedBox(height: 20),
-        buildText(context, "Additional Taxe", 14, Colors.black,
+        buildText(context, "Tax specifique", 14, Colors.black,
             fontWeight: FontWeight.w300),
         const SizedBox(height: 10),
         TextFormField(
           controller: additionalTaxController,
+          enabled: true,
+          readOnly: true,
           textInputAction: TextInputAction.done,
           keyboardType: TextInputType.text,
           inputFormatters: noSpaceNoEmoji,
@@ -350,18 +177,18 @@ class _InvoiceItemPageState extends State<InvoiceItemPage> {
 
 
   Widget _buildAmountContainer(){
-    return Column(
+    return Obx(() => Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        padChild(child: buildText(context, "Montant", 14, Colors.black,
+        padChild(child: buildText(context, "Repartition de la taxe", 14, Colors.black,
             fontWeight: FontWeight.w600)),
         padChild(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              buildText(context, "Total Hors Taxes",
+              buildText(context, "Total Hors Taxe",
                   14, Colors.black, fontWeight: FontWeight.w300),
-              buildText(context, "0", 14, Colors.black,
+              buildText(context, "${tH.value}", 14, Colors.black,
                   fontWeight: FontWeight.w600),
             ],
           ),
@@ -373,7 +200,7 @@ class _InvoiceItemPageState extends State<InvoiceItemPage> {
             children: [
               buildText(context, "Total appliquées",
                   14, Colors.black, fontWeight: FontWeight.w300),
-              buildText(context, "0", 14,
+              buildText(context, "${tA.value}", 14,
                   Colors.black, fontWeight: FontWeight.w600),
             ],
           ),
@@ -385,12 +212,35 @@ class _InvoiceItemPageState extends State<InvoiceItemPage> {
             children: [
               buildText(context, "Grand total",
                   14, Colors.black, fontWeight: FontWeight.w600),
-              buildText(context, "0", 14, Colors.black,
+              buildText(context, "${gT.value}", 14, Colors.black,
                   fontWeight: FontWeight.w600),
             ],
           ),
         ),
       ],
+    ));
+  }
+
+
+  Widget _buildBtnAction(){
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: SizedBox(
+        height: 50,
+        child: SimpleBtn(
+            titleBtn: "Ajouter",
+            sizeFont: 12,
+            onPressed:(){
+              if(dataProductSelect != null && qteController!.text.isNotEmpty){
+                invCtr.finalItemInvoice.add(invCtr.addInvoiceDto.value.items.first);
+                invCtr.addInvoiceDto.value.items.clear();
+                Get.back(result: true);
+              }else{
+                ToastService.showWarning(context, "Facturation",
+                    description: "Selectionner un produit et sa quantité pour ajouté.");
+              }
+            }),
+      ),
     );
   }
 
@@ -410,34 +260,11 @@ class _InvoiceItemPageState extends State<InvoiceItemPage> {
             const SizedBox(height: 20),
             _buildAdditionalTax(),
             const SizedBox(height: 20),
-           // _buildAmountContainer()
+            _buildAmountContainer()
           ],
         ),
       ),
-      bottomNavigationBar: Container(
-        height: 80,
-        padding: const EdgeInsets.all(12),
-        color: KStyles.primaryColor.withOpacity(0.2),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            /*Column(
-              children: [
-                buildText(context, "Total", 14, Colors.black, fontWeight: FontWeight.w400),
-                const SizedBox(height: 10),
-                buildText(context, "0 XOF", 14, Colors.black, fontWeight: FontWeight.bold),
-              ],
-            ),*/
-            SizedBox(
-              width: MediaQuery.of(context).size.width / 2 + 50,
-              child: SimpleBtn(
-                    titleBtn: "Ajouter",
-                    sizeFont: 12,
-                    onPressed:(){})
-            )
-          ],
-        ),
-      ),
+      bottomNavigationBar: _buildBtnAction(),
     );
   }
 

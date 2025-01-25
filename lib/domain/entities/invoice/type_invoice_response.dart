@@ -1,3 +1,4 @@
+import 'package:invoice_app/domain/entities/sort_entities.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../pageable.dart';
@@ -10,14 +11,14 @@ part 'type_invoice_response.g.dart';
 class TypeInvoiceResponse {
 
   List<TypeInvoiceEntities>? content;
-  Pageable? pageable;
+  Pageable1? pageable;
   bool? last;
   int? totalPages;
   int? totalElements;
   bool? first;
   int? size;
   int? number;
-  List<String>? sort;
+  SortEntities? sort;
   int? numberOfElements;
   bool? empty;
 
@@ -39,10 +40,12 @@ class TypeInvoiceEntities {
   String? id;
   String? code;
   String? name;
-  String? reimbursement;
+  String? allowedTypeForReimburementCode;
+  String? impactOnRevenues;
 
 
-  TypeInvoiceEntities({this.id, this.code, this.name, this.reimbursement});
+  TypeInvoiceEntities({this.id, this.code, this.name,
+    this.allowedTypeForReimburementCode, this.impactOnRevenues});
 
   factory TypeInvoiceEntities.fromJson(Map<String, dynamic> json) =>
       _$TypeInvoiceEntitiesFromJson(json);

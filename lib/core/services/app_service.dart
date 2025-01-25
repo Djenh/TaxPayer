@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:invoice_app/core/constants/strings.dart';
 import 'package:invoice_app/core/services/app_storage.dart';
 import 'package:invoice_app/domain/entities/company/company_tin_response.dart';
+import 'package:invoice_app/domain/entities/company/pos_data_response.dart';
 import 'package:invoice_app/utils/logger_util.dart';
 
 
@@ -12,11 +13,13 @@ class AppServices extends GetxService {
 
   Rx<String?> currentUser = Rx<String?>(null);
   Rx<CompanyTinResponse?> currentCompany = Rx<CompanyTinResponse?>(null);
+  Rx<PosDataResponse?> currentPos = Rx<PosDataResponse?>(null);
   String? authTokenUser;
 
   Future<AppServices> init() async {
     await AppStorage.instance.storage;
     await checkCompanyData();
+    await checkCurrentPosData();
     await checkUser();
     await checkUserToken();
     return this;
@@ -30,6 +33,16 @@ class AppServices extends GetxService {
       AppLogger.info("current company info : ${currentCompany.toJson()}");
     } else {
       currentCompany.value = null;
+    }
+  }
+
+  Future<void> checkCurrentPosData() async {
+    if (AppStorage.instance.exist(dataPos)) {
+      currentPos.value = PosDataResponse.fromJson(
+          json.decode(await AppStorage.instance.getDataStorage(dataPos)));
+      AppLogger.info("current pos info : ${currentPos.toJson()}");
+    } else {
+      currentPos.value = null;
     }
   }
 

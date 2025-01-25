@@ -1,3 +1,4 @@
+import 'package:invoice_app/domain/entities/sort_entities.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../pageable.dart';
@@ -10,14 +11,14 @@ part 'tax_group_response.g.dart';
 class TaxGroupResponse {
 
   List<TaxGroupEntities>? content;
-  Pageable? pageable;
+  Pageable1? pageable;
   bool? last;
   int? totalPages;
   int? totalElements;
   bool? first;
   int? size;
   int? number;
-  List<String>? sort;
+  SortEntities? sort;
   int? numberOfElements;
   bool? empty;
 
@@ -39,11 +40,10 @@ class TaxGroupEntities {
   String? id;
   String? code;
   String? name;
-  int? rate;
-  String? description;
+  num? rate;
 
 
-  TaxGroupEntities({this.id, this.code, this.name, this.rate, this.description});
+  TaxGroupEntities({this.id, this.code, this.name, this.rate});
 
   factory TaxGroupEntities.fromJson(Map<String, dynamic> json) =>
       _$TaxGroupEntitiesFromJson(json);

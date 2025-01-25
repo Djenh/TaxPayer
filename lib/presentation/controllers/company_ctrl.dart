@@ -1,10 +1,12 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:invoice_app/core/errors/request_failures.dart';
 import 'package:invoice_app/core/services/app_service.dart';
 import 'package:invoice_app/data/dtos/add_pos_dto.dart';
 import 'package:invoice_app/domain/entities/company/company_tin_response.dart';
+import 'package:invoice_app/domain/entities/company/localities_list_response.dart';
 import 'package:invoice_app/domain/entities/company/pos_data_response.dart';
 import 'package:invoice_app/domain/usecases/company_uc.dart';
 import 'package:invoice_app/utils/logger_util.dart';
@@ -16,8 +18,11 @@ class CompanyCtrl extends GetxController {
 
   final CompanyUc companyUc;
 
-
   RxBool isLoading = false.obs;
+  static const _pageSize = 20;
+  var currentPage = 1.obs;
+  PagingController<int, LocalitiesEntities>? pagingLocController;
+  List<LocalitiesEntities> allLocalities = [];
 
   RxBool get ignorePointer => RxBool(isLoading.isTrue);
 
@@ -100,7 +105,7 @@ class CompanyCtrl extends GetxController {
       result.fold((Failure failure) {
         AppLogger.error("fetch data failed: ${failure.message}");
       }, (List<PosDataResponse> companyDataPos) {
-        if (companyDataPos.first.companyTin == tin) {
+        if (companyDataPos.first.company?.tin == tin) {
           AppLogger.info("companyDataPos successful: $companyDataPos");
           response = companyDataPos;
         }
@@ -130,7 +135,7 @@ class CompanyCtrl extends GetxController {
       result.fold((Failure failure) {
         AppLogger.error("fetch data failed: ${failure.message}");
       }, (PosDataResponse companyDataPos) {
-        if (companyDataPos.companyTin == tin) {
+        if (companyDataPos.company?.tin == tin) {
           AppLogger.info("companyDataPos successful: $companyDataPos");
           response = companyDataPos;
         }
@@ -198,5 +203,34 @@ class CompanyCtrl extends GetxController {
 
     return response;
   }
+
+  ///func to get all localities
+  Future<List<LocalitiesEntities>?> allLocalitiesData(int pageKey) async {
+    List<LocalitiesEntities>? dataLocalities;
+
+    try {
+      final result = await companyUc.executeAllLocalities(pageKey, _pageSize);
+
+      result.fold(
+            (failure) {
+              AppLogger.error("fetch data failed: ${failure.message}");
+        },
+            (LocalitiesListResponse response) {
+              AppLogger.info("response successful: ${response.toJson()}");
+              dataLocalities = response.content ?? [];
+              allLocalities = dataLocalities!;
+        },
+      );
+    } catch (e) {
+      AppLogger.error('An error occurred during allLocalitiesData : $e');
+      rethrow;
+    } finally {
+      //_setLoading(false);
+    }
+
+    return dataLocalities;
+  }
+
+
 
 }

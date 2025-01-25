@@ -13,14 +13,16 @@ TypeInvoiceResponse _$TypeInvoiceResponseFromJson(Map<String, dynamic> json) =>
           .toList(),
       pageable: json['pageable'] == null
           ? null
-          : Pageable.fromJson(json['pageable'] as Map<String, dynamic>),
+          : Pageable1.fromJson(json['pageable'] as Map<String, dynamic>),
       last: json['last'] as bool?,
       totalPages: (json['totalPages'] as num?)?.toInt(),
       totalElements: (json['totalElements'] as num?)?.toInt(),
       first: json['first'] as bool?,
       size: (json['size'] as num?)?.toInt(),
       number: (json['number'] as num?)?.toInt(),
-      sort: (json['sort'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      sort: json['sort'] == null
+          ? null
+          : SortEntities.fromJson(json['sort'] as Map<String, dynamic>),
       numberOfElements: (json['numberOfElements'] as num?)?.toInt(),
       empty: json['empty'] as bool?,
     );
@@ -36,7 +38,7 @@ Map<String, dynamic> _$TypeInvoiceResponseToJson(
       'first': instance.first,
       'size': instance.size,
       'number': instance.number,
-      'sort': instance.sort,
+      'sort': instance.sort?.toJson(),
       'numberOfElements': instance.numberOfElements,
       'empty': instance.empty,
     };
@@ -46,7 +48,9 @@ TypeInvoiceEntities _$TypeInvoiceEntitiesFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String?,
       code: json['code'] as String?,
       name: json['name'] as String?,
-      reimbursement: json['reimbursement'] as String?,
+      allowedTypeForReimburementCode:
+          json['allowedTypeForReimburementCode'] as String?,
+      impactOnRevenues: json['impactOnRevenues'] as String?,
     );
 
 Map<String, dynamic> _$TypeInvoiceEntitiesToJson(
@@ -55,5 +59,6 @@ Map<String, dynamic> _$TypeInvoiceEntitiesToJson(
       'id': instance.id,
       'code': instance.code,
       'name': instance.name,
-      'reimbursement': instance.reimbursement,
+      'allowedTypeForReimburementCode': instance.allowedTypeForReimburementCode,
+      'impactOnRevenues': instance.impactOnRevenues,
     };

@@ -29,7 +29,7 @@ PreferredSizeWidget appBarOther(BuildContext context, String title,
     title: Text(
         title,
         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-            fontSize: 16, fontWeight: FontWeight.w400, color: Colors.black)
+            fontSize: 18, fontWeight: FontWeight.w400, color: Colors.black)
     ),
     actions: actionList ?? [],
   );

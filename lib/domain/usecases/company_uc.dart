@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:invoice_app/data/dtos/add_pos_dto.dart';
 import 'package:invoice_app/domain/entities/company/company_tin_response.dart';
+import 'package:invoice_app/domain/entities/company/localities_list_response.dart';
 import 'package:invoice_app/domain/entities/company/pos_data_response.dart';
 import 'package:invoice_app/domain/repositories/i_company_repository.dart';
 
@@ -29,6 +30,10 @@ class CompanyUc {
 
   Future<Either<Failure, PosDataResponse>> executeUpdPosCompanyBy(String id, AddPosDto params) async {
     return await companyRepository.updPosCompany(id, params);
+  }
+
+  Future<Either<Failure, LocalitiesListResponse>> executeAllLocalities(int page, int size) async {
+    return await companyRepository.allLocalities(page, size);
   }
 
 }

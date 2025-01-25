@@ -7,7 +7,6 @@ import 'package:invoice_app/presentation/res/style/e_style.dart';
 
 import '../../../../../_widgets/app_bar_custom.dart';
 import '../template_invoice/modern_view_invoice_page.dart';
-import '_widgets/error_scan_dialog.dart';
 
 
 

@@ -25,7 +25,7 @@ class BuildDropdownString extends StatelessWidget {
               hint: buildText(context, hint, 12, Colors.black54,
                   fontWeight: FontWeight.w600),
               isExpanded: true,
-              decoration: AppInputStyles.dropDownInputDecoration(),
+              decoration: AppInputStyles.dropDownInputDecoration1(),
               value: null,
               items: items.map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
@@ -36,7 +36,7 @@ class BuildDropdownString extends StatelessWidget {
               onChanged: (String? value) {
                 // TODO : Ajouter la logique pour la sélection
               },
-              icon: const Icon(Icons.arrow_drop_down, color: Colors.grey, size: 32),
+              icon: const Icon(Icons.arrow_drop_down, color: Colors.grey, size: 22),
             ),
           ),
         ),

@@ -13,14 +13,16 @@ DepositTaxResponse _$DepositTaxResponseFromJson(Map<String, dynamic> json) =>
           .toList(),
       pageable: json['pageable'] == null
           ? null
-          : Pageable.fromJson(json['pageable'] as Map<String, dynamic>),
+          : Pageable1.fromJson(json['pageable'] as Map<String, dynamic>),
       last: json['last'] as bool?,
       totalPages: (json['totalPages'] as num?)?.toInt(),
       totalElements: (json['totalElements'] as num?)?.toInt(),
       first: json['first'] as bool?,
       size: (json['size'] as num?)?.toInt(),
       number: (json['number'] as num?)?.toInt(),
-      sort: (json['sort'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      sort: json['sort'] == null
+          ? null
+          : SortEntities.fromJson(json['sort'] as Map<String, dynamic>),
       numberOfElements: (json['numberOfElements'] as num?)?.toInt(),
       empty: json['empty'] as bool?,
     );
@@ -35,7 +37,7 @@ Map<String, dynamic> _$DepositTaxResponseToJson(DepositTaxResponse instance) =>
       'first': instance.first,
       'size': instance.size,
       'number': instance.number,
-      'sort': instance.sort,
+      'sort': instance.sort?.toJson(),
       'numberOfElements': instance.numberOfElements,
       'empty': instance.empty,
     };
@@ -45,7 +47,10 @@ DepositTaxEntities _$DepositTaxEntitiesFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String?,
       code: json['code'] as String?,
       name: json['name'] as String?,
-      rate: (json['rate'] as num?)?.toInt(),
+      rate: json['rate'] as num?,
+      hasClientTinRequiredhasClientTinRequired:
+          json['hasClientTinRequiredhasClientTinRequired'] as bool?,
+      description: json['description'] as String?,
     );
 
 Map<String, dynamic> _$DepositTaxEntitiesToJson(DepositTaxEntities instance) =>
@@ -54,4 +59,7 @@ Map<String, dynamic> _$DepositTaxEntitiesToJson(DepositTaxEntities instance) =>
       'code': instance.code,
       'name': instance.name,
       'rate': instance.rate,
+      'hasClientTinRequiredhasClientTinRequired':
+          instance.hasClientTinRequiredhasClientTinRequired,
+      'description': instance.description,
     };
