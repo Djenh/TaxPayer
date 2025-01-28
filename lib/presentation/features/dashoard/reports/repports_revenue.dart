@@ -52,7 +52,9 @@ Widget _buildRepportItemCard({String? title,date,VoidCallback? onTapItem,onTapXl
                   height: 40,
                   width: 40,
                   color: KStyles.cardGrey,
-                  onPressed: onTapItem!,
+                  onPressed: (){
+
+                  },
                   child: const Icon(Iconsax.courthouse,color: KStyles.primaryColor,size: 20),
                 ),
                 const SizedBox(
