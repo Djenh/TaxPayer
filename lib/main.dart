@@ -12,7 +12,6 @@ Future<void> main() async {
   await initAppServices();
 
   EnvironmentConfig.setEnvironment(Environment.dev);
-
   runApp(const AppInitPage());
 }
 

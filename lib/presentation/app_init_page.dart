@@ -63,6 +63,11 @@ class _AppInitPageState extends State<AppInitPage> with WidgetsBindingObserver {
               home: AppServices.instance.currentCompany.value != null
                   ? HomePage()
                   : const OnboardingPage(),
+              /*
+              AppServices.instance.currentCompany.value != null
+                  ? HomePage()
+                  : const OnboardingPage(),
+               */
               localizationsDelegates: const <LocalizationsDelegate>[
                 ...GlobalMaterialLocalizations.delegates,
               ],

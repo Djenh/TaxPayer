@@ -16,6 +16,7 @@ import 'package:invoice_app/domain/usecases/product_uc.dart';
 import 'package:invoice_app/presentation/controllers/auth_ctrl.dart';
 import 'package:invoice_app/presentation/controllers/company_ctrl.dart';
 import 'package:invoice_app/presentation/controllers/customer_ctrl.dart';
+import 'package:invoice_app/presentation/controllers/dashboard_ctrl.dart';
 import 'package:invoice_app/presentation/controllers/invoice_ctrl.dart';
 import 'package:invoice_app/presentation/controllers/product_ctrl.dart';
 import '../../data/repositories_impl/customers_impl.dart';
@@ -64,6 +65,7 @@ void setupLocator() {
 
   //Ctrl globaux
   locator.registerLazySingleton(() => InvoiceCtrl(invoiceUc: locator<InvoiceUc>()));
+  locator.registerLazySingleton(() => DashboardCtrl());
   locator.registerLazySingleton(() => CompanyCtrl(companyUc: locator<CompanyUc>()));
 
   //Ctrl spécifiques à certaines pages

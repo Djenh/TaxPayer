@@ -8,6 +8,13 @@ class RegisterStr {
 
 
   // Registration page ---
+  static const String emptyAgency = 'Vous n’avez actuellement  aucune agence. Créer une agence pour générer des factures';
+  static const String emptyInvoice = 'Vous n’avez actuellement  aucune facture. cliquez pour créer une facture';
+  static const String createAgency = 'Créer une agence';
+  static const String createInvoice = 'Créer une facture';
+  static const String statistiques = 'Statistiques';
+  static const String agences = 'Agences';
+  static const String rapports = 'Rapports';
   static const String titleLayout = 'Vérifier votre Identité fiscale';
   static const String subTitleLayout = 'Vos données seront vérifiées à partie de votre identité fiscale';
   static const String ifuTitle = 'Identifiant Fiscal Unique';
