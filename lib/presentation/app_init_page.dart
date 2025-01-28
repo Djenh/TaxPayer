@@ -11,6 +11,7 @@ import 'package:invoice_app/presentation/res/themes/theme.dart';
 
 import '../../core/constants/app_constants.dart';
 import 'controllers/theme_ctrl.dart';
+import 'features/agency/screens/agency_page.dart';
 import 'features/onboarding/screens/onboarding_page.dart';
 
 
@@ -60,7 +61,7 @@ class _AppInitPageState extends State<AppInitPage> with WidgetsBindingObserver {
               darkTheme: KThemes.darkTheme(context),
               home: AppServices.instance.currentCompany.value != null
                   ? HomePage()
-                  : const OnboardingPage(),
+                  : AgencyPage(isManage: true),//const OnboardingPage(),
               localizationsDelegates: const <LocalizationsDelegate>[
                 ...GlobalMaterialLocalizations.delegates,
               ],
