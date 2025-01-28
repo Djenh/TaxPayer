@@ -5,14 +5,12 @@ import 'package:iconsax/iconsax.dart';
 import 'package:invoice_app/core/configs/injection_container.dart';
 import 'package:invoice_app/core/services/app_service.dart';
 import 'package:invoice_app/core/services/app_storage.dart';
-import 'package:invoice_app/core/services/toast_service.dart';
 import 'package:invoice_app/domain/entities/company/pos_data_response.dart';
 import 'package:invoice_app/presentation/_widgets/app_bar_custom.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
 import 'package:invoice_app/presentation/controllers/company_ctrl.dart';
 import 'package:invoice_app/presentation/features/pos/screens/pos_form_page.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
-
 import '../../../../core/constants/strings.dart';
 
 
@@ -35,7 +33,9 @@ class _PosPageState extends State<PosPage> {
   @override
   void initState() {
     super.initState();
-    _fetchDataAgency();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _fetchDataAgency();
+    });
   }
 
   Future<void> _fetchDataAgency() async {
