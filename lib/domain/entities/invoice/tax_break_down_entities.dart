@@ -1,4 +1,4 @@
-import 'package:invoice_app/domain/entities/invoice/tax_group_response.dart';
+import 'package:invoice_app/domain/entities/product/tax_group_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 

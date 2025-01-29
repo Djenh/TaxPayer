@@ -17,20 +17,21 @@ class BuildDropdownString extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        buildText(context, label, 12, Colors.grey, fontWeight: FontWeight.w400),
+        //buildText(context, label, 12, Colors.black, fontWeight: FontWeight.w400),
         GestureDetector(
           onTap: onTap,
           child: AbsorbPointer(
             child: DropdownButtonFormField<String>(
-              hint: buildText(context, hint, 12, Colors.black54,
-                  fontWeight: FontWeight.w600),
+              hint: buildText(context, hint, 14, Colors.black,
+                  fontWeight: FontWeight.w500),
               isExpanded: true,
-              decoration: AppInputStyles.dropDownInputDecoration1(),
+              decoration: AppInputStyles.dropDownInputDecoration1(
+                  labelText: label),
               value: null,
               items: items.map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
-                  child: buildText(context, value, 12, Colors.black54),
+                  child: buildText(context, value, 12, Colors.black),
                 );
               }).toList(),
               onChanged: (String? value) {

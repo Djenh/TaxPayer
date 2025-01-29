@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:invoice_app/domain/entities/invoice/tax_group_response.dart';
+import 'package:invoice_app/domain/entities/product/tax_group_response.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
+import 'package:invoice_app/presentation/controllers/product_ctrl.dart';
 
 import '../../../../../core/configs/injection_container.dart';
 import '../../../../_widgets/app_bar_custom.dart';
 import '../../../../_widgets/paged_first_error.dart';
 import '../../../../_widgets/paged_new_page_error.dart';
-import '../../../../controllers/invoice_ctrl.dart';
 import '../../../../res/style/e_style.dart';
 
 
@@ -21,16 +21,16 @@ class TaxGroupPage extends StatefulWidget {
 
 class _TaxGroupState extends State<TaxGroupPage> {
 
-  final invoiceCtr = locator<InvoiceCtrl>();
+  final prodCtr = locator<ProductCtrl>();
 
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    invoiceCtr.pagingTaxGroupController = PagingController<int, TaxGroupEntities>(firstPageKey: 0);
-    invoiceCtr.pagingTaxGroupController?.addPageRequestListener((pageKey) {
-      invoiceCtr.allTaxGroupData(pageKey);
+    prodCtr.pagingTaxGroupController = PagingController<int, TaxGroupEntities>(firstPageKey: 0);
+    prodCtr.pagingTaxGroupController?.addPageRequestListener((pageKey) {
+      prodCtr.allTaxGroupData(pageKey);
     });
   }
 
@@ -38,8 +38,8 @@ class _TaxGroupState extends State<TaxGroupPage> {
   @override
   void dispose() {
     super.dispose();
-    invoiceCtr.pagingTaxGroupController?.dispose();
-    invoiceCtr.pagingTaxGroupController = null;
+    prodCtr.pagingTaxGroupController?.dispose();
+    prodCtr.pagingTaxGroupController = null;
   }
 
 
@@ -58,11 +58,11 @@ class _TaxGroupState extends State<TaxGroupPage> {
       backgroundColor: Colors.white,
       appBar: appBarOther(context, "Choisir une taxation"),
       body: RefreshIndicator(
-          onRefresh: () => Future.sync(() => invoiceCtr.pagingTaxGroupController?.refresh()),
+          onRefresh: () => Future.sync(() => prodCtr.pagingTaxGroupController?.refresh()),
           child: LayoutBuilder(
             builder: (_, cxs) {
               return PagedListView<int, TaxGroupEntities>.separated(
-                pagingController: invoiceCtr.pagingTaxGroupController!,
+                pagingController: prodCtr.pagingTaxGroupController!,
                 separatorBuilder: (context, index) => Padding(
                   padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                   child: Divider(
@@ -125,8 +125,8 @@ class _TaxGroupState extends State<TaxGroupPage> {
                   firstPageProgressIndicatorBuilder: (_) => const Center(child: CircularProgressIndicator()),
                   newPageProgressIndicatorBuilder: (_) => const Center(child: CircularProgressIndicator()),
                   noItemsFoundIndicatorBuilder: (_) => noItem(),
-                  firstPageErrorIndicatorBuilder: (_) => PagedFirstError(pagingController: invoiceCtr.pagingTaxGroupController, cxs: cxs),
-                  newPageErrorIndicatorBuilder: (_) => PagedNewPageError(pagingController: invoiceCtr.pagingTaxGroupController),
+                  firstPageErrorIndicatorBuilder: (_) => PagedFirstError(pagingController: prodCtr.pagingTaxGroupController, cxs: cxs),
+                  newPageErrorIndicatorBuilder: (_) => PagedNewPageError(pagingController: prodCtr.pagingTaxGroupController),
                 ),
               );
             },

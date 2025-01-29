@@ -1,7 +1,9 @@
 import 'package:invoice_app/domain/entities/invoice/deposit_tax_response.dart';
 import 'package:invoice_app/domain/entities/invoice/signature_entities.dart';
 import 'package:invoice_app/domain/entities/invoice/tax_break_down_entities.dart';
-import 'package:invoice_app/domain/entities/invoice/tax_group_response.dart';
+import 'package:invoice_app/domain/entities/product/categories_entities.dart';
+import 'package:invoice_app/domain/entities/product/pricing_response.dart';
+import 'package:invoice_app/domain/entities/product/tax_group_response.dart';
 import 'package:invoice_app/domain/entities/invoice/type_invoice_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -78,18 +80,44 @@ class ItemEntities {
   TaxGroupEntities? taxGroup;
   String? comment;
   int? quantity;
-  PriceData? price;
+  ProductInvoice? product;
   String? priceDefinitionMode;
   num? taxSpecific;
 
   ItemEntities({this.id, this.taxGroup, this.comment, this.quantity,
-    this.price, this.priceDefinitionMode, this.taxSpecific});
+    this.product, this.priceDefinitionMode, this.taxSpecific});
 
   factory ItemEntities.fromJson(Map<String, dynamic> json) =>
       _$ItemEntitiesFromJson(json);
 
   Map<String, dynamic> toJson() => _$ItemEntitiesToJson(this);
 }
+
+
+@JsonSerializable(explicitToJson: true)
+class ProductInvoice {
+
+  String? id;
+  String? code;
+  String? name;
+  String? officialProductNo;
+  PriceData? price;
+  CategoriesEntities? category;
+  String? productType;
+  String? companyTin;
+  String? posCode;
+
+
+  ProductInvoice({this.id, this.code, this.name, this.officialProductNo,
+    this.price, this.category, this.productType, this.companyTin, this.posCode});
+
+  factory ProductInvoice.fromJson(Map<String, dynamic> json) =>
+      _$ProductInvoiceFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ProductInvoiceToJson(this);
+}
+
+
 
 
 @JsonSerializable(explicitToJson: true)
@@ -115,17 +143,17 @@ class UnitData {
 class PriceData {
 
   String? id;
-  num? amount;
-  String? productCode;
+  int? amount;
   TaxGroupEntities? taxGroup;
-  num? taxSpecific;
-  num? createdAt;
-  num? updatedAt;
+  int? taxSpecific;
+  double? createdAt;
+  double? updatedAt;
   String? priceDefinitionMode;
+  SubTotalPriceProd? subTotal;
   bool? enabled;
 
-  PriceData({this.id, this.amount, this.productCode, this.taxGroup,
-    this.taxSpecific, this.createdAt, this.updatedAt, this.priceDefinitionMode,
+  PriceData({this.id, this.amount, this.taxGroup, this.taxSpecific,
+    this.createdAt, this.updatedAt, this.priceDefinitionMode, this.subTotal,
     this.enabled});
 
   factory PriceData.fromJson(Map<String, dynamic> json) =>

@@ -1,4 +1,3 @@
-import 'package:invoice_app/domain/entities/sort_entities.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../pageable.dart';
@@ -11,14 +10,14 @@ part 'tax_group_response.g.dart';
 class TaxGroupResponse {
 
   List<TaxGroupEntities>? content;
-  Pageable1? pageable;
+  Pageable? pageable;
   bool? last;
   int? totalPages;
   int? totalElements;
   bool? first;
   int? size;
   int? number;
-  SortEntities? sort;
+  List<String>? sort;
   int? numberOfElements;
   bool? empty;
 

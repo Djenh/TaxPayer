@@ -266,9 +266,9 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
             final item = invoiceData!.invoice!.items![index];
             return _buildProductRow(
               index: index,
-              title: "title",
-              subtitle: "subtitle",
-              price: item.item!.price!.amount!.toInt(),
+              title: "",
+              subtitle: item.item!.product!.name ?? "",
+              price: item.item!.product!.price!.amount!.toInt(),
               quantity: invCtr.finalItemInvoice[index].quantity,
               //quantity: item.item!.quantity!,
             );

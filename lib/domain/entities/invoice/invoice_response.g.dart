@@ -107,9 +107,9 @@ ItemEntities _$ItemEntitiesFromJson(Map<String, dynamic> json) => ItemEntities(
           : TaxGroupEntities.fromJson(json['taxGroup'] as Map<String, dynamic>),
       comment: json['comment'] as String?,
       quantity: (json['quantity'] as num?)?.toInt(),
-      price: json['price'] == null
+      product: json['product'] == null
           ? null
-          : PriceData.fromJson(json['price'] as Map<String, dynamic>),
+          : ProductInvoice.fromJson(json['product'] as Map<String, dynamic>),
       priceDefinitionMode: json['priceDefinitionMode'] as String?,
       taxSpecific: json['taxSpecific'] as num?,
     );
@@ -120,9 +120,40 @@ Map<String, dynamic> _$ItemEntitiesToJson(ItemEntities instance) =>
       'taxGroup': instance.taxGroup?.toJson(),
       'comment': instance.comment,
       'quantity': instance.quantity,
-      'price': instance.price?.toJson(),
+      'product': instance.product?.toJson(),
       'priceDefinitionMode': instance.priceDefinitionMode,
       'taxSpecific': instance.taxSpecific,
+    };
+
+ProductInvoice _$ProductInvoiceFromJson(Map<String, dynamic> json) =>
+    ProductInvoice(
+      id: json['id'] as String?,
+      code: json['code'] as String?,
+      name: json['name'] as String?,
+      officialProductNo: json['officialProductNo'] as String?,
+      price: json['price'] == null
+          ? null
+          : PriceData.fromJson(json['price'] as Map<String, dynamic>),
+      category: json['category'] == null
+          ? null
+          : CategoriesEntities.fromJson(
+              json['category'] as Map<String, dynamic>),
+      productType: json['productType'] as String?,
+      companyTin: json['companyTin'] as String?,
+      posCode: json['posCode'] as String?,
+    );
+
+Map<String, dynamic> _$ProductInvoiceToJson(ProductInvoice instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'code': instance.code,
+      'name': instance.name,
+      'officialProductNo': instance.officialProductNo,
+      'price': instance.price?.toJson(),
+      'category': instance.category?.toJson(),
+      'productType': instance.productType,
+      'companyTin': instance.companyTin,
+      'posCode': instance.posCode,
     };
 
 UnitData _$UnitDataFromJson(Map<String, dynamic> json) => UnitData(
@@ -143,27 +174,30 @@ Map<String, dynamic> _$UnitDataToJson(UnitData instance) => <String, dynamic>{
 
 PriceData _$PriceDataFromJson(Map<String, dynamic> json) => PriceData(
       id: json['id'] as String?,
-      amount: json['amount'] as num?,
-      productCode: json['productCode'] as String?,
+      amount: (json['amount'] as num?)?.toInt(),
       taxGroup: json['taxGroup'] == null
           ? null
           : TaxGroupEntities.fromJson(json['taxGroup'] as Map<String, dynamic>),
-      taxSpecific: json['taxSpecific'] as num?,
-      createdAt: json['createdAt'] as num?,
-      updatedAt: json['updatedAt'] as num?,
+      taxSpecific: (json['taxSpecific'] as num?)?.toInt(),
+      createdAt: (json['createdAt'] as num?)?.toDouble(),
+      updatedAt: (json['updatedAt'] as num?)?.toDouble(),
       priceDefinitionMode: json['priceDefinitionMode'] as String?,
+      subTotal: json['subTotal'] == null
+          ? null
+          : SubTotalPriceProd.fromJson(
+              json['subTotal'] as Map<String, dynamic>),
       enabled: json['enabled'] as bool?,
     );
 
 Map<String, dynamic> _$PriceDataToJson(PriceData instance) => <String, dynamic>{
       'id': instance.id,
       'amount': instance.amount,
-      'productCode': instance.productCode,
       'taxGroup': instance.taxGroup?.toJson(),
       'taxSpecific': instance.taxSpecific,
       'createdAt': instance.createdAt,
       'updatedAt': instance.updatedAt,
       'priceDefinitionMode': instance.priceDefinitionMode,
+      'subTotal': instance.subTotal?.toJson(),
       'enabled': instance.enabled,
     };
 

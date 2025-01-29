@@ -1,26 +1,29 @@
 class PricingDto {
 
   int amount;
-  String productCode;
+  String? productCode;
   String taxGroupCode;
   int taxSpecific;
   String priceDefinitionMode;
 
 
 
-  PricingDto({required this.amount, required this.productCode,
-    required this.taxGroupCode, required this.taxSpecific,
-    required this.priceDefinitionMode});
+  PricingDto({required this.amount, this.productCode, required this.taxGroupCode,
+    required this.taxSpecific, required this.priceDefinitionMode});
 
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{
       'amount': amount,
-      'productCode': productCode,
       'taxGroupCode': taxGroupCode,
       'taxSpecific': taxSpecific,
       'priceDefinitionMode': priceDefinitionMode
     };
+
+    if(productCode != null){
+      data["productCode"] = productCode;
+    }
+
     return data;
   }
 

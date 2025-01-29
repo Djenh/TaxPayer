@@ -90,8 +90,9 @@ class AppInputStyles {
     );
   }
 
-  static InputDecoration dropDownInputDecoration1() {
+  static InputDecoration dropDownInputDecoration1({String? labelText}) {
     return  InputDecoration(
+      label: Text(labelText ?? ""),
       enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: const BorderSide(color: KStyles.fieldGrey, width: 1.5)
