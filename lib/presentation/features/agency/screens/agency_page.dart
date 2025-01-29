@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
+import 'package:invoice_app/presentation/features/agency/screens/agency_detail_page.dart';
 import 'package:invoice_app/presentation/features/stocks/product/screens/product_create_page.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 
@@ -14,9 +15,8 @@ import '../../registration/_widgets/indicator.dart';
 
 
 class AgencyPage extends StatefulWidget {
-  const AgencyPage({super.key, required this.isManage});
+  AgencyPage({super.key});
 
-  final bool isManage;
 
   @override
   State<AgencyPage> createState() => _AgencyPageState();
@@ -46,56 +46,7 @@ class _AgencyPageState extends State<AgencyPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor : Colors.white,
-          surfaceTintColor: Colors.white,
-          elevation: 2,
-          shadowColor: Colors.black.withOpacity(0.2),
-          leading: CircleAvatar(
-            radius: 8,
-            backgroundColor: KStyles.textLightColor.withOpacity(0.2),
-            child: const Icon(Iconsax.user, color: KStyles.blackColor, size: 24),
-          ),
-          title: Text.rich(
-            TextSpan(
-                text: "Bonjour\n",
-                style: TextStyle(fontWeight: FontWeight.normal, color: Colors.black, fontSize: 15,),
-                children: <TextSpan>[
-                  TextSpan(text: "Byte Innov",
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: Colors.black),
-                  )
-                ]
-            ),
-          ),
-          actions: [
-              SizedBox(
-                height: 40,
-                width: 135,
-                child: TextField(
-                  textInputAction: TextInputAction.done,
-                  keyboardType: TextInputType.text,
-                  inputFormatters: noSpaceNoEmoji,
-                  autofocus: false,
-                  onTap: () async {},
-                  decoration: AppInputStyles.defaultInputDecoration(
-                      labelText: "Agences",
-                      // hintText: "Agences",
-                      suffixIcon: const Icon(Icons.arrow_drop_down_sharp, size: 24)
-                  ),
-                ),
-              ),
-              IconButton(
-                  onPressed: () async {},
-                  icon: const Icon(CupertinoIcons.camera_viewfinder,
-                      color: KStyles.blackColor, size: 28)
-              ),
-              IconButton(
-                  onPressed: () async {},
-                  icon: const Icon(CupertinoIcons.add_circled_solid,
-                      color: KStyles.primaryColor, size: 36)
-              ),
-            ]
-        ),
+        appBar: appBarAgence(context, "Bonjour", "ByteInnov"),
         body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Container(
@@ -125,8 +76,8 @@ class _AgencyPageState extends State<AgencyPage> {
                           Indicator(
                             shp: BoxShape.rectangle,
                             color: KStyles.yellowI,
-                            wdt: 60,
-                            hgt: 8,
+                            wdt: 50,
+                            hgt: 7,
                           ),
                           SizedBox(height: 8,),
                           Text("La Nationale",
@@ -357,7 +308,9 @@ class _AgencyPageState extends State<AgencyPage> {
                                                             ),
                                                           ],
                                                         ),
-                                                        onTap: (){},
+                                                        onTap: (){
+                                                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => AgencyDetailPage()));
+                                                        },
                                                       )
                                                   )
                                               )
