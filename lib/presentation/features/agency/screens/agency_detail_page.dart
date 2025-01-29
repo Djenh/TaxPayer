@@ -1,16 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:invoice_app/presentation/_widgets/build_text.dart';
-import 'package:invoice_app/presentation/features/stocks/product/screens/product_create_page.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
-
-import '../../../_widgets/app_bar_custom.dart';
 import '../../../res/app_input_styles.dart';
 import '../../../res/input_formaters.dart';
-import '../../registration/_widgets/indicator.dart';
 
 
 class AgencyDetailPage extends StatefulWidget {
@@ -62,7 +54,7 @@ class _AgencyDetailPageState extends State<AgencyDetailPage> {
               ),
             ],
           ),
-          title: Text.rich(
+          title: const Text.rich(
             TextSpan(
                 text: "Agence N°1",
                 style: TextStyle(fontWeight: FontWeight.w700, color: Colors.black, fontSize: 17,),
@@ -74,17 +66,17 @@ class _AgencyDetailPageState extends State<AgencyDetailPage> {
           actions: [
             OutlinedButton(
               onPressed: () {},
-              child: Text('Active', style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),),
               style: OutlinedButton.styleFrom(
                 backgroundColor: KStyles.secondaryColor.withOpacity(0.2),
                 foregroundColor: KStyles.secondaryColor,
-                side: BorderSide(color: KStyles.secondaryColor),
+                side: const BorderSide(color: KStyles.secondaryColor),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
+              child: const Text('Active', style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),),
             ),
-            SizedBox(width: padding,),
+            const SizedBox(width: padding,),
           ]
       ),
       body: SingleChildScrollView(
@@ -108,7 +100,7 @@ class _AgencyDetailPageState extends State<AgencyDetailPage> {
                         borderRadius: BorderRadius.circular(8)
                     ),
                     child: Padding(
-                      padding: EdgeInsets.all(padding),
+                      padding: const EdgeInsets.all(padding),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,7 +119,7 @@ class _AgencyDetailPageState extends State<AgencyDetailPage> {
                                         strokeAlign: BorderSide.strokeAlignCenter),
                                     borderRadius: BorderRadius.circular(8)
                                 ),
-                                child: Padding(
+                                child: const Padding(
                                   padding: EdgeInsets.all(8),
                                   child: Text.rich(
                                     TextSpan(
@@ -153,7 +145,7 @@ class _AgencyDetailPageState extends State<AgencyDetailPage> {
                                           strokeAlign: BorderSide.strokeAlignCenter),
                                       borderRadius: BorderRadius.circular(8)
                                   ),
-                                  child: Padding(
+                                  child: const Padding(
                                     padding: EdgeInsets.all(8),
                                     child: Text.rich(
                                       TextSpan(
@@ -171,7 +163,7 @@ class _AgencyDetailPageState extends State<AgencyDetailPage> {
                             ],
                           ),
                           const SizedBox(height: padding,),
-                          Row(
+                          const Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Row(
@@ -179,7 +171,7 @@ class _AgencyDetailPageState extends State<AgencyDetailPage> {
                                   Icon(
                                       Icons.email_outlined, size:18, color: KStyles.textSecondaryColor
                                   ),
-                                  const SizedBox(width: 5,),
+                                  SizedBox(width: 5,),
                                   Text("stmichel@gmail.com", style: TextStyle(fontSize: 15))
                                 ],
                               ),
@@ -188,19 +180,19 @@ class _AgencyDetailPageState extends State<AgencyDetailPage> {
                                   Icon(
                                       Icons.phone, size:18, color: KStyles.textSecondaryColor
                                   ),
-                                  const SizedBox(width: 5,),
+                                  SizedBox(width: 5,),
                                   Text("+229 01 97 01 01 40", style: TextStyle(fontSize: 15))
                                 ],
                               ),
                             ],
                           ),
                           const SizedBox(height: padding,),
-                          Row(
+                          const Row(
                             children: [
                               Icon(
                                   Icons.map_outlined, size:18, color: KStyles.textSecondaryColor
                               ),
-                              const SizedBox(width: 5,),
+                              SizedBox(width: 5,),
                               Text("En face de la banque ByteBank", style: TextStyle(fontSize: 15))
                             ],
                           ),
@@ -221,7 +213,7 @@ class _AgencyDetailPageState extends State<AgencyDetailPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Column(
+                            const Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -249,7 +241,7 @@ class _AgencyDetailPageState extends State<AgencyDetailPage> {
                           ],
 
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -264,7 +256,7 @@ class _AgencyDetailPageState extends State<AgencyDetailPage> {
                                       strokeAlign: BorderSide.strokeAlignCenter),
                                   borderRadius: BorderRadius.circular(8)
                               ),
-                              child: Padding(
+                              child: const Padding(
                                 padding: EdgeInsets.all(5),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -273,7 +265,7 @@ class _AgencyDetailPageState extends State<AgencyDetailPage> {
                                     CircleAvatar(
                                       radius: 16,
                                       backgroundColor: KStyles.primaryColor,
-                                      child: const Icon(Iconsax.wallet, color: Colors.white, size: 18),
+                                      child: Icon(Iconsax.wallet, color: Colors.white, size: 18),
                                     ),
                                     SizedBox(height: 5,),
                                     Text("Factures", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 12),),
@@ -292,7 +284,7 @@ class _AgencyDetailPageState extends State<AgencyDetailPage> {
                                       strokeAlign: BorderSide.strokeAlignCenter),
                                   borderRadius: BorderRadius.circular(8)
                               ),
-                              child: Padding(
+                              child: const Padding(
                                 padding: EdgeInsets.all(5),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -301,7 +293,7 @@ class _AgencyDetailPageState extends State<AgencyDetailPage> {
                                     CircleAvatar(
                                       radius: 16,
                                       backgroundColor: KStyles.secondaryColor,
-                                      child: const Icon(Iconsax.bill, color: Colors.white, size: 18),
+                                      child: Icon(Iconsax.bill, color: Colors.white, size: 18),
                                     ),
                                     SizedBox(height: 5,),
                                     Text("Recettes", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 12),),
@@ -312,7 +304,7 @@ class _AgencyDetailPageState extends State<AgencyDetailPage> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 20,),
+                        const SizedBox(height: 20,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -325,14 +317,14 @@ class _AgencyDetailPageState extends State<AgencyDetailPage> {
                             ),
                             OutlinedButton(
                               onPressed: () {},
-                              child: Text('Créer une facture'),
                               style: OutlinedButton.styleFrom(
                                 foregroundColor: Colors.grey,
-                                side: BorderSide(color: Colors.grey),
+                                side: const BorderSide(color: Colors.grey),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                               ),
+                              child: const Text('Créer une facture'),
                             ),
                           ],
                         ),
@@ -341,7 +333,7 @@ class _AgencyDetailPageState extends State<AgencyDetailPage> {
                             scrollDirection: Axis.vertical,
                             shrinkWrap: true,
                             children: [
-                              SizedBox(height: padding,),
+                              const SizedBox(height: padding,),
                               ...List.generate(
                                   10,
                                       (index) => Padding(
@@ -379,7 +371,7 @@ class _AgencyDetailPageState extends State<AgencyDetailPage> {
                                               ],
                                             ),
                                           ),
-                                          Expanded(
+                                          const Expanded(
                                             flex: 1,
                                             child: Column(
                                               mainAxisAlignment: MainAxisAlignment.start,

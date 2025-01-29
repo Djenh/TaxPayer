@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:invoice_app/presentation/features/dashoard/company/card_company_page.dart';
-import 'package:invoice_app/presentation/features/dashoard/company/mouvement_item.dart';
-import 'package:invoice_app/presentation/features/dashoard/company/section_item.dart';
+import 'package:invoice_app/presentation/features/company/widgets/card_company_page.dart';
+import 'package:invoice_app/presentation/features/company/widgets/mouvement_item.dart';
+import 'package:invoice_app/presentation/features/company/widgets/section_item.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 
 
