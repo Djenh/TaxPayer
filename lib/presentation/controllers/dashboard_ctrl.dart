@@ -26,4 +26,5 @@ class DashboardCtrl extends GetxController {
   }
   void onTabTapped(int value) => currentIndex.value = value;
 
+
 }

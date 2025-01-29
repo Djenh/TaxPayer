@@ -4,14 +4,17 @@ import 'package:iconsax/iconsax.dart';
 import 'package:invoice_app/commons/ui/button/kcirclebutton.dart';
 import 'package:invoice_app/commons/ui/kemptydata.dart';
 import 'package:invoice_app/core/configs/injection_container.dart';
+import 'package:invoice_app/core/constants/strings.dart';
 import 'package:invoice_app/core/services/app_service.dart';
+import 'package:invoice_app/core/services/app_storage.dart';
 import 'package:invoice_app/domain/entities/company/pos_data_response.dart';
 import 'package:invoice_app/presentation/controllers/company_ctrl.dart';
 import 'package:invoice_app/presentation/controllers/dashboard_ctrl.dart';
-import 'package:invoice_app/presentation/features/dashoard/company/card_company_page.dart';
-import 'package:invoice_app/presentation/features/dashoard/company/draggabledcrollabledheet_list.dart';
-import 'package:invoice_app/presentation/features/dashoard/reports/repports_revenue.dart';
-import 'package:invoice_app/presentation/features/dashoard/statistique/card_business_page.dart';
+import 'package:invoice_app/presentation/features/agency/screens/agency_page.dart';
+import 'package:invoice_app/presentation/features/company/widgets/card_company_page.dart';
+import 'package:invoice_app/presentation/features/company/widgets/draggabledcrollabledheet_list.dart';
+import 'package:invoice_app/presentation/features/repports/screens/repports_revenue.dart';
+import 'package:invoice_app/presentation/features/statistics/screens/card_business_page.dart';
 import 'package:invoice_app/presentation/features/dashoard/widgets/tab_bar_widget.dart';
 import 'package:invoice_app/presentation/features/pos/screens/pos_form_page.dart';
 import 'package:invoice_app/presentation/features/registration/_strings/register_str.dart';
@@ -41,7 +44,6 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Future<void> _fetchDataAgency() async {
-    print("_fetchDataAgency _fetchDataAgency 00000");
     await companyCtr.dataListPosCompanyByTin().then((val){
       dataAgency = val ?? [];
       setState(() {});
@@ -152,6 +154,7 @@ class _DashboardPageState extends State<DashboardPage> {
                             onChanged: (PosDataResponse? value) {
                               agenceSelcted = value;
                               setState(() {});
+                              saveDataCurrentPosToLocal(value!);
                             },
                             value: agenceSelcted,
                           ),
@@ -170,7 +173,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     ),
                     KCircleButton(
                       onPressed: () {
-
+                        Get.to(() => AgencyPage());
                       },
                       child: const Icon(Iconsax.add, color: Colors.white),
                     ),
@@ -285,20 +288,31 @@ class _DashboardPageState extends State<DashboardPage> {
                 ],
               ),
             if(dashboardCtr.currentIndex.value == 1)
-              Padding(
-                padding: const EdgeInsets.only(top: 50),
-                child: Kemptydata(
-                  textButton: RegisterStr.createAgency,
-                  text: RegisterStr.emptyAgency,
-                  onPressed: () async{
-                    await Get.to(() => const PosFormPage())!.then((val){
-                      if(val == true){
-                        //_refreshData();
-                      }
-                    });
-                  },
-                ),
+              Column(
+                children: [
+                  companyCtr.isLoading.isTrue
+                      ? const Center(child: CircularProgressIndicator())
+                      : (dataAgency.isEmpty)
+                      ?
+                  Padding(
+                    padding: const EdgeInsets.only(top: 50),
+                    child: Kemptydata(
+                      textButton: RegisterStr.createAgency,
+                      text: RegisterStr.emptyAgency,
+                      onPressed: () async{
+                        await Get.to(() => const PosFormPage())!.then((val){
+                          if(val == true){
+                            //_refreshData();
+                          }
+                        });
+                      },
+                    ),
+                  )
+                      : AgencyPage(dataAgency: dataAgency),
+                ],
               ),
+
+
             if(dashboardCtr.currentIndex.value == 2)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -360,5 +374,13 @@ class _DashboardPageState extends State<DashboardPage> {
       ),
     )
     );
+  }
+
+  Future<void> saveDataCurrentPosToLocal(PosDataResponse data) async {
+    await AppStorage.instance.setInstance(key: dataPos, value: data);
+    await AppServices.instance.checkCurrentPosData();
+    Future.microtask((){
+      _refreshData();
+    });
   }
 }
