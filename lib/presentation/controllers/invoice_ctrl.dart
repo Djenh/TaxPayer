@@ -9,8 +9,7 @@ import 'package:invoice_app/data/dtos/add_invoice_dto.dart';
 import 'package:invoice_app/data/dtos/pricing_dto.dart';
 import 'package:invoice_app/domain/entities/invoice/deposit_tax_response.dart';
 import 'package:invoice_app/domain/entities/invoice/invoice_response.dart';
-import 'package:invoice_app/domain/entities/invoice/pricing_response.dart';
-import 'package:invoice_app/domain/entities/invoice/tax_group_response.dart';
+import 'package:invoice_app/domain/entities/product/pricing_response.dart';
 import 'package:invoice_app/domain/entities/invoice/type_invoice_response.dart';
 import 'package:invoice_app/domain/usecases/invoice_uc.dart';
 import 'package:invoice_app/presentation/_widgets/app_loader.dart';
@@ -29,8 +28,6 @@ class InvoiceCtrl extends GetxController {
   static const _pageSize = 20;
   PagingController<int, TypeInvoiceEntities>? pagingTypeInvoiceController;
   List<TypeInvoiceEntities> allTypeInvoice = [];
-  PagingController<int, TaxGroupEntities>? pagingTaxGroupController;
-  List<TaxGroupEntities> allTaxGroup = [];
   PagingController<int, DepositTaxEntities>? pagingDepositTaxController;
   List<DepositTaxEntities> allDepositTax = [];
 
@@ -132,74 +129,6 @@ class InvoiceCtrl extends GetxController {
     } catch (error) {
       pagingDepositTaxController?.error = error.toString();
     }
-  }
-
-  ///func to get all group tax
-  Future<void> allTaxGroupData(int pageKey) async {
-    try {
-      final result = await invoiceUc.executeAllTaxGroup(pageKey, _pageSize);
-
-      result.fold(
-            (failure) {
-              pagingTaxGroupController?.error = failure.message;
-              developer.log(
-                'Unhandled Exception in Tax Group Data Fetch',
-                name: 'allTaxGroupData',
-                error: failure.message,
-              );
-        },
-            (response) {
-          final List<TaxGroupEntities> newItems = response.content ?? [];
-
-          if (pageKey == 0) {
-            allTaxGroup.clear();
-          }
-
-          allTaxGroup.addAll(newItems);
-
-          final isLastPage = pageKey >= (response.totalPages ?? 1) - 1;
-          if (isLastPage) {
-            pagingTaxGroupController?.appendLastPage(newItems);
-          } else {
-            final nextPageKey = pageKey + 1;
-            pagingTaxGroupController?.appendPage(newItems, nextPageKey);
-          }
-        },
-      );
-    } catch (error) {
-      pagingTaxGroupController?.error = error.toString();
-    }
-  }
-
-  ///func to add price product
-  Future<PricingResponse?> addPriceProd(BuildContext context,
-      PricingDto params, {String? nameProd}) async {
-    PricingResponse? response;
-
-    try {
-      _setLoading(true);
-
-      final Either<Failure, PricingResponse> result =
-            await invoiceUc.executeSetPricingTax(params);
-
-      result.fold((Failure failure) {
-        AppLogger.error("data save failed: ${failure.message}");
-        ToastService.showError(context, 'Prix',
-            description: failure.message);
-      }, (PricingResponse priceData) {
-        AppLogger.info("priceData successful: ${priceData.toJson()}");
-        ToastService.showSuccess(context, 'Prix',
-            description: "Prix du produit ${nameProd ?? ""} ajouté.");
-        response = priceData;
-      });
-    } catch (e) {
-      AppLogger.error('An error occurred during addPriceProd : $e');
-      rethrow;
-    } finally {
-      _setLoading(false);
-    }
-
-    return response;
   }
 
 

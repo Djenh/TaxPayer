@@ -88,6 +88,11 @@ class _LocalitiesPaginatedSearchableDropdownState extends State<LocalitiesPagina
   Widget build(BuildContext context) {
     return Column(
       children: [
+        IconButton(
+            onPressed: () => Get.back(),
+            icon: const Icon(Iconsax.close_square)
+        ),
+        const SizedBox(height: 20),
         Padding(
           padding: const EdgeInsets.all(20.0),
           child: TextField(

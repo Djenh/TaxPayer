@@ -6,11 +6,13 @@ import 'package:iconsax/iconsax.dart';
 import 'package:invoice_app/core/services/app_service.dart';
 import 'package:invoice_app/core/services/toast_service.dart';
 import 'package:invoice_app/data/dtos/add_product_dto.dart';
-import 'package:invoice_app/domain/entities/invoice/tax_group_response.dart';
+import 'package:invoice_app/data/dtos/pricing_dto.dart';
+import 'package:invoice_app/domain/entities/product/tax_group_response.dart';
 import 'package:invoice_app/domain/entities/product/categories_entities.dart';
 import 'package:invoice_app/domain/entities/product/unit_m_list_response.dart';
 import 'package:invoice_app/domain/value_objects/name_vo.dart';
 import 'package:invoice_app/presentation/_widgets/action_btn.dart';
+import 'package:invoice_app/presentation/_widgets/build_selection_card.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
 import 'package:invoice_app/presentation/features/stocks/product/pricing/price_create.dart';
 import 'package:invoice_app/presentation/features/stocks/product/taxgroup/tax_group.dart';
@@ -57,6 +59,9 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
   String? codeTaxGp;
   Rx<String?> nameError = Rx<String?>(null);
   Rx<String?> nameOfficialError = Rx<String?>(null);
+  bool ttc = false;
+  bool ht = false;
+
 
   void _showToast(String description) {
     ToastService.showWarning(context, 'Produit', description: description);
@@ -210,12 +215,21 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
         productType: goods ? "goods" : "services",
         companyTin: tin!,
         posCode: posId!,
-        amount: int.parse(priceController!.text.trim()),
-        taxGroupCode: codeTaxGp,
-        taxSpecific: int.parse(taxSpController!.text.trim())
+        price: PricingDto(
+            amount: int.parse(priceController!.text.trim()),
+            taxGroupCode: codeTaxGp!,
+            taxSpecific: int.parse(taxSpController!.text.trim()),
+            priceDefinitionMode: ttc ? "TTC" : "HT"
+        ),
     );
 
     AppLogger.info("params => ${params.toJson()}");
+
+    await prodCtr.addProduct(context, params).then((val) async {
+      if(val != null){
+        Get.back(result: true);
+      }
+    });
 
   }
 
@@ -431,7 +445,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
                         labelText: "Unité de mesure",
                         hintText: "Sélectionnez une unité",
                         //prefixIcon: const Icon(Iconsax.category_2),
-                        suffixIcon: const Icon(Icons.arrow_drop_down_sharp, size: 42)
+                        suffixIcon: const Icon(Icons.arrow_drop_down_sharp, size: 22)
                     ),
                   )
                 ],
@@ -485,6 +499,36 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
                             labelText: "Taxe spécifique",
                             //prefixIcon: const Icon(Iconsax.clipboard)
                           ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: BuildSelectionCard(
+                          title: "TTC",
+                          isSelected: ttc,
+                          onTap: () {
+                            setState(() {
+                              ttc = !ttc;
+                              ht = false;
+                            });
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: BuildSelectionCard(
+                          title: "HT",
+                          isSelected: ht,
+                          onTap: () {
+                            setState(() {
+                              ht = !ht;
+                              ttc = false;
+                            });
+                          },
                         ),
                       ),
                     ],

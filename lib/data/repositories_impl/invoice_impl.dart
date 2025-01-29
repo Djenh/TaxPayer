@@ -5,15 +5,13 @@ import 'package:invoice_app/core/errors/dio_failures.dart';
 import 'package:invoice_app/core/errors/request_failures.dart';
 import 'package:invoice_app/data/datasource/remote/api_invoice.dart';
 import 'package:invoice_app/data/dtos/add_invoice_dto.dart';
-import 'package:invoice_app/data/dtos/pricing_dto.dart';
 import 'package:invoice_app/data/dtos/reimbursement_invoice_dto.dart';
 import 'package:invoice_app/domain/entities/invoice/deposit_tax_response.dart';
 import 'package:invoice_app/domain/entities/invoice/invoice_response.dart';
-import 'package:invoice_app/domain/entities/invoice/pricing_response.dart';
-import 'package:invoice_app/domain/entities/invoice/tax_group_response.dart';
 import 'package:invoice_app/domain/entities/invoice/type_invoice_response.dart';
 import 'package:invoice_app/domain/repositories/i_invoice_repository.dart';
 import 'package:retrofit/retrofit.dart';
+
 
 class InvoiceRemoteRepository implements IInvoiceRepository {
   InvoiceRemoteRepository({required this.apiInvoice});
@@ -41,26 +39,7 @@ class InvoiceRemoteRepository implements IInvoiceRepository {
         NetworkFailure(message: 'Une erreur inattendue s\'est produite.'));
   }
 
-  @override
-  Future<Either<Failure, TaxGroupResponse>> allTaxGroup(
-      int page, int size) async {
-    // TODO: implement allTaxGroup
-    final Map<String, dynamic> pageable = {"page": page, "size": size};
 
-    try {
-      final HttpResponse<TaxGroupResponse> httpResponse =
-          await apiInvoice.getAllTaxGroup(pageable);
-      if (httpResponse.response.statusCode == HttpStatus.ok) {
-        return Right(httpResponse.data);
-      }
-    } on DioException catch (e) {
-      return DioErrorHandler.handle(error: e);
-    } catch (e) {
-      return Left(NetworkFailure(message: e.toString()));
-    }
-    return const Left(
-        NetworkFailure(message: 'Une erreur inattendue s\'est produite.'));
-  }
 
   @override
   Future<Either<Failure, TypeInvoiceResponse>> allTypeInvoice(
@@ -181,52 +160,12 @@ class InvoiceRemoteRepository implements IInvoiceRepository {
   }
 
   @override
-  Future<Either<Failure, PricingListResponse>> pricingProductByCode(
-      String code, int page, int size) async {
-    // TODO: implement pricingProductByCode
-    final Map<String, dynamic> pageable = {"page": page, "size": size};
-
-    try {
-      final HttpResponse<PricingListResponse> httpResponse =
-          await apiInvoice.getPricingProductByCode(code, pageable);
-      if (httpResponse.response.statusCode == HttpStatus.ok) {
-        return Right(httpResponse.data);
-      }
-    } on DioException catch (e) {
-      return DioErrorHandler.handle(error: e);
-    } catch (e) {
-      return Left(NetworkFailure(message: e.toString()));
-    }
-    return const Left(
-        NetworkFailure(message: 'Une erreur inattendue s\'est produite.'));
-  }
-
-  @override
   Future<Either<Failure, InvoiceResponse>> reimbursementInvoice(
       String action, ReimbursementInvoiceDto params) async {
     // TODO: implement reimbursementInvoice
     try {
       final HttpResponse<InvoiceResponse> httpResponse =
           await apiInvoice.reimbursementInvoice(action, params.toJson());
-      if (httpResponse.response.statusCode == HttpStatus.ok ||
-          httpResponse.response.statusCode == HttpStatus.created) {
-        return Right(httpResponse.data);
-      }
-    } on DioException catch (e) {
-      return DioErrorHandler.handle(error: e);
-    } catch (e) {
-      return Left(NetworkFailure(message: e.toString()));
-    }
-    return const Left(
-        NetworkFailure(message: 'Une erreur inattendue s\'est produite.'));
-  }
-
-  @override
-  Future<Either<Failure, PricingResponse>> setPricing(PricingDto params) async {
-    // TODO: implement setPricing
-    try {
-      final HttpResponse<PricingResponse> httpResponse =
-          await apiInvoice.setPricing(params.toJson());
       if (httpResponse.response.statusCode == HttpStatus.ok ||
           httpResponse.response.statusCode == HttpStatus.created) {
         return Right(httpResponse.data);

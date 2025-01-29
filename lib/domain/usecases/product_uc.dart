@@ -2,6 +2,9 @@ import 'package:dartz/dartz.dart';
 import 'package:invoice_app/data/dtos/add_category_dto.dart';
 import 'package:invoice_app/data/dtos/add_product_dto.dart';
 import 'package:invoice_app/data/dtos/add_unit_dto.dart';
+import 'package:invoice_app/data/dtos/pricing_dto.dart';
+import 'package:invoice_app/domain/entities/product/pricing_response.dart';
+import 'package:invoice_app/domain/entities/product/tax_group_response.dart';
 import 'package:invoice_app/domain/entities/product/unit_m_list_response.dart';
 import 'package:invoice_app/domain/repositories/i_product_repository.dart';
 
@@ -46,6 +49,21 @@ class ProductUc {
 
   Future<Either<Failure, ProductListResponse>> executeAllProductByTin(String tin, int page, int size) async {
     return await productRepository.allProductsByTin(tin, page, size);
+  }
+
+  Future<Either<Failure, TaxGroupResponse>> executeAllTaxGroup(
+      int page, int size) async {
+    return await productRepository.allTaxGroup(page, size);
+  }
+
+  Future<Either<Failure, PricingListResponse>> executePricingProductByCode(
+      String code, int page, int size) async {
+    return await productRepository.pricingProductByCode(code, page, size);
+  }
+
+  Future<Either<Failure, PricingResponse>> executeSetPricing(
+      PricingDto params) async {
+    return await productRepository.setPricing(params);
   }
 
 }

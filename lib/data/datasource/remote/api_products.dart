@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:invoice_app/domain/entities/product/pricing_response.dart';
+import 'package:invoice_app/domain/entities/product/tax_group_response.dart';
 import 'package:invoice_app/domain/entities/product/categories_entities.dart';
 import 'package:invoice_app/domain/entities/product/categories_list_response.dart';
 import 'package:invoice_app/domain/entities/product/unit_m_list_response.dart';
@@ -41,5 +43,18 @@ abstract class ApiProducts {
   Future<HttpResponse<ProductListResponse>> getAllProductsByTin(@Path("tin") String tin,
       @Queries() Map<String, dynamic> pageable);
 
+
+  @GET("/tax-groups")
+  Future<HttpResponse<TaxGroupResponse>> getAllTaxGroup(
+      @Queries() Map<String, dynamic> pageable);
+
+
+  @GET("/pricing/product/{code}")
+  Future<HttpResponse<PricingListResponse>> getPricingProductByCode(
+      @Path("code") String code, @Queries() Map<String, dynamic> pageable);
+
+  @POST("/pricing")
+  Future<HttpResponse<PricingResponse>> setPricing(
+      @Body() Map<String, dynamic> params);
 
 }

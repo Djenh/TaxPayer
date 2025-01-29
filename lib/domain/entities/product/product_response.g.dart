@@ -12,13 +12,17 @@ ProductResponse _$ProductResponseFromJson(Map<String, dynamic> json) =>
       code: json['code'] as String?,
       name: json['name'] as String?,
       officialProductNo: json['officialProductNo'] as String?,
+      price: json['price'] == null
+          ? null
+          : PricingResponse.fromJson(json['price'] as Map<String, dynamic>),
       category: json['category'] == null
           ? null
           : CategoriesEntities.fromJson(
               json['category'] as Map<String, dynamic>),
       productType: json['productType'] as String?,
       companyTin: json['companyTin'] as String?,
-    )..posCode = json['posCode'] as String?;
+      posCode: json['posCode'] as String?,
+    );
 
 Map<String, dynamic> _$ProductResponseToJson(ProductResponse instance) =>
     <String, dynamic>{
@@ -26,6 +30,7 @@ Map<String, dynamic> _$ProductResponseToJson(ProductResponse instance) =>
       'code': instance.code,
       'name': instance.name,
       'officialProductNo': instance.officialProductNo,
+      'price': instance.price?.toJson(),
       'category': instance.category?.toJson(),
       'productType': instance.productType,
       'companyTin': instance.companyTin,
