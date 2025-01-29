@@ -74,6 +74,7 @@ class _InvoiceListState extends State<InvoiceList> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        backgroundColor: Colors.white,
         appBar: appBarHome(context, "Les Factures",
           actionList: [
           IconButton(
@@ -94,7 +95,8 @@ class _InvoiceListState extends State<InvoiceList> {
               Tab(text: "Ventes"),
               Tab(text: "Achats"),
             ],
-          )
+          ),
+          bgColor: Colors.white
         ),
         body: Column(
           children: [

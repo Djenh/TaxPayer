@@ -7,10 +7,10 @@ import '../res/input_formaters.dart';
 import '../res/style/e_style.dart';
 
 PreferredSizeWidget appBarHome(BuildContext context, String title,
-    {List<Widget>? actionList, PreferredSizeWidget? bottomWidget}){
+    {List<Widget>? actionList, PreferredSizeWidget? bottomWidget, Color? bgColor}){
   return AppBar(
     elevation: 0,
-    backgroundColor: Colors.transparent,
+    backgroundColor: bgColor ?? Colors.transparent,
     shadowColor: Theme.of(context).shadowColor,
     automaticallyImplyLeading: false,
     centerTitle: false,
