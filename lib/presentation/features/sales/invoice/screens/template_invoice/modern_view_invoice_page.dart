@@ -1,13 +1,15 @@
 import 'package:dotted_dashed_line/dotted_dashed_line.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:invoice_app/domain/entities/invoice/invoice_response.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../../../res/style/e_style.dart';
 
 class ModernViewInvoicePage extends StatefulWidget {
-  const ModernViewInvoicePage({super.key, required this.isSaleInvoice});
+  final InvoiceResponse? invoiceResponse;
+  const ModernViewInvoicePage({super.key, required this.isSaleInvoice,this.invoiceResponse});
 
   final bool isSaleInvoice;
 
@@ -51,7 +53,7 @@ class _ModernViewInvoicePageState extends State<ModernViewInvoicePage> {
           const SizedBox(height: 4),
           buildText(context, adr, 8, Colors.black, fontWeight: FontWeight.w300),
           const SizedBox(height: 4),
-          buildText(context, "IFU : $ifu", 8, Colors.black,
+          buildText(context, ifu, 8, Colors.black,
               fontWeight: FontWeight.w300),
           const SizedBox(height: 4),
         ],
@@ -78,13 +80,13 @@ class _ModernViewInvoicePageState extends State<ModernViewInvoicePage> {
         buildText(context, title, 24, Colors.black,
             fontWeight: FontWeight.w700),
         const SizedBox(height: 4),
-        buildText(context, numberInvoice, 16, Colors.black,
+        buildText(context, numberInvoice, 14, Colors.black,
             fontWeight: FontWeight.w400)
       ],
     );
   }
 
-  Widget _buildItemArticle() {
+  Widget _buildItemArticle(ItemsEntities itemsEntities) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,11 +98,49 @@ class _ModernViewInvoicePageState extends State<ModernViewInvoicePage> {
           ),
           padding: const EdgeInsets.all(4),
           child: buildText(
-              context, "Biens/Marchandises", 10, KStyles.primaryColor,
+              context, itemsEntities.item!.product!.productType??"".toUpperCase(), 10, KStyles.primaryColor,
               fontWeight: FontWeight.w400),
         ),
         const SizedBox(height: 3),
-        buildText(context, "1 QTE x 1.000 = 1.000", 12, Colors.black,
+        buildText(context, "${itemsEntities.item!.quantity??1} QTE x ${itemsEntities.item!.product?.price?.amount?.toString()??""}", 12, Colors.black,
+            fontWeight: FontWeight.w500),
+        const SizedBox(height: 3),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            buildText(context, "${itemsEntities.item!.product?.name??""}  [${itemsEntities.item!.product?.price?.taxGroup?.code??""}]", 12, Colors.black,
+                fontWeight: FontWeight.w500),
+            buildText(context, "*${itemsEntities.item?.total?.ttc??""}", 12, Colors.black,
+                fontWeight: FontWeight.w500),
+          ],
+        ),
+        const SizedBox(height: 3),
+        const DottedDashedLine(
+            height: 0,
+            width: double.infinity,
+            axis: Axis.horizontal,
+            strokeWidth: 0.5),
+      ],
+    );
+  }
+  /*
+  Widget _buildItemArticle(ItemsEntities itemsEntities) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: KStyles.primaryColor.withOpacity(0.2),
+            borderRadius: BorderRadius.circular(4),
+          ),
+          padding: const EdgeInsets.all(4),
+          child: buildText(
+              context, itemsEntities.item!.product!.code!, 10, KStyles.primaryColor,
+              fontWeight: FontWeight.w400),
+        ),
+        const SizedBox(height: 3),
+        buildText(context, "${itemsEntities.item!.quantity??1} QTE x ${itemsEntities.item!.product?.price?.amount?.toString()??""} = ${itemsEntities.item!.product?.price?.subTotal?.ttc?.toString()??""}", 12, Colors.black,
             fontWeight: FontWeight.w500),
         const SizedBox(height: 3),
         Row(
@@ -121,7 +161,7 @@ class _ModernViewInvoicePageState extends State<ModernViewInvoicePage> {
       ],
     );
   }
-
+   */
   Widget _buildRecapArticle(
       String title1, String value1, String title2, String value2) {
     return Column(
@@ -176,23 +216,23 @@ class _ModernViewInvoicePageState extends State<ModernViewInvoicePage> {
             Expanded(
               child: _buildCompanyInfoCard(
                   false,
-                  "RCCM.RB/COT/13-B-9781",
-                  "ABC COMPANY",
-                  "abcCompany@gmail.com",
-                  "+24166567893",
-                  "Libreville, Gabon",
-                  "3201300924413"),
+                  widget.invoiceResponse?.invoice?.pos?.company?.tin??"",
+                  widget.invoiceResponse?.invoice?.pos?.company?.name??"",
+                  widget.invoiceResponse?.invoice?.pos?.contact?.email??"",
+                  widget.invoiceResponse?.invoice?.pos?.contact?.phoneNumber??"",
+                  widget.invoiceResponse?.invoice?.pos?.company?.address?.description??"",
+                  widget.invoiceResponse?.invoice?.pos?.company?.tradeNo??""),
             ),
             const SizedBox(width: 10),
             Expanded(
               child: _buildCompanyInfoCard(
                   true,
-                  "RCCM.RB/COT/34-B-6700",
-                  "Marx GODJO SA",
-                  "marxGodjoSa@gmail.com",
-                  "+24145231988",
-                  "Cotonou, Benin",
-                  "4201300924213"),
+                  widget.invoiceResponse?.invoice?.client?.tin??"",
+                  widget.invoiceResponse?.invoice?.client?.name??"",
+                  widget.invoiceResponse?.invoice?.client?.contact?.email??"",
+                  widget.invoiceResponse?.invoice?.client?.contact?.phoneNumber??"",
+                  widget.invoiceResponse?.invoice?.client?.invoicingAddress?.description??"",
+                  ""),
             ),
           ],
         ),
@@ -203,40 +243,59 @@ class _ModernViewInvoicePageState extends State<ModernViewInvoicePage> {
         ],
         const SizedBox(height: 20),
         Center(
-            child: _buildTitleInvoice(
-                (widget.isSaleInvoice ? "FACTURE DE VENTE" : "FACTURE D’AVOIR"),
-                "N° 03010")),
+            child: _buildTitleInvoice(//(widget.isSaleInvoice ? "FACTURE DE VENTE" : "FACTURE D’AVOIR")
+                widget.invoiceResponse?.invoice?.typeInvoice?.name??"",
+                "N° ${widget.invoiceResponse?.invoice?.code??""}")),
         const SizedBox(height: 20),
-        SizedBox(
-          height: MediaQuery.of(context).size.height / 2 - 50,
-          child: ListView.builder(
-              itemCount: 4,
-              itemBuilder: (BuildContext context, int i) {
-                if (i < 2) {
-                  // Articles
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 12.0),
-                    child: _buildItemArticle(),
-                  );
-                } else if (i == 2) {
-                  // Section TOTAL
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: _buildRecapArticle(
-                        "TOTAL", "*16.000", "REGIME TPS  [E]", "*16.000"),
-                  );
-                } else if (i == 3) {
-                  // Section ESPECES
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: _buildRecapArticle(
-                        "ESPECES :", "*16.000", "NBR d’articles :", "2"),
-                  );
-                } else {
-                  return const SizedBox.shrink();
-                }
-              }),
+        ListView.builder(
+            itemCount: widget.invoiceResponse!.invoice!.items!.length,
+            shrinkWrap: true,
+            itemBuilder: (BuildContext context, int i) {
+              final article = widget.invoiceResponse!.invoice!.items![i];
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 12.0),
+                child: _buildItemArticle(article),
+              );
+              /*
+              if (i < 2) {
+                // Articles
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 12.0),
+                  child: _buildItemArticle(),
+                );
+              } else if (i == 2) {
+                // Section TOTAL
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: _buildRecapArticle(
+                      "TOTAL", "*16.000", "REGIME TPS  [E]", "*16.000"),
+                );
+              } else if (i == 3) {
+                // Section ESPECES
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: _buildRecapArticle(
+                      "ESPECES :", "*16.000", "NBR d’articles :", "2"),
+                );
+              } else {
+                return const SizedBox.shrink();
+              }
+               */
+            }),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: _buildRecapArticle(
+              "TOTAL", "*${widget.invoiceResponse!.total?.ttc??0}", "", ""),
         ),
+        buildText(
+            context, "Répartition des taxes".toUpperCase(), 10, KStyles.primaryColor,
+            fontWeight: FontWeight.w400),
+        ...?widget.invoiceResponse?.taxBreakDown?.map((e) => Padding(
+          padding:  const EdgeInsets.symmetric(vertical: 8.0),
+          child: _buildRecapArticle(
+              e.taxGroup?.name??"", "*${e.total}", "${e.taxGroup?.code} (${e.taxGroup?.rate}%)", ""),
+        )).toList(),
+        const SizedBox(height: 40),
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
@@ -247,7 +306,7 @@ class _ModernViewInvoicePageState extends State<ModernViewInvoicePage> {
             children: [
               Expanded(
                 child: QrImageView(
-                  data: '1234567890',
+                  data:  '${widget.invoiceResponse?.signatureData?.qrCode?.toString()}',
                   version: QrVersions.auto,
                   size: 100.0,
                 ),
@@ -261,14 +320,14 @@ class _ModernViewInvoicePageState extends State<ModernViewInvoicePage> {
                       fontWeight: FontWeight.w300),
                   const SizedBox(height: 4),
                   buildText(
-                      context, "HP2V-H3VI-JVLL-AMQ2-7AFL-LM3O", 8, Colors.black,
+                      context, "${widget.invoiceResponse?.signatureData?.signature?.toString()}", 8, Colors.black,
                       fontWeight: FontWeight.w700),
                   const SizedBox(height: 4),
                   _buildRowDataSign("TIN-POS-TI", "1230909-0834"),
                   const SizedBox(height: 4),
                   _buildRowDataSign("Ref logiciel", "9LEHE"),
                   const SizedBox(height: 4),
-                  _buildRowDataSign("Date, Heure", "11/06/2024 17:34:15")
+                  _buildRowDataSign("Date, Heure", "${widget.invoiceResponse?.signatureData?.certifiedDate.toString()}")
                 ],
               ))
             ],
@@ -278,7 +337,7 @@ class _ModernViewInvoicePageState extends State<ModernViewInvoicePage> {
         buildText(
             context,
             "Arrêté la présente facture à la somme"
-            " de quatorze mille cent quarante francs CFA TTC",
+            " de ${widget.invoiceResponse?.totalInletters.toString()}",
             8,
             Colors.black,
             fontWeight: FontWeight.w600,

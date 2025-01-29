@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:invoice_app/presentation/features/sales/invoice/screens/template_invoice/modern_view_invoice_1_page.dart';
-
+import 'package:invoice_app/core/services/pdf_generate.dart';
+import 'package:invoice_app/domain/entities/invoice/invoice_response.dart';
+import 'package:invoice_app/presentation/features/sales/invoice/screens/template_invoice/modern_view_invoice_page.dart';
+import 'package:screenshot/screenshot.dart';
 import '../../../../_widgets/app_bar_custom.dart';
 import '../widgets/modals/full_menu.dart';
 
@@ -196,14 +198,15 @@ import '../widgets/modals/full_menu.dart';
 
 
 class InvoiceDetailPage extends StatefulWidget {
-  const InvoiceDetailPage({super.key});
+  final InvoiceResponse? invoiceResponse;
+  const InvoiceDetailPage({super.key, this.invoiceResponse});
 
   @override
   State<InvoiceDetailPage> createState() => _InvoiceDetailPageState();
 }
 
 class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
-
+  ScreenshotController screenshotController = ScreenshotController();
 
 
 
@@ -211,9 +214,9 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: appBarOther(context, "Fature #25738", actionList: [
+      appBar: appBarOther(context, "Fature ${widget.invoiceResponse?.invoice?.code??0}", actionList: [
         IconButton(
-          onPressed: (){},
+          onPressed: ()=> GeneratePdfService.exportInvoiceToPdf(context,screenshotController,widget.invoiceResponse!),
           icon: const Icon(Iconsax.document_download),
         ),
         IconButton(
@@ -223,9 +226,12 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
           icon: const Icon(Icons.more_vert_outlined),
         )
       ]),
-      body: const SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
-        child: ModernViewInvoice1Page(isSaleInvoice: true),
+      body: Screenshot(
+        controller: screenshotController,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: ModernViewInvoicePage(isSaleInvoice: true,invoiceResponse: widget.invoiceResponse),
+        ),
       ),
     );
   }
@@ -241,8 +247,7 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
           topRight: Radius.circular(16),
         ),
       ),
-      builder: (context) => const FullMenu(),
+      builder: (context) => FullMenu(invoiceResponse: widget.invoiceResponse,screenshotController: screenshotController),
     );
   }
-
 }

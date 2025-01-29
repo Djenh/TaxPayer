@@ -17,6 +17,10 @@ abstract class ApiInvoice {
   Future<HttpResponse<TypeInvoiceResponse>> getAllTypeInvoice(
       @Queries() Map<String, dynamic> pageable);
 
+  @GET("/invoice")
+  Future<HttpResponse<InvoiceEntitiesResponse>> getAllInvoice(
+      @Queries() Map<String, dynamic> pageable,String tin);
+
 
   @GET("/security-tax")
   Future<HttpResponse<DepositTaxResponse>> getAllDepositTax(

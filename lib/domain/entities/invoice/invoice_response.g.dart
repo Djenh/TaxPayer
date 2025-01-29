@@ -5,7 +5,42 @@ part of 'invoice_response.dart';
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
+InvoiceEntitiesResponse _$InvoiceEntitiesResponseFromJson(Map<String, dynamic> json) =>
+    InvoiceEntitiesResponse(
+          content: (json['content'] as List<dynamic>?)
+              ?.map((e) => InvoiceResponse.fromJson(e as Map<String, dynamic>))
+              .toList(),
+          pageable: json['pageable'] == null
+              ? null
+              : Pageable1.fromJson(json['pageable'] as Map<String, dynamic>),
+          last: json['last'] as bool?,
+          totalPages: (json['totalPages'] as num?)?.toInt(),
+          totalElements: (json['totalElements'] as num?)?.toInt(),
+          first: json['first'] as bool?,
+          size: (json['size'] as num?)?.toInt(),
+          number: (json['number'] as num?)?.toInt(),
+          sort: json['sort'] == null
+              ? null
+              : SortEntities.fromJson(json['sort'] as Map<String, dynamic>),
+          numberOfElements: (json['numberOfElements'] as num?)?.toInt(),
+          empty: json['empty'] as bool?,
+    );
 
+Map<String, dynamic> _$InvoiceEntitiesResponseToJson(
+    InvoiceEntitiesResponse instance) =>
+    <String, dynamic>{
+          'content': instance.content?.map((e) => e.toJson()).toList(),
+          'pageable': instance.pageable?.toJson(),
+          'last': instance.last,
+          'totalPages': instance.totalPages,
+          'totalElements': instance.totalElements,
+          'first': instance.first,
+          'size': instance.size,
+          'number': instance.number,
+          'sort': instance.sort?.toJson(),
+          'numberOfElements': instance.numberOfElements,
+          'empty': instance.empty,
+    };
 InvoiceResponse _$InvoiceResponseFromJson(Map<String, dynamic> json) =>
     InvoiceResponse(
       invoice: json['invoice'] == null
@@ -20,6 +55,7 @@ InvoiceResponse _$InvoiceResponseFromJson(Map<String, dynamic> json) =>
       total: json['total'] == null
           ? null
           : UnitData.fromJson(json['total'] as Map<String, dynamic>),
+
       taxBreakDown: (json['taxBreakDown'] as List<dynamic>?)
           ?.map((e) => TaxBreakDownEntities.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -52,6 +88,12 @@ InvoiceEntities _$InvoiceEntitiesFromJson(Map<String, dynamic> json) =>
       tin: json['tin'] as String?,
       code: json['code'] as String?,
       posCode: json['posCode'] as String?,
+          pos: json['pos'] == null
+              ? null
+              : PosDataResponse.fromJson(json['pos'] as Map<String, dynamic>),
+          client: json['client'] == null
+              ? null
+              : CustomerEntities.fromJson(json['client'] as Map<String, dynamic>),
       typeInvoice: json['typeInvoice'] == null
           ? null
           : TypeInvoiceEntities.fromJson(
@@ -73,6 +115,8 @@ Map<String, dynamic> _$InvoiceEntitiesToJson(InvoiceEntities instance) =>
       'tin': instance.tin,
       'code': instance.code,
       'posCode': instance.posCode,
+      'pos': instance.pos?.toJson(),
+      'client': instance.client?.toJson(),
       'typeInvoice': instance.typeInvoice?.toJson(),
       'securityTax': instance.securityTax?.toJson(),
       'clientCode': instance.clientCode,
@@ -110,6 +154,9 @@ ItemEntities _$ItemEntitiesFromJson(Map<String, dynamic> json) => ItemEntities(
       product: json['product'] == null
           ? null
           : ProductInvoice.fromJson(json['product'] as Map<String, dynamic>),
+      total: json['total'] == null
+          ? null
+          : UnitData.fromJson(json['total'] as Map<String, dynamic>),
       priceDefinitionMode: json['priceDefinitionMode'] as String?,
       taxSpecific: json['taxSpecific'] as num?,
     );
@@ -121,6 +168,7 @@ Map<String, dynamic> _$ItemEntitiesToJson(ItemEntities instance) =>
       'comment': instance.comment,
       'quantity': instance.quantity,
       'product': instance.product?.toJson(),
+      'total': instance.total?.toJson(),
       'priceDefinitionMode': instance.priceDefinitionMode,
       'taxSpecific': instance.taxSpecific,
     };

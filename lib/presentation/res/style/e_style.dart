@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart'; // Import Google Fonts
 
 const padding=10.0;
+const padding20=20.0;
+const padding15=15.0;
+const padding5=5.0;
 
 class  KStyles {
   // **Palette de couleurs modernes**
   //static const Color primaryColor = Color(0xFF1A73E8); // Bleu vif
   static const Color primaryColor = Color(0xFF3974C6);
+  static const Color tabColor = Color(0xFF65558F);
+  static const Color unselectTabBarColor = Color(0xFF49454F);
   static const Color secondaryColor = Color(0xFF34A853); // Vert doux
   static const Color accentColor = Color(0xFFFBBC05); // Jaune lumineux
   static const Color backgroundColor = Color(0xFFF4F6F9); // Fond léger
@@ -24,6 +29,9 @@ class  KStyles {
   static const Color warningInvoice = Color(0xFFFEE7EF);
   static const Color dangerColor = Color(0xFFC20E4D);
   static const Color dangerColor1 = Color(0xFFF31260);
+  static const Color dcardBusinessColor = Color(0xFF1C4277);
+  static const Color dropDownBorderColor = Color(0xFFD4D4D8);
+  static const Color bgContainerReppotsColor = Color(0xFE4E4E7);
 
 
 

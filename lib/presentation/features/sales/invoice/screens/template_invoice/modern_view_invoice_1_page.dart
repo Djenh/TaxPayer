@@ -3,10 +3,12 @@ import 'package:iconsax/iconsax.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
+import '../../../../../../domain/entities/invoice/invoice_response.dart';
 import '../../../../../res/style/e_style.dart';
 
 class ModernViewInvoice1Page extends StatefulWidget {
-  const ModernViewInvoice1Page({super.key, required this.isSaleInvoice});
+  final InvoiceResponse? invoiceResponse;
+  const ModernViewInvoice1Page({super.key, required this.isSaleInvoice,this.invoiceResponse});
 
   final bool isSaleInvoice;
 
@@ -63,7 +65,7 @@ class _ModernViewInvoice1PageState extends State<ModernViewInvoice1Page> {
               child: VerticalDivider(color: Colors.grey, thickness: 2),
             ),
             const SizedBox(width: 4),
-            buildText(context, value, 12, Colors.black,
+            buildText(context, value, 6, Colors.black,
                 fontWeight: FontWeight.w600),
             const SizedBox(width: 6),
             Container(
@@ -155,7 +157,7 @@ class _ModernViewInvoice1PageState extends State<ModernViewInvoice1Page> {
   }
 
   Widget _buildItemRow(
-      int index, String description, int quantity, String price, String total) {
+      dynamic index, String description, int quantity, String price, String total) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -226,9 +228,9 @@ class _ModernViewInvoice1PageState extends State<ModernViewInvoice1Page> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _buildHeaderInvoice(
-            widget.isSaleInvoice ? "Facture de vente" : "Facture d'avoir",
-            "N° 123345"),
+        _buildHeaderInvoice(//widget.isSaleInvoice ? "Facture de vente" : "Facture d'avoir"
+            widget.invoiceResponse?.invoice?.typeInvoice?.name??"",
+            "N° ${widget.invoiceResponse?.invoice?.code??""}"),
         const Divider(color: Colors.grey, thickness: 1),
         const SizedBox(height: 20),
         _buildInfoCompany(
@@ -260,17 +262,17 @@ class _ModernViewInvoice1PageState extends State<ModernViewInvoice1Page> {
             SizedBox(
               height: 200,
               child: ListView.builder(
-                itemCount: articles.length,
+                itemCount: widget.invoiceResponse!.invoice!.items!.length,
                 itemBuilder: (BuildContext context, int index) {
-                  final article = articles[index];
+                  final article = widget.invoiceResponse!.invoice!.items![index];
                   return Column(
                     children: [
                       _buildItemRow(
-                        article['index'],
-                        article['description'],
-                        article['quantity'],
-                        article['price'],
-                        article['total'],
+                        article.item!.product!.code!,
+                        article.item!.product?.name??"",
+                        article.item!.quantity??1,
+                        article.item!.product?.price?.amount?.toString()??"",
+                        article.item!.product?.price?.subTotal?.ttc?.toString()??"",
                       ),
                       const Divider(thickness: 1),
                     ],
@@ -281,15 +283,15 @@ class _ModernViewInvoice1PageState extends State<ModernViewInvoice1Page> {
           ],
         ),
         const SizedBox(height: 20),
-        _buildSummaryRow("Total", "40.000"),
-        _buildSummaryRow("Base Imposable", "33.898,30"),
-        _buildSummaryRow("Taxe", "6.101,70"),
+        _buildSummaryRow("Total", "${widget.invoiceResponse?.total?.ttc?.toString()}"),
+        _buildSummaryRow("Base Imposable", "${widget.invoiceResponse?.total?.baseTaxable?.toString()}"),
+        _buildSummaryRow("Taxe", "${widget.invoiceResponse?.total?.tax?.toString()}"),
         const SizedBox(height: 20),
         Center(
           child: buildText(
               context,
               "Arrêté la présente facture à la somme"
-              " de quatorze mille cent quarante francs CFA TTC",
+              " de ${widget.invoiceResponse?.totalInletters.toString()}",
               8,
               Colors.black,
               textAlign: TextAlign.center,
@@ -307,7 +309,7 @@ class _ModernViewInvoice1PageState extends State<ModernViewInvoice1Page> {
             children: [
               Expanded(
                 child: QrImageView(
-                  data: '1234567890',
+                  data: '${widget.invoiceResponse?.signatureData?.qrCode?.toString()}',
                   version: QrVersions.auto,
                   size: 100.0,
                   foregroundColor: Colors.green,
@@ -322,14 +324,14 @@ class _ModernViewInvoice1PageState extends State<ModernViewInvoice1Page> {
                       fontWeight: FontWeight.w300),
                   const SizedBox(height: 4),
                   buildText(
-                      context, "HP2V-H3VI-JVLL-AMQ2-7AFL-LM3O", 8, Colors.black,
+                      context, "${widget.invoiceResponse?.signatureData?.signature?.toString()}", 8, Colors.black,
                       fontWeight: FontWeight.w700),
                   const SizedBox(height: 4),
                   _buildRowDataSign("TIN-POS-TI", "1230909-0834"),
                   const SizedBox(height: 4),
                   _buildRowDataSign("Ref logiciel", "9LEHE"),
                   const SizedBox(height: 4),
-                  _buildRowDataSign("Date, Heure", "11/06/2024 17:34:15")
+                  _buildRowDataSign("Date, Heure", "${widget.invoiceResponse?.signatureData?.certifiedDate.toString()}")
                 ],
               ))
             ],

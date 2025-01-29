@@ -3,6 +3,7 @@ String _path1(name) => 'assets/images/$name.jpg';
 
 class Imgs {
   final String img1 = _path('1');
+  final String placeholder = _path('placeholder');
   final String img2 = _path1('2');
   final String img3 = _path1('3');
   final String img4 = _path1('4');
