@@ -262,7 +262,7 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
           itemCount: invoiceData!.invoice!.items!.length,
           separatorBuilder: (context, index) =>
           const Divider(thickness: 1, height: 1),
-          itemBuilder: (context, index) {
+          itemBuilder: (context, index){
             final item = invoiceData!.invoice!.items![index];
             return _buildProductRow(
               index: index,
