@@ -1,18 +1,9 @@
-import 'dart:io';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:open_filex/open_filex.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
+import 'package:invoice_app/core/services/pdf_generate.dart';
 import 'package:invoice_app/domain/entities/invoice/invoice_response.dart';
-import 'package:invoice_app/presentation/features/sales/invoice/screens/template_invoice/modern_view_invoice_1_page.dart';
 import 'package:invoice_app/presentation/features/sales/invoice/screens/template_invoice/modern_view_invoice_page.dart';
-import 'package:invoice_app/presentation/features/sales/invoice/widgets/invoice_item.dart';
 import 'package:screenshot/screenshot.dart';
-
 import '../../../../_widgets/app_bar_custom.dart';
 import '../widgets/modals/full_menu.dart';
 
@@ -225,7 +216,7 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
       backgroundColor: Colors.white,
       appBar: appBarOther(context, "Fature ${widget.invoiceResponse?.invoice?.code??0}", actionList: [
         IconButton(
-          onPressed: generatePdf,
+          onPressed: ()=> GeneratePdfService.exportInvoiceToPdf(context,screenshotController,widget.invoiceResponse!),
           icon: const Icon(Iconsax.document_download),
         ),
         IconButton(
@@ -259,35 +250,4 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
       builder: (context) => FullMenu(invoiceResponse: widget.invoiceResponse,screenshotController: screenshotController),
     );
   }
-
-  Future<void> generatePdf() async{
-    try{
-      Uint8List? image = await screenshotController.capture();
-      if(image == null) return;
-      final pdf = pw.Document();
-      final imageProvider = pw.MemoryImage(image);
-
-      pdf.addPage(
-        pw.Page(
-          build: (pw.Context context){
-            return pw.Center(child: pw.Image(imageProvider));
-          }
-        )
-      );
-      final directory = await getApplicationDocumentsDirectory();
-      final filePath = '${directory.path}/${widget.invoiceResponse?.invoice?.typeInvoice?.name??""}_${widget.invoiceResponse?.invoice?.code??""}.pdf';
-      final file = File(filePath);
-      await file.writeAsBytes(await pdf.save());
-      if (kDebugMode) {
-        print("PDF genere avec succes");
-      }
-
-      await OpenFilex.open(filePath);
-    }catch(e){
-      if(kDebugMode){
-        print(e.toString());
-      }
-    }
-  }
-
 }

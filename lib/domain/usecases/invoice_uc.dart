@@ -18,6 +18,11 @@ class InvoiceUc {
     return await invoiceRepository.allTypeInvoice(page, size);
   }
 
+  Future<Either<Failure, InvoiceEntitiesResponse>> executeAllInvoice(
+      String tin,int page, int size) async {
+    return await invoiceRepository.allInvoice(tin,page, size);
+  }
+
   Future<Either<Failure, DepositTaxResponse>> executeAllDepositTax(
       int page, int size) async {
     return await invoiceRepository.allDepositTax(page, size);
