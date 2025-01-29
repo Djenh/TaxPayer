@@ -35,6 +35,10 @@ dependencies:
   geolocator:
   dropdown_search:
   flutter_spinkit:
+  screenshot: ^3.0.0
+  path_provider: ^2.1.5
+  share: ^2.0.4
+  open_filex: ^4.6.0
 
   #Injection Dependance
   get_it:

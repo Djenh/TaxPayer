@@ -11,6 +11,7 @@ import 'package:invoice_app/presentation/_widgets/action_btn.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
 import 'package:invoice_app/presentation/controllers/invoice_ctrl.dart';
 import 'package:invoice_app/presentation/features/clients/screens/customer_page.dart';
+import 'package:invoice_app/presentation/features/sales/invoice/screens/invoice_detail_page.dart';
 import 'package:invoice_app/utils/logger_util.dart';
 import '../../../../_widgets/app_bar_custom.dart';
 import '../../../../_widgets/build_dropdown_str.dart';
@@ -293,7 +294,7 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
 
     await invCtr.invoiceSetData(context, invCtr.addInvoiceDto.value).then((val){
       if(val != null){
-        Get.back();
+        Get.off(() => InvoiceDetailPage(invoiceResponse: val));
       }
     });
 
