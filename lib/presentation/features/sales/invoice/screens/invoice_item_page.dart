@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:invoice_app/core/configs/injection_container.dart';
 import 'package:invoice_app/core/services/toast_service.dart';
 import 'package:invoice_app/data/dtos/add_invoice_dto.dart';
-import 'package:invoice_app/domain/entities/invoice/tax_group_response.dart';
+import 'package:invoice_app/domain/entities/product/tax_group_response.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
 import 'package:invoice_app/presentation/controllers/invoice_ctrl.dart';
 import 'package:invoice_app/presentation/features/stocks/product/screens/product_page.dart';
@@ -84,6 +84,11 @@ class _InvoiceItemPageState extends State<InvoiceItemPage> {
                     if(val is ProductResponse){
                       setState(() {
                         dataProductSelect = val;
+                        priceController!.text =
+                            val.price?.amount.toString() ?? "";
+                        dataTaxGroup = val.price!.taxGroup;
+                        additionalTaxController!.text =
+                            val.price?.taxSpecific.toString() ?? "";
                       });
                     }
               });

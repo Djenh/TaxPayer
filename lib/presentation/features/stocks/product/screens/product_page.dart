@@ -66,7 +66,7 @@ class _ProductPageState extends State<ProductPage> {
   Widget _buildProductList(ProductResponse ctg) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
-      child: GestureDetector(
+      child: InkWell(
         onTap: (){
           if(widget.isManage){
             //Get.to(() => const ProductDetailPage());

@@ -1,4 +1,5 @@
 import 'package:invoice_app/domain/entities/product/categories_entities.dart';
+import 'package:invoice_app/domain/entities/product/pricing_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../pageable.dart';
@@ -13,6 +14,7 @@ class ProductResponse {
   String? code;
   String? name;
   String? officialProductNo;
+  PricingResponse? price;
   CategoriesEntities? category;
   String? productType;
   String? companyTin;
@@ -20,13 +22,14 @@ class ProductResponse {
 
 
   ProductResponse({this.id, this.code, this.name, this.officialProductNo,
-    this.category, this.productType, this.companyTin});
+    this.price, this.category, this.productType, this.companyTin, this.posCode});
 
   factory ProductResponse.fromJson(Map<String, dynamic> json) =>
       _$ProductResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$ProductResponseToJson(this);
 }
+
 
 
 @JsonSerializable(explicitToJson: true)
