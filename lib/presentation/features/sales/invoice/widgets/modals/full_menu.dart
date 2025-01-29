@@ -1,16 +1,9 @@
-import 'dart:io';
-import 'package:open_filex/open_filex.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
-import 'package:flutter/foundation.dart';
+import 'package:invoice_app/core/services/pdf_generate.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:invoice_app/domain/entities/invoice/invoice_response.dart';
 import 'package:invoice_app/presentation/features/sales/invoice/screens/invoice_recuring_page.dart';
-import 'package:open_filex/open_filex.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 
 
@@ -99,7 +92,7 @@ class FullMenu extends StatelessWidget {
       {"icon": Iconsax.edit, "label": "Change Template", "action": () => _navigateToTemplate(context)},
       {"icon": Iconsax.copy, "label": "Dupliquer la facture", "action": () => _navigateToDuplicate(context)},
       {"icon": Iconsax.tick_circle, "label": "Marquer comme payer", "action": () => _markAsPaid(context)},
-      {"icon": Iconsax.export, "label": "Exporter PDF", "action": () => _exportPdf(context,screenshotController!)},
+      {"icon": Iconsax.export, "label": "Exporter PDF", "action": () => GeneratePdfService.exportInvoiceToPdf(context,screenshotController!,invoiceResponse!)},
       {"icon": Iconsax.sms, "label": "Envoyer par Email", "action": () => _sendEmail(context)},
       {"icon": Iconsax.save_2, "label": "Savegarder", "action": () => _save(context)},
       {"icon": Iconsax.trash, "label": "Supprimer", "action": () => _delete(context)},
@@ -154,38 +147,7 @@ class FullMenu extends StatelessWidget {
     debugPrint("Marquer comme payé !");
   }
 
-  void _exportPdf(BuildContext context,ScreenshotController screenshotController) async{
-    try{
-      Uint8List? image = await screenshotController.capture();
-      if(image == null) return;
-      final pdf = pw.Document();
-      final imageProvider = pw.MemoryImage(image);
 
-      pdf.addPage(
-          pw.Page(
-              build: (pw.Context context){
-                return pw.Center(child: pw.Image(imageProvider));
-              }
-          )
-      );
-      final directory = await getApplicationDocumentsDirectory();
-      final filePath = '${directory.path}/${invoiceResponse?.invoice?.typeInvoice?.name??""}_${invoiceResponse?.invoice?.code??""}.pdf';
-      final file = File(filePath);
-      await file.writeAsBytes(await pdf.save());
-      if (kDebugMode) {
-        print("PDF genere avec succes");
-      }
-
-      await OpenFilex.open(filePath);
-    }catch(e){
-      if(kDebugMode){
-        print(e.toString());
-      }
-    }
-    debugPrint("Exporter en PDF !");
-
-
-  }
 
   void _sendEmail(BuildContext context) {
     debugPrint("Envoyer par Email !");

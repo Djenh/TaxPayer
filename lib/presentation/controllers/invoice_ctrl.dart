@@ -27,7 +27,9 @@ class InvoiceCtrl extends GetxController {
   RxBool isLoading = false.obs;
   static const _pageSize = 20;
   PagingController<int, TypeInvoiceEntities>? pagingTypeInvoiceController;
+  PagingController<int, InvoiceResponse>? pagingIvoiceController;
   List<TypeInvoiceEntities> allTypeInvoice = [];
+  List<InvoiceResponse> allInvoice = [];
   PagingController<int, DepositTaxEntities>? pagingDepositTaxController;
   List<DepositTaxEntities> allDepositTax = [];
 
@@ -50,7 +52,7 @@ class InvoiceCtrl extends GetxController {
       clientCode: "",
       typeInvoiceCode: "",
       tin: AppServices.instance.currentCompany.value!.tin!,
-      posCode: AppServices.instance.currentPos.value!.code!,
+      posCode: (AppServices.instance.currentPos.value != null) ? AppServices.instance.currentPos.value!.code! : '',
       securityTaxCode: "",
       items: []
   ).obs;
@@ -60,7 +62,7 @@ class InvoiceCtrl extends GetxController {
         clientCode: "",
         typeInvoiceCode: "",
         tin: AppServices.instance.currentCompany.value!.tin!,
-        posCode: AppServices.instance.currentPos.value!.code!,
+        posCode: (AppServices.instance.currentPos.value != null) ? AppServices.instance.currentPos.value!.code! : '',
         securityTaxCode: "",
         items: []
     );
@@ -91,6 +93,36 @@ class InvoiceCtrl extends GetxController {
           } else {
             final nextPageKey = pageKey + 1;
             pagingTypeInvoiceController?.appendPage(newItems, nextPageKey);
+          }
+        },
+      );
+    } catch (error) {
+      pagingTypeInvoiceController?.error = error.toString();
+    }
+  }
+  Future<void> allInvoiceData(String tin,int pageKey) async {
+    try {
+      final result = await invoiceUc.executeAllInvoice(tin,pageKey, _pageSize);
+
+      result.fold(
+            (failure) {
+              pagingIvoiceController?.error = failure.message;
+        },
+            (response) {
+          final List<InvoiceResponse> newItems = response.content ?? [];
+
+          if (pageKey == 0) {
+            allInvoice.clear();
+          }
+
+          allInvoice.addAll(newItems);
+
+          final isLastPage = pageKey >= (response.totalPages ?? 1) - 1;
+          if (isLastPage) {
+            pagingIvoiceController?.appendLastPage(newItems);
+          } else {
+            final nextPageKey = pageKey + 1;
+            pagingIvoiceController?.appendPage(newItems, nextPageKey);
           }
         },
       );

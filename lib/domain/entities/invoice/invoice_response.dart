@@ -1,10 +1,14 @@
+import 'package:invoice_app/domain/entities/company/pos_data_response.dart';
+import 'package:invoice_app/domain/entities/customer/customer_list_response.dart';
 import 'package:invoice_app/domain/entities/invoice/deposit_tax_response.dart';
 import 'package:invoice_app/domain/entities/invoice/signature_entities.dart';
 import 'package:invoice_app/domain/entities/invoice/tax_break_down_entities.dart';
+import 'package:invoice_app/domain/entities/pageable.dart';
 import 'package:invoice_app/domain/entities/product/categories_entities.dart';
 import 'package:invoice_app/domain/entities/product/pricing_response.dart';
 import 'package:invoice_app/domain/entities/product/tax_group_response.dart';
 import 'package:invoice_app/domain/entities/invoice/type_invoice_response.dart';
+import 'package:invoice_app/domain/entities/sort_entities.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 
@@ -24,7 +28,7 @@ class InvoiceResponse {
   List<ReimbursementInvoices>? reimbursementInvoices;
 
   InvoiceResponse({this.invoice, this.numberItems, this.totalInletters,
-    this.signatureData, this.total, this.taxBreakDown, this.originalInvoice,
+    this.signatureData, this.total,  this.taxBreakDown, this.originalInvoice,
     this.reimbursementInvoices});
 
   factory InvoiceResponse.fromJson(Map<String, dynamic> json) =>
@@ -34,6 +38,30 @@ class InvoiceResponse {
 }
 
 
+class InvoiceEntitiesResponse {
+
+  List<InvoiceResponse>? content;
+  Pageable1? pageable;
+  bool? last;
+  int? totalPages;
+  int? totalElements;
+  bool? first;
+  int? size;
+  int? number;
+  SortEntities? sort;
+  int? numberOfElements;
+  bool? empty;
+
+
+  InvoiceEntitiesResponse({this.content, this.pageable, this.last, this.totalPages,
+    this.totalElements, this.first, this.size, this.number, this.sort,
+    this.numberOfElements, this.empty});
+
+  factory InvoiceEntitiesResponse.fromJson(Map<String, dynamic> json) =>
+      _$InvoiceEntitiesResponseFromJson(json);
+
+  Map<String, dynamic> toJson() => _$InvoiceEntitiesResponseToJson(this);
+}
 @JsonSerializable(explicitToJson: true)
 class InvoiceEntities {
 
@@ -41,6 +69,8 @@ class InvoiceEntities {
   String? tin;
   String? code;
   String? posCode;
+  PosDataResponse? pos;
+  CustomerEntities? client;
   TypeInvoiceEntities? typeInvoice;
   DepositTaxEntities? securityTax;
   String? clientCode;
@@ -48,7 +78,7 @@ class InvoiceEntities {
   String? comment;
 
   InvoiceEntities({this.id, this.tin, this.code, this.posCode, this.typeInvoice,
-    this.securityTax, this.clientCode, this.items, this.comment});
+    this.securityTax,this.pos, this.client, this.clientCode, this.items, this.comment});
 
   factory InvoiceEntities.fromJson(Map<String, dynamic> json) =>
       _$InvoiceEntitiesFromJson(json);
@@ -81,10 +111,11 @@ class ItemEntities {
   String? comment;
   int? quantity;
   ProductInvoice? product;
+  UnitData? total;
   String? priceDefinitionMode;
   num? taxSpecific;
 
-  ItemEntities({this.id, this.taxGroup, this.comment, this.quantity,
+  ItemEntities({this.id, this.taxGroup, this.comment, this.quantity, this.total,
     this.product, this.priceDefinitionMode, this.taxSpecific});
 
   factory ItemEntities.fromJson(Map<String, dynamic> json) =>
