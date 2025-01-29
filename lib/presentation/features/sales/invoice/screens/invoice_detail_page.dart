@@ -256,7 +256,7 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
           topRight: Radius.circular(16),
         ),
       ),
-      builder: (context) => const FullMenu(),
+      builder: (context) => FullMenu(invoiceResponse: widget.invoiceResponse,screenshotController: screenshotController),
     );
   }
 
