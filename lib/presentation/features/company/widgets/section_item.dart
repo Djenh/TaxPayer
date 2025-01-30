@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:invoice_app/commons/ui/button/kcirclebutton.dart';
+import 'package:invoice_app/presentation/res/style/e_style.dart';
 
 
 class SectionItem extends StatelessWidget {
@@ -13,7 +15,13 @@ class SectionItem extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
         children: [
-          Icon(icon, color: Colors.black54),
+          KCircleButton(
+            color: KStyles.cardGrey,
+            onPressed: () {
+
+            },
+            child: Icon(icon,color: Colors.black54),
+          ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -21,7 +29,7 @@ class SectionItem extends StatelessWidget {
               children: [
                 Text(title, style: const TextStyle(fontSize: 12, color: Colors.black54)),
                 const SizedBox(height: 4),
-                Text(value, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
+                Text(value, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black)),
               ],
             ),
           ),

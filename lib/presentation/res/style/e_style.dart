@@ -31,7 +31,8 @@ class  KStyles {
   static const Color dangerColor1 = Color(0xFFF31260);
   static const Color dcardBusinessColor = Color(0xFF1C4277);
   static const Color dropDownBorderColor = Color(0xFFD4D4D8);
-  static const Color bgContainerReppotsColor = Color(0xFE4E4E7);
+  static const Color bgContainerReppotsColor = Color(0xFFE4E4E7);
+  static const Color bgStatColor = Color(0xFFECF0F1);
 
 
 

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:invoice_app/commons/ui/kagencycard.dart';
 import 'package:invoice_app/domain/entities/company/pos_data_response.dart';
-import 'package:invoice_app/presentation/features/agency/screens/agency_detail_page.dart';
+import 'package:invoice_app/presentation/features/agency/screens/agency_item.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 
 // ignore: must_be_immutable
@@ -121,7 +120,7 @@ class AgencyPage extends StatelessWidget {
             shrinkWrap: true,
             itemCount: dataAgency!.length,
             itemBuilder: (BuildContext context, int ps){
-              return agencyItem(dataAgency![ps],ps);
+              return AgencyItem(dataAgency: dataAgency![ps]);
             },
           ),
         ],
@@ -129,94 +128,7 @@ class AgencyPage extends StatelessWidget {
     );
   }
 }
-/*
 
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal, // Activation du scroll horizontal
-            child: DataTable(
-              columnSpacing: 10,
-              headingRowHeight: 40,
-              dataRowHeight: 50,
-              headingTextStyle: const TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
-              columns: const [
-                DataColumn(label: Text("Nom de l’agence")),
-                DataColumn(label: Text("Ville")),
-                DataColumn(label: Text("Chiffre d’affaire")),
-              ],
-              rows: dataAgency!.map((agency) {
-                return DataRow(cells: [
-                  DataCell(Text(agency.name??"", style: const TextStyle(fontWeight: FontWeight.bold))),
-                  DataCell(Text(agency.address?.locality?.name??"")),
-                  DataCell(Text("1.200.000")),
-                ]);
-              }).toList(),
-            ),
-          ),
- */
-Widget agencyItem(PosDataResponse dataAgency, int index){
-  return GestureDetector(
-    onTap: () => Get.to(() => AgencyDetailPage()),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        const SizedBox(height: 10),
-        const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(
-              flex: 2,
-              child: Text(
-                "Nom de l’agence",
-                style: TextStyle(color: Colors.grey),
-              ),
-            ),
-            Flexible(
-              flex: 1,
-              child: Text(
-                "Ville",
-                style: TextStyle(color: Colors.grey),
-              ),
-            ),
-            Flexible(
-              flex: 2,
-              child: Text(
-                "Chiffre d’affaire",
-                style: TextStyle(color: Colors.grey),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 5),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Flexible(
-              flex: 2,
-              child: Text(dataAgency.name??"",
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-            Flexible(
-              flex: 1,
-              child: Text(dataAgency.address?.locality?.name??"",
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-            const Flexible(
-              flex: 2,
-              child: Text("1.200.000",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-          ],
-        ),
-        const Divider(),
-      ],
-    ),
-  );
-}
 
 
 
