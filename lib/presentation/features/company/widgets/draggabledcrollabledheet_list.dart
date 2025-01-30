@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:invoice_app/core/services/app_service.dart';
 import 'package:invoice_app/presentation/features/company/widgets/card_company_page.dart';
 import 'package:invoice_app/presentation/features/company/widgets/mouvement_item.dart';
 import 'package:invoice_app/presentation/features/company/widgets/section_item.dart';
@@ -49,15 +50,35 @@ class CompanyDetails extends StatelessWidget {
             Expanded(
               child: TabBarView(
                 children: [
-                  ListView.separated(
-                    separatorBuilder: (context, index) => const Divider(
-                      color: KStyles.textSecondaryColor,
+                  Padding(
+                    padding: const EdgeInsets.only(left: padding,right: padding),
+                    child: ListView(
+                      children: [
+                        const SizedBox(height: padding15),
+                        SectionItem(icon: Iconsax.personalcard, title: "Identifiant Fiscal", value: AppServices.instance.currentCompany.value?.tin??""),
+                        const Divider(
+                          color: Colors.black54,
+                        ),
+                        SectionItem(icon: Iconsax.barcode, title: "Registre de commerce", value: AppServices.instance.currentCompany.value?.tradeNo??""),
+                        const Divider(
+                          color: Colors.black54,
+                        ),
+                        SectionItem(icon: Iconsax.shop, title: "Secteur", value: AppServices.instance.currentCompany.value?.sectors?.first.name??""),
+                        const Divider(
+                          color: Colors.black54,
+                        ),
+                        SectionItem(icon: Iconsax.call, title: "Télephone", value: AppServices.instance.currentCompany.value?.contact?.phoneNumber??""),
+                        const Divider(
+                          color: Colors.black54,
+                        ),
+                        SectionItem(icon: Iconsax.sms, title: "Email", value: AppServices.instance.currentCompany.value?.contact?.email??""),
+                        const Divider(
+                          color: Colors.black54,
+                        ),
+                        SectionItem(icon: Iconsax.map, title: "Adresse", value: AppServices.instance.currentCompany.value?.address?.description??""),
+                        const SizedBox(height: padding15),
+                      ],
                     ),
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    itemCount: 10,
-                    itemBuilder: (context, index) {
-                      return const SectionItem(icon: Iconsax.personalcard, title: "Identifiant Fiscal", value: "97092099");
-                    },
                   ),
                   ListView.separated(
                     separatorBuilder: (context, index) => const Divider(

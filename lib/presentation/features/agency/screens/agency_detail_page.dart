@@ -1,12 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:invoice_app/commons/ui/kagencycard.dart';
+import 'package:invoice_app/core/configs/injection_container.dart';
+import 'package:invoice_app/domain/entities/company/pos_data_response.dart';
+import 'package:invoice_app/domain/entities/invoice/invoice_response.dart';
+import 'package:invoice_app/presentation/_widgets/build_text.dart';
+import 'package:invoice_app/presentation/_widgets/paged_first_error.dart';
+import 'package:invoice_app/presentation/_widgets/paged_new_page_error.dart';
+import 'package:invoice_app/presentation/controllers/invoice_ctrl.dart';
+import 'package:invoice_app/presentation/features/registration/_strings/register_str.dart';
+import 'package:invoice_app/presentation/features/sales/invoice/screens/invoice_create_page.dart';
+import 'package:invoice_app/presentation/features/sales/invoice/screens/invoice_detail_page.dart';
+import 'package:invoice_app/presentation/features/sales/invoice/widgets/invoice_item.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
-import '../../../res/app_input_styles.dart';
-import '../../../res/input_formaters.dart';
 
 
 class AgencyDetailPage extends StatefulWidget {
-  AgencyDetailPage({super.key});
+  final PosDataResponse dataAgency;
+  const AgencyDetailPage({super.key,required this.dataAgency});
 
   @override
   State<AgencyDetailPage> createState() => _AgencyDetailPageState();
@@ -14,15 +27,25 @@ class AgencyDetailPage extends StatefulWidget {
 
 class _AgencyDetailPageState extends State<AgencyDetailPage> {
 
+  final invoiceCtr = locator<InvoiceCtrl>();
+
+
+
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
+    invoiceCtr.pagingIvoiceController = PagingController<int, InvoiceResponse>(firstPageKey: 0);
+    invoiceCtr.pagingIvoiceController?.addPageRequestListener((pageKey) {
+      invoiceCtr.allInvoiceData(widget.dataAgency.company?.tin??"",pageKey);
+    });
   }
-
 
   @override
   void dispose() {
     super.dispose();
+    invoiceCtr.pagingIvoiceController?.dispose();
+    invoiceCtr.pagingIvoiceController = null;
   }
 
 
@@ -54,15 +77,9 @@ class _AgencyDetailPageState extends State<AgencyDetailPage> {
               ),
             ],
           ),
-          title: const Text.rich(
-            TextSpan(
-                text: "Agence N°1",
-                style: TextStyle(fontWeight: FontWeight.w700, color: Colors.black, fontSize: 17,),
-                children: <TextSpan>[
-                  TextSpan()
-                ]
+          title: Text("Agence N° ${widget.dataAgency.code??""}",
+                style: const TextStyle(fontWeight: FontWeight.w700, color: Colors.black, fontSize: 17,)
             ),
-          ),
           actions: [
             OutlinedButton(
               onPressed: () {},
@@ -74,30 +91,26 @@ class _AgencyDetailPageState extends State<AgencyDetailPage> {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              child: const Text('Active', style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),),
+              child:  Text(widget.dataAgency.company?.status??"", style: const TextStyle(fontSize: 10, fontWeight: FontWeight.normal),),
             ),
-            const SizedBox(width: padding,),
+            const SizedBox(width: padding),
           ]
       ),
-      body: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Container(
-            height: (MediaQuery.of(context).size.height),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: padding, vertical: 15),
-                  child: Container(
-                    height: 150,
+      body: RefreshIndicator(
+        onRefresh: () => Future.sync(() => invoiceCtr.pagingIvoiceController?.refresh()),
+        child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.only(left: padding15,right: padding15),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: padding15),
+                  Container(
                     width: (MediaQuery.of(context).size.width),
                     decoration: BoxDecoration(
-                        border: Border.all(
-                            width: 1,
-                            color: KStyles.textLightColor,
-                            strokeAlign: BorderSide.strokeAlignCenter),
-                        borderRadius: BorderRadius.circular(8)
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: KStyles.dropDownBorderColor)
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(padding),
@@ -105,298 +118,205 @@ class _AgencyDetailPageState extends State<AgencyDetailPage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          IntrinsicHeight(
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Expanded(child: cardWiget("Agence N°1\n",widget.dataAgency.address?.description??"")),
+                                const SizedBox(width: padding),
+                                Expanded(child: cardWiget("1.200.000\n","Chiffre d'affaire")),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: padding,),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Container(
-                                width: 150,
-                                height: 60,
-                                decoration: BoxDecoration(
-                                    color: KStyles.textLightColor.withOpacity(0.5),
-                                    border: Border.all(
-                                        width: 1,
-                                        color: KStyles.textLightColor.withOpacity(0.5),
-                                        strokeAlign: BorderSide.strokeAlignCenter),
-                                    borderRadius: BorderRadius.circular(8)
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.all(8),
-                                  child: Text.rich(
-                                    TextSpan(
-                                        text: "Agence N°1\n",
-                                        style: TextStyle(fontWeight: FontWeight.w700, color: Colors.black, fontSize: 17,),
-                                        children: <TextSpan>[
-                                          TextSpan(text: "Cotonou",
-                                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: Colors.black),
-                                          )
-                                        ]
-                                    ),
-                                  ),
-                                )
-                              ),
-                              Container(
-                                  width: 150,
-                                  height: 60,
-                                  decoration: BoxDecoration(
-                                      color: KStyles.textLightColor.withOpacity(0.5),
-                                      border: Border.all(
-                                          width: 1,
-                                          color: KStyles.textLightColor.withOpacity(0.5),
-                                          strokeAlign: BorderSide.strokeAlignCenter),
-                                      borderRadius: BorderRadius.circular(8)
-                                  ),
-                                  child: const Padding(
-                                    padding: EdgeInsets.all(8),
-                                    child: Text.rich(
-                                      TextSpan(
-                                          text: "1.200.000\n",
-                                          style: TextStyle(fontWeight: FontWeight.w700, color: Colors.black, fontSize: 17,),
-                                          children: <TextSpan>[
-                                            TextSpan(text: "Chiffre d'affaire",
-                                              style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: Colors.black),
-                                            )
-                                          ]
-                                      ),
-                                    ),
-                                  )
-                              ),
+                              Flexible(child: textWiget(widget.dataAgency.contact?.email??"",Iconsax.sms)),
+                              const SizedBox(width: padding15),
+                              Flexible(child: textWiget(widget.dataAgency.contact?.phoneNumber??"",Iconsax.call)),
                             ],
                           ),
-                          const SizedBox(height: padding,),
-                          const Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                      Icons.email_outlined, size:18, color: KStyles.textSecondaryColor
-                                  ),
-                                  SizedBox(width: 5,),
-                                  Text("stmichel@gmail.com", style: TextStyle(fontSize: 15))
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Icon(
-                                      Icons.phone, size:18, color: KStyles.textSecondaryColor
-                                  ),
-                                  SizedBox(width: 5,),
-                                  Text("+229 01 97 01 01 40", style: TextStyle(fontSize: 15))
-                                ],
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: padding,),
-                          const Row(
-                            children: [
-                              Icon(
-                                  Icons.map_outlined, size:18, color: KStyles.textSecondaryColor
-                              ),
-                              SizedBox(width: 5,),
-                              Text("En face de la banque ByteBank", style: TextStyle(fontSize: 15))
-                            ],
-                          ),
-
+                          const SizedBox(height: padding),
+                          textWiget(widget.dataAgency.address?.description??"",Iconsax.map),
                         ],
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(height: padding),
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.all(padding),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  const SizedBox(height: padding15),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Flexible(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Point des affaires", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-                                Text("Situation sur les 6 derniers mois", style: TextStyle(fontSize: 13),),
-                              ],
-                            ),
-                            Container(
-                              height: 50,
-                              width: 150,
-                              child: TextField(
-                                textInputAction: TextInputAction.done,
-                                keyboardType: TextInputType.text,
-                                inputFormatters: noSpaceNoEmoji,
-                                autofocus: false,
-                                onTap: () async {},
-                                decoration: AppInputStyles.defaultInputDecoration(
-                                    labelText: "Semestre",
-                                    // hintText: "Semestre",
-                                    prefixIcon: const Icon(Icons.filter_alt_outlined, size: 24),
-                                    suffixIcon: const Icon(Icons.arrow_drop_down_sharp, size: 24)
-                                ),
-                              ),
-                            ),
+                            Text("Point des affaires", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),),
+                            Text("Situation sur les 6 derniers mois", style: TextStyle(fontSize: 12),),
                           ],
+                        ),
+                      ),
+                      const SizedBox(width: padding),
+                      GestureDetector(
+                        onTap: (){
 
-                        ),
-                        const SizedBox(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              height: 85,
-                              width: 150,
-                              decoration: BoxDecoration(
-                                  color: KStyles.primaryColor.withOpacity(0.5),
-                                  border: Border.all(
-                                      width: 1,
-                                      color: KStyles.primaryColor.withOpacity(0.5),
-                                      strokeAlign: BorderSide.strokeAlignCenter),
-                                  borderRadius: BorderRadius.circular(8)
-                              ),
-                              child: const Padding(
-                                padding: EdgeInsets.all(5),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    CircleAvatar(
-                                      radius: 16,
-                                      backgroundColor: KStyles.primaryColor,
-                                      child: Icon(Iconsax.wallet, color: Colors.white, size: 18),
-                                    ),
-                                    SizedBox(height: 5,),
-                                    Text("Factures", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 12),),
-                                    Text("203"),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Container(
-                              height: 85,
-                              width: 150,
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                      width: 1,
-                                      color: KStyles.secondaryColor,
-                                      strokeAlign: BorderSide.strokeAlignCenter),
-                                  borderRadius: BorderRadius.circular(8)
-                              ),
-                              child: const Padding(
-                                padding: EdgeInsets.all(5),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    CircleAvatar(
-                                      radius: 16,
-                                      backgroundColor: KStyles.secondaryColor,
-                                      child: Icon(Iconsax.bill, color: Colors.white, size: 18),
-                                    ),
-                                    SizedBox(height: 5,),
-                                    Text("Recettes", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 12),),
-                                    Text("140B FCFA"),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 20,),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Les factures",
-                              textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.bodyLarge!
-                                  .copyWith(
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            OutlinedButton(
-                              onPressed: () {},
-                              style: OutlinedButton.styleFrom(
-                                foregroundColor: Colors.grey,
-                                side: const BorderSide(color: Colors.grey),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                              ),
-                              child: const Text('Créer une facture'),
-                            ),
-                          ],
-                        ),
-                        Expanded(
-                          child: ListView(
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            children: [
-                              const SizedBox(height: padding,),
-                              ...List.generate(
-                                  10,
-                                      (index) => Padding(
-                                    padding: const EdgeInsets.only(bottom: padding),
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: padding / 2, vertical: padding),
-                                      decoration: const BoxDecoration(color: Colors.white),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          const CircleAvatar(
-                                            radius: padding * 2.7,
-                                            child: Center(
-                                              child: Icon(Iconsax.bill),
-                                            ),
-                                          ),
-                                          const SizedBox(width: padding),
-                                          Expanded(
-                                            flex: 1,
-                                            child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Text("Jorge Maso",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .bodySmall!
-                                                        .copyWith(fontWeight: FontWeight.bold, color: Colors.black)),
-                                                Text("FA #80903Biy",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .bodySmall!
-                                                        .copyWith(fontWeight: FontWeight.bold, color: Colors.black)),
-                                              ],
-                                            ),
-                                          ),
-                                          const Expanded(
-                                            flex: 1,
-                                            child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.end,
-                                              children: [
-                                                Text("400 000 XOF", style: TextStyle(color: Colors.black)),
-                                                Text("10/11/2024; 10:00"),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ))
-                            ],
+                        },
+                        child: Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(color: KStyles.dropDownBorderColor)
+                          ),
+                          child: const Padding(
+                              padding: EdgeInsets.all(padding5),
+                              child: Row(
+                                children: [
+                                  Icon(Icons.filter_alt_outlined, color: KStyles.blackColor, size: 20),
+                                  SizedBox(
+                                    width: padding5,
+                                  ),
+                                  Text("Semestre dernier",style: TextStyle(color: KStyles.blackColor,fontSize: 12)),
+                                  SizedBox(
+                                    width: padding5,
+                                  ),
+                                  Icon(Icons.keyboard_arrow_down, color: KStyles.blackColor, size: 20)
+                                ],
+                              )
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
+
                   ),
-                )
-              ],
-            ),
-          )
+                  const SizedBox(height: padding15),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        child: KAgencycard(
+                          title: "Factures",
+                          subTitle: "14",
+                          onPressed: (){
+
+                          },
+                          borderColor: KStyles.primaryColor,
+                          icon: Iconsax.wallet,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: padding,
+                      ),
+                      Flexible(
+                        child: KAgencycard(
+                          title: "Recettes",
+                          subTitle: "200 FCFA",
+                          onPressed: (){
+
+                          },
+                          borderColor: KStyles.secondaryColor,
+                          icon: Iconsax.bill,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: padding15),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "Les factures",
+                        textAlign: TextAlign.start,
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                      ),
+                      OutlinedButton(
+                        onPressed: () => Get.to(() => const InvoiceCreatePage()),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor:  KStyles.dropDownBorderColor,
+                          side: const BorderSide(color:  KStyles.dropDownBorderColor),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        child: const Text(RegisterStr.createAgency,style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12,color:  KStyles.tabColor)),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: padding15),
+                  LayoutBuilder(
+                    builder: (_, cxs) {
+                      return PagedListView<int, InvoiceResponse>.separated(
+                        pagingController: invoiceCtr.pagingIvoiceController!,
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        separatorBuilder: (context, index) => Padding(
+                          padding: const EdgeInsets.only(left: 2.0, right: 2.0),
+                          child: Divider(
+                              height: 1, thickness: 1, color: Colors.grey.shade300),
+                        ),
+                        builderDelegate: PagedChildBuilderDelegate<InvoiceResponse>(
+                          itemBuilder: (context, typ, index) {
+                            return InvoiceItem(
+                              invoiceResponse: typ,
+                              onTap: () => Get.to(() =>  InvoiceDetailPage(invoiceResponse: typ)),
+                            );
+                          },
+                          firstPageProgressIndicatorBuilder: (_) => const Center(child: CircularProgressIndicator()),
+                          newPageProgressIndicatorBuilder: (_) => const Center(child: CircularProgressIndicator()),
+                          noItemsFoundIndicatorBuilder: (_) => noItem(),
+                          firstPageErrorIndicatorBuilder: (_) => PagedFirstError(pagingController: invoiceCtr.pagingIvoiceController, cxs: cxs),
+                          newPageErrorIndicatorBuilder: (_) => PagedNewPageError(pagingController: invoiceCtr.pagingIvoiceController),
+                        ),
+                      );
+                    },
+                  )
+                ],
+              ),
+            )
+        ),
       ),
     );
   }
+  Widget noItem(){
+    return Padding(
+      padding: const EdgeInsets.only(top: 60),
+      child: Center(
+        child: buildText(context, "Aucune facture trouvée.", 16, Colors.black,
+            fontWeight: FontWeight.w500, textAlign: TextAlign.center),
+      ),
+    );
+  }
+  Widget cardWiget(String title, subTitle){
+    return Container(
+        width: 150,
+        decoration: BoxDecoration(
+            color: KStyles.bgStatColor,
+            borderRadius: BorderRadius.circular(8)
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(6),
+          child: Text.rich(
+            TextSpan(
+                text: title,
+                style: const TextStyle(fontWeight: FontWeight.w900, color: Colors.black, fontSize: 14,),
+                children: <TextSpan>[
+                  TextSpan(text: subTitle,
+                    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.normal, color: Colors.black),
+                  )
+                ]
+            ),
+          ),
+        )
+    );
+  }
+  Widget textWiget(String title, IconData icon){
+    return Row(
+      children: [
+        Icon(icon, size:18, color: KStyles.textSecondaryColor),
+        const SizedBox(width: padding5),
+        Flexible(child: Text(title, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.normal, color: Colors.black)))
+      ],
+    );
+  }
+
 }

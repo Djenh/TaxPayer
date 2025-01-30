@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:invoice_app/commons/ui/button/kcirclebutton.dart';
 import 'package:invoice_app/commons/ui/kemptydata.dart';
+import 'package:invoice_app/commons/ui/kstatisticcard.dart';
 import 'package:invoice_app/core/configs/injection_container.dart';
 import 'package:invoice_app/core/constants/strings.dart';
 import 'package:invoice_app/core/services/app_service.dart';
@@ -19,7 +20,10 @@ import 'package:invoice_app/presentation/features/dashoard/widgets/tab_bar_widge
 import 'package:invoice_app/presentation/features/pos/screens/pos_form_page.dart';
 import 'package:invoice_app/presentation/features/registration/_strings/register_str.dart';
 import 'package:invoice_app/presentation/features/sales/invoice/screens/verify_invoice/scan_verify_page.dart';
+import 'package:invoice_app/presentation/res/assets/app_assets.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
+
+import '../../../../utils/custom_image_view.dart';
 
 
 
@@ -60,11 +64,23 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return Obx(() =>Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.only(left: padding,right: padding),
       child: RefreshIndicator(
         onRefresh: () => Future.sync(() => _refreshData()),
         child: ListView(
           children: [
+            CustomImageView(
+              onTap: (){
+
+              },
+              height: 5,
+              width: 209,
+              imagePath: $appAssets.svgs.svframe,
+              fit: BoxFit.contain,
+            ),
+            const SizedBox(
+              height: padding15,
+            ),
             Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -79,13 +95,19 @@ class _DashboardPageState extends State<DashboardPage> {
                         return KCircleButton(
                           color: KStyles.cardGrey,
                           onPressed: () => Scaffold.of(context).openDrawer(),
-                          child: const Icon(Iconsax.user,color: KStyles.blackColor),
+                          child: CustomImageView(
+                            height: 24,
+                            width: 24,
+                            imagePath: $appAssets.svgs.menu,
+                            fit: BoxFit.contain,
+                          ),
                         );
                       },
                     ),
                     const SizedBox(
                       width: padding,
                     ),
+                    /*
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,12 +122,23 @@ class _DashboardPageState extends State<DashboardPage> {
                         ),
                       ],
                     ),
+                     */
                   ],
+                ),
+                CustomImageView(
+                  onTap: (){
+
+                  },
+                  height: 32,
+                  width: 94,
+                  imagePath: $appAssets.imgs.imgLogoHeader,
+                  fit: BoxFit.contain,
                 ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    /*
                     Container(
                         padding: const EdgeInsets.only(left: 6, right: 6),
                         height: 35,
@@ -160,23 +193,40 @@ class _DashboardPageState extends State<DashboardPage> {
                           ),
                         )
                     ),
+                     */
+                    KCircleButton(
+                      color: KStyles.cardGrey,
+                      onPressed: () {
+
+                      },
+                      child: const Icon(Iconsax.message_text,color: KStyles.blackColor),
+                    ),
                     const SizedBox(
-                      width: padding15,
+                      width: padding,
+                    ),
+                    KCircleButton(
+                      color: KStyles.cardGrey,
+                      onPressed: () {
+
+                      },
+                      child: const Icon(Iconsax.command_square,color: KStyles.blackColor),
+                    ),
+                    const SizedBox(
+                      width: padding,
                     ),
                     KCircleButton(
                       color: KStyles.cardGrey,
                       onPressed: () => Get.to(() => const ScanVerifyPage()),
                       child: const Icon(Iconsax.scan,color: KStyles.blackColor),
                     ),
-                    const SizedBox(
-                      width: padding15,
-                    ),
+                    /*
                     KCircleButton(
                       onPressed: () {
                         Get.to(() => AgencyPage());
                       },
                       child: const Icon(Iconsax.add, color: Colors.white),
                     ),
+                     */
                   ],
                 ),
               ],
@@ -203,7 +253,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   isScrollControlled: true,
                   backgroundColor: Colors.transparent,
                   builder: (context) => DraggableScrollableSheet(
-                    initialChildSize: 0.6,
+                    initialChildSize: 0.7,
                     minChildSize: 0.4,
                     maxChildSize: 0.9,
                     expand: false,
@@ -275,16 +325,111 @@ class _DashboardPageState extends State<DashboardPage> {
               height: padding20,
             ),
             if(dashboardCtr.currentIndex.value == 0)
-              const Column(
+              Column(
                 children: [
-                  BusinessCard(
+                  const BusinessCard(
                     chiffreAffaire: "1 Milliard Fcfa",
                     invoiceAmount: "1 Million Fcfa",
                     totalAgency: "05",
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: padding,
                   ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          KStatisticard(
+                              title: "32",
+                              subTitle:  "Achats",
+                            onPressed: (){
+
+                            },
+                            width: 100,
+                            height: 80,
+                          ),
+                          KStatisticard(
+                            title: "12",
+                            subTitle:  "Taxe",
+                            onPressed: (){
+
+                            },
+                            width: 100,
+                            height: 80,
+                          ),
+                          KStatisticard(
+                              width: 100,
+                              height: 80,
+                              title: "10",
+                              subTitle:  "Clients",
+                            onPressed: (){
+
+                            },
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(color: KStyles.dropDownBorderColor)
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(padding),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Chiffres d’affaires",
+                                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold,color: KStyles.blackColor),
+                              ),
+                              const SizedBox(height: 10),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                  child: DataTable(
+                                    headingRowColor: MaterialStateColor.resolveWith(
+                                            (states) => KStyles.primaryColor),
+                                    headingTextStyle: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    columns: const [
+                                      DataColumn(label: Text("MOIS",style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white))),
+                                      DataColumn(label: Text("NBRE FACTURE",style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white))),
+                                      DataColumn(label: Text("TOTAL",style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white))),
+                                    ],
+                                    rows: const [
+                                      DataRow(cells: [
+                                        DataCell(Text("Janvier")),
+                                        DataCell(Text("100")),
+                                        DataCell(Text("120K")),
+                                      ]),
+                                      DataRow(cells: [
+                                        DataCell(Text("Février")),
+                                        DataCell(Text("120")),
+                                        DataCell(Text("62M")),
+                                      ]),
+                                      DataRow(cells: [
+                                        DataCell(Text("Mars")),
+                                        DataCell(Text("60")),
+                                        DataCell(Text("12K")),
+                                      ]),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                    ],
+                  )
                 ],
               ),
             if(dashboardCtr.currentIndex.value == 1)
@@ -311,7 +456,6 @@ class _DashboardPageState extends State<DashboardPage> {
                       : AgencyPage(dataAgency: dataAgency),
                 ],
               ),
-
 
             if(dashboardCtr.currentIndex.value == 2)
               Column(
