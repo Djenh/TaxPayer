@@ -1,14 +1,24 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:image_picker/image_picker.dart';
 
+import '../../../../core/configs/injection_container.dart';
+import '../../../../core/services/toast_service.dart';
 import '../../../../domain/entities/product/categories_entities.dart';
+import '../../../_widgets/action_btn.dart';
 import '../../../_widgets/app_bar_custom.dart';
 import '../../../_widgets/build_text.dart';
+import '../../../controllers/product_ctrl.dart';
 import '../../../res/app_input_styles.dart';
 import '../../../res/input_formaters.dart';
 import '../../../res/style/e_style.dart';
+import '../../registration/_strings/register_str.dart';
 import '../../stocks/product/category/screens/category_page.dart';
 import '../widgets/rgpd_card.dart';
+import 'complaint_end_create_page.dart';
 
 
 
@@ -33,8 +43,10 @@ class _ComplaintCreatePageState extends State<ComplaintCreatePage> {
   TextEditingController? contribuableController;
   TextEditingController? objetController;
   TextEditingController? descriptionController;
-
   String? codeCategorie;
+  File? _selectedImage;
+  final ImagePicker _picker = ImagePicker();
+  final prodCtr = locator<ProductCtrl>();
 
   @override
   void initState() {
@@ -48,6 +60,8 @@ class _ComplaintCreatePageState extends State<ComplaintCreatePage> {
     contribuableController = TextEditingController();
     objetController = TextEditingController();
     descriptionController = TextEditingController();
+
+
   }
 
   @override
@@ -100,99 +114,54 @@ class _ComplaintCreatePageState extends State<ComplaintCreatePage> {
     );
   }
 
-
-  Widget _buildBtnAddComplaint(){
-    return Container(
-      height: padding,
-      color: Colors.white,
-
-
-
-      child: const Align(
-        alignment: Alignment.bottomCenter,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              /*Expanded(
-                child: ActionBtn(
-                    title: "Suivant",
-                    loading: invCtr.isLoading,
-                    onPressed: (){
-                      //
-                    }),
-              ),*/
-              SizedBox(width: 16),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-
   Widget step1Form(BuildContext ctx){
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment:  CrossAxisAlignment.start,
       children: [
-        buildText(ctx, "Nom du plaignant", 14, Colors.black,
-            fontWeight: FontWeight.w300),
-        const SizedBox(height: padding),
         TextFormField(
           controller: nomPlaignantController,
           enabled: true,
           keyboardType: TextInputType.text,
           inputFormatters: noSpaceNoEmoji,
-          decoration: AppInputStyles.defaultInputDecoration(labelText: ""),
+          textCapitalization: TextCapitalization.sentences,
+          decoration: AppInputStyles.defaultInputDecoration(labelText: "Nom du plaignant"),
         ),
-        const SizedBox(height: padding),
-        buildText(ctx, "Prénom du plaignant", 14, Colors.black,
-            fontWeight: FontWeight.w300),
-        const SizedBox(height: padding),
+        const SizedBox(height: 15),
         TextFormField(
           controller: prenomPlaignantController,
           enabled: true,
           keyboardType: TextInputType.text,
           inputFormatters: noSpaceNoEmoji,
-          decoration: AppInputStyles.defaultInputDecoration(labelText: ""),
+          textCapitalization: TextCapitalization.sentences,
+          decoration: AppInputStyles.defaultInputDecoration(labelText: "Prénom du plaignant"),
         ),
-        const SizedBox(height: padding),
-        buildText(ctx, "Téléphone du plaignant", 14, Colors.black,
-            fontWeight: FontWeight.w300),
-        const SizedBox(height: padding),
+        const SizedBox(height: 15),
         TextFormField(
           controller: telPlaignantController,
           enabled: true,
           keyboardType: TextInputType.phone,
           inputFormatters: noSpaceNoEmoji,
-          decoration: AppInputStyles.defaultInputDecoration(labelText: ""),
+          decoration: AppInputStyles.defaultInputDecoration(labelText: "Téléphone"),
         ),
-        const SizedBox(height: padding),
-        buildText(ctx, "Email du plaignant", 14, Colors.black,
-            fontWeight: FontWeight.w300),
-        const SizedBox(height: padding),
+        const SizedBox(height: 15),
         TextFormField(
           controller: emailPlaignantController,
           enabled: true,
           keyboardType: TextInputType.emailAddress,
           inputFormatters: noSpaceNoEmoji,
-          decoration: AppInputStyles.defaultInputDecoration(labelText: ""),
+          decoration: AppInputStyles.defaultInputDecoration(labelText: "Email"),
         ),
+        const SizedBox(height: 25),
       ],
     );
   }
-
 
   Widget step2Form(BuildContext ctx){
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment:  CrossAxisAlignment.start,
       children: [
-        buildText(ctx, "Catégorie", 14, Colors.black,
-            fontWeight: FontWeight.w300),
-        const SizedBox(height: padding),
         TextFormField(
           controller: categorieController,
           textInputAction: TextInputAction.next,
@@ -209,78 +178,156 @@ class _ComplaintCreatePageState extends State<ComplaintCreatePage> {
             });
           },
           decoration: AppInputStyles.defaultInputDecoration(
-              // labelText: "Categorie",
+              labelText: "Categorie",
               hintText: "Sélectionnez une catégorie",
               suffixIcon: const Icon(Icons.arrow_drop_down_sharp, size: 22)
           ),
         ),
-        const SizedBox(height: padding),
+        const SizedBox(height: 15),
         Row(
           children: [
             Flexible(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment:  CrossAxisAlignment.start,
-                children: [
-                  buildText(ctx, "Tin du contribuable", 14, Colors.black,
-                      fontWeight: FontWeight.w300),
-                  const SizedBox(height: padding),
-                  TextFormField(
-                    controller: tinContribuableController,
-                    enabled: true,
-                    keyboardType: TextInputType.text,
-                    inputFormatters: noSpaceNoEmoji,
-                    decoration: AppInputStyles.defaultInputDecoration(labelText: ""),
-                  ),
-                ],
+              child: TextFormField(
+                controller: tinContribuableController,
+                enabled: true,
+                keyboardType: TextInputType.text,
+                inputFormatters: noSpaceNoEmoji,
+                decoration: AppInputStyles.defaultInputDecoration(labelText: "Tin du contribuable"),
               ),
             ),
-            const SizedBox(width: padding),
+            const SizedBox(width: 15),
             Flexible(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment:  CrossAxisAlignment.start,
-                children: [
-                  buildText(ctx, "Contribuable", 14, Colors.black,
-                      fontWeight: FontWeight.w300),
-                  const SizedBox(height: padding),
-                  TextFormField(
-                    controller: contribuableController,
-                    enabled: true,
-                    keyboardType: TextInputType.text,
-                    inputFormatters: noSpaceNoEmoji,
-                    decoration: AppInputStyles.defaultInputDecoration(labelText: ""),
-                  ),
-                ],
-              )
+              child: TextFormField(
+                controller: contribuableController,
+                enabled: true,
+                keyboardType: TextInputType.text,
+                inputFormatters: noSpaceNoEmoji,
+                textCapitalization: TextCapitalization.sentences,
+                decoration: AppInputStyles.defaultInputDecoration(labelText: "Contribuable"),
+              ),
             ),
           ],
         ),
-        const SizedBox(height: padding),
-        buildText(ctx, "Objet de la plainte", 14, Colors.black,
-            fontWeight: FontWeight.w300),
-        const SizedBox(height: padding),
+        const SizedBox(height: 15),
         TextFormField(
           controller: objetController,
-          enabled: true,
           keyboardType: TextInputType.text,
           inputFormatters: noSpaceNoEmoji,
-          decoration: AppInputStyles.defaultInputDecoration(labelText: ""),
+          textCapitalization: TextCapitalization.sentences,
+          decoration: AppInputStyles.defaultInputDecoration(labelText: "Objet de la plainte"),
         ),
-        const SizedBox(height: padding),
-        buildText(ctx, "Description", 14, Colors.black, fontWeight: FontWeight.w300),
-        const SizedBox(height: padding),
+
+        const SizedBox(height: 15),
         TextFormField(
           controller: descriptionController,
           enabled: true,
           keyboardType: TextInputType.multiline,
           maxLines: 3,
           inputFormatters: noSpaceNoEmoji,
-          decoration: AppInputStyles.defaultInputDecoration(labelText: ""),
+          textCapitalization: TextCapitalization.sentences,
+          decoration: AppInputStyles.defaultInputDecoration(labelText: "Description"),
         ),
+        const SizedBox(height: 15),
+        Stack(
+          children: [
+            Container(
+              height: 100,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade200,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: _selectedImage == null
+                  ? GestureDetector(
+                onTap: _pickImage,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Iconsax.gallery_add, size: 40,
+                        color: Colors.black),
+                    const SizedBox(height: 8),
+                    buildText(context, "Ajouter une image",
+                        14, Colors.black, fontWeight: FontWeight.w400),
+                  ],
+                ),
+              )
+                  : ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.file(
+                  _selectedImage!,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: double.infinity,
+                ),
+              ),
+            ),
+            if (_selectedImage != null)
+              Positioned(
+                top: 8,
+                right: 8,
+                child: CircleAvatar(
+                  backgroundColor: Colors.red.shade100,
+                  radius: 18,
+                  child: IconButton(
+                    icon: const Icon(Iconsax.trash, color: Colors.red, size: 18),
+                    onPressed: _deleteImage,
+                  ),
+                ),
+              ),
+          ],
+        ),
+        const SizedBox(height: 25),
       ],
     );
   }
+
+  Future<void> _pickImage() async {
+    final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _selectedImage = File(pickedFile.path);
+      });
+    }
+  }
+
+  void _deleteImage() {
+    Future.delayed(const Duration(milliseconds: 300), () {
+      setState(() {
+        _selectedImage = null;
+      });
+    });
+  }
+
+  void _showToast(String description) {
+    ToastService.showWarning(context, 'Plainte', description: description);
+  }
+
+  Future<bool> _verifyField() async {
+    // ---to be implemented
+
+    if (nomPlaignantController?.text == null) {
+      _showToast('Veuillez remplir le nom du plaignant');
+      return false;
+    }
+
+    if (prenomPlaignantController?.text == null) {
+      _showToast('Veuillez remplir le prénom du plaignant');
+      return false;
+    }
+    if (telPlaignantController?.text == null) {
+      _showToast('Veuillez remplir le téléphone du plaignant');
+      return false;
+    }
+    if (emailPlaignantController?.text == null) {
+      _showToast("Veuillez remplir l'email du plaignant");
+      return false;
+    }
+    return true;
+    // ---to be implemented
+  }
+
+
+
 
 
   @override
@@ -302,60 +349,88 @@ class _ComplaintCreatePageState extends State<ComplaintCreatePage> {
             actionList: [ ]
         ),
         body: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: padding),
+          padding: const EdgeInsets.symmetric(horizontal: padding, vertical: padding),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const RgpdCard(
-                  title: "Protection d'identité",
-                  subTitle: "Votre plainte sera prise en compte et nous vous assurons \nque votre identité sera gardé dans l'anonymat conformément \naux dispositions de l'article 123"
+             const SizedBox(
+               height: 90,
+                child: RgpdCard(
+                    title: RegisterStr.rgpdTitle,
+                    subTitle: RegisterStr.rgpdSubTitle,
+                ),
               ),
               const SizedBox(height: padding,),
               Expanded(
-                child: Stepper(
-                  type : StepperType. horizontal,
-                  currentStep: activeStep,
-                  onStepCancel: () {
-                    if (activeStep > 0) {
-                      setState(() {
-                        activeStep -= 1;
-                      });
-                    }
-                  },
-                  onStepContinue: () {
-                    if (activeStep <= 0) {
-                      setState(() {
-                        activeStep += 1;
-                      });
-                    }
-                  },
-                  onStepTapped: (int index) {
-                    setState(() {
-                      activeStep = index;
-                    });
-                  },
-                  steps: <Step>[
-                    Step(
-                      isActive: activeStep>=0,
-                      title: const Text("Info du plaignant"),
-                      content: step1Form(context),
+                child: Theme(
+                  data: ThemeData(
+                    canvasColor: Colors.white,
+                    colorScheme: Theme.of(context).colorScheme.copyWith(
+                      primary: KStyles.primaryColor,
                     ),
-                    Step(
-                      isActive: activeStep>=1,
-                      title: const Text("Plainte"),
-                      content: step2Form(context),
-                    ),
-                  ],
+                  ),
+                  child: Stepper(
+                    type : StepperType. horizontal,
+                    currentStep: activeStep,
+                    onStepCancel: () {
+                      if (activeStep > 0) {
+                        setState(() {
+                          activeStep -= 1;
+                        });
+                      }
+                    },
+                    onStepContinue: () {
+                      if (activeStep <= 0) {
+                        setState(() {
+                          activeStep += 1;
+                        });
+                      }
+                    },
+                    onStepTapped: (int index) {
+                      setState(() {
+                        activeStep = index;
+                      });
+                    },
+                    controlsBuilder: (BuildContext context, ControlsDetails details) {
+                      return
+                        activeStep==0
+                            ?ActionBtn(
+                          title: 'Suivant',
+                          loading: prodCtr.isLoading,
+                          onPressed: details.onStepContinue,
+                        )
+                            :ActionBtn(
+                            title: 'Valider',
+                            loading: prodCtr.isLoading,
+                            onPressed: () async {
+                              // bool isFilled = await _verifyField();
+                              bool isFilled = true;
+                              if(isFilled){
+                                Get.to(() => const ComplaintEndCreatePage());
+                              }
+                            }
+                        );
+                    },
+                    steps: <Step>[
+                      Step(
+                        isActive: activeStep>=0,
+                        title: const Text("Info du plaignant"),
+                        content: step1Form(context),
+                      ),
+                      Step(
+                        isActive: activeStep>=1,
+                        title: const Text("Plainte"),
+                        content: step2Form(context),
+                      ),
+                    ],
+                  ),
                 ),
               )
             ],
           ),
         ),
-        bottomNavigationBar: _buildBtnAddComplaint(),
       ),
     );
   }
-
 }
-
-

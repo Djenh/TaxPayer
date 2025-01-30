@@ -58,7 +58,7 @@ dependencies:
   # Log local & remote call api
   logger: any
   talker_dio_logger:
-  easy_stepper: ^0.8.5+1
+  timelines_plus: ^1.0.6
 
 
 

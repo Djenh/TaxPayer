@@ -67,9 +67,9 @@ class _ScanVerifyPageState extends State<ScanVerifyPage> {
                   }
                 }
               },
-              onScannerStarted: (MobileScannerArguments? args) {
+              /*onScannerStarted: (MobileScannerArguments? args) {
                 debugPrint('Scanner démarré : ${args?.hasTorch}');
-              },
+              },*/
               errorBuilder: (context, exception, child) {
                 return Center(
                   child: Text(

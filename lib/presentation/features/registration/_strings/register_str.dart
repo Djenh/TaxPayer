@@ -63,4 +63,11 @@ class RegisterStr {
   static const String titleRp = 'Définition d’un nouveau mot de passe';
   static const String subTitleInitRp = 'Merci d’entrer votre nouveau mot de passe';
 
+
+  // RGPD title
+  static const String rgpdTitle = "Protection d'identité";
+  static const String rgpdSubTitle = "Votre plainte sera prise en compte et "
+      "nous vous assurons que votre identité sera gardé dans l'anonymat "
+      "conformément aux dispositions de l'article 123";
+
 }
