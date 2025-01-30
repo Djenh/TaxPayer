@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:invoice_app/commons/ui/button/kcirclebutton.dart';
 import 'package:invoice_app/commons/ui/kemptydata.dart';
+import 'package:invoice_app/commons/ui/kstatisticcard.dart';
 import 'package:invoice_app/core/configs/injection_container.dart';
 import 'package:invoice_app/core/constants/strings.dart';
 import 'package:invoice_app/core/services/app_service.dart';
@@ -203,7 +204,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   isScrollControlled: true,
                   backgroundColor: Colors.transparent,
                   builder: (context) => DraggableScrollableSheet(
-                    initialChildSize: 0.6,
+                    initialChildSize: 0.7,
                     minChildSize: 0.4,
                     maxChildSize: 0.9,
                     expand: false,
@@ -275,16 +276,111 @@ class _DashboardPageState extends State<DashboardPage> {
               height: padding20,
             ),
             if(dashboardCtr.currentIndex.value == 0)
-              const Column(
+              Column(
                 children: [
-                  BusinessCard(
+                  const BusinessCard(
                     chiffreAffaire: "1 Milliard Fcfa",
                     invoiceAmount: "1 Million Fcfa",
                     totalAgency: "05",
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: padding,
                   ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          KStatisticard(
+                              title: "32",
+                              subTitle:  "Achats",
+                            onPressed: (){
+
+                            },
+                            width: 100,
+                            height: 80,
+                          ),
+                          KStatisticard(
+                            title: "12",
+                            subTitle:  "Taxe",
+                            onPressed: (){
+
+                            },
+                            width: 100,
+                            height: 80,
+                          ),
+                          KStatisticard(
+                              width: 100,
+                              height: 80,
+                              title: "10",
+                              subTitle:  "Clients",
+                            onPressed: (){
+
+                            },
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(color: KStyles.dropDownBorderColor)
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(padding),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Chiffres d’affaires",
+                                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold,color: KStyles.blackColor),
+                              ),
+                              const SizedBox(height: 10),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                  child: DataTable(
+                                    headingRowColor: MaterialStateColor.resolveWith(
+                                            (states) => KStyles.primaryColor),
+                                    headingTextStyle: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    columns: const [
+                                      DataColumn(label: Text("MOIS",style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white))),
+                                      DataColumn(label: Text("NBRE FACTURE",style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white))),
+                                      DataColumn(label: Text("TOTAL",style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white))),
+                                    ],
+                                    rows: const [
+                                      DataRow(cells: [
+                                        DataCell(Text("Janvier")),
+                                        DataCell(Text("100")),
+                                        DataCell(Text("120K")),
+                                      ]),
+                                      DataRow(cells: [
+                                        DataCell(Text("Février")),
+                                        DataCell(Text("120")),
+                                        DataCell(Text("62M")),
+                                      ]),
+                                      DataRow(cells: [
+                                        DataCell(Text("Mars")),
+                                        DataCell(Text("60")),
+                                        DataCell(Text("12K")),
+                                      ]),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                    ],
+                  )
                 ],
               ),
             if(dashboardCtr.currentIndex.value == 1)
@@ -311,7 +407,6 @@ class _DashboardPageState extends State<DashboardPage> {
                       : AgencyPage(dataAgency: dataAgency),
                 ],
               ),
-
 
             if(dashboardCtr.currentIndex.value == 2)
               Column(

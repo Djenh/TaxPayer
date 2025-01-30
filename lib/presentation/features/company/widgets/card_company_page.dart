@@ -46,16 +46,16 @@ class CompanyCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 Row(
                   children: [
-                    Text(
+                    const Text(
                       "Entreprise",
                       style: TextStyle(fontSize: 14, color: Colors.black),
                     ),
-                    Text(
+                    const Text(
                       " | ",
                       style: TextStyle(fontSize: 14, color: Colors.black),
                     ),
                     Text(AppServices.instance.currentCompany.value?.status??"",
-                      style: TextStyle(fontSize: 14, color: KStyles.primaryColor),
+                      style: const TextStyle(fontSize: 14, color: KStyles.primaryColor),
                     ),
                   ],
                 ),
