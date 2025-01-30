@@ -6,15 +6,11 @@ import 'package:invoice_app/core/errors/request_failures.dart';
 import 'package:invoice_app/core/services/app_service.dart';
 import 'package:invoice_app/core/services/toast_service.dart';
 import 'package:invoice_app/data/dtos/add_invoice_dto.dart';
-import 'package:invoice_app/data/dtos/pricing_dto.dart';
 import 'package:invoice_app/domain/entities/invoice/deposit_tax_response.dart';
 import 'package:invoice_app/domain/entities/invoice/invoice_response.dart';
-import 'package:invoice_app/domain/entities/product/pricing_response.dart';
 import 'package:invoice_app/domain/entities/invoice/type_invoice_response.dart';
 import 'package:invoice_app/domain/usecases/invoice_uc.dart';
 import 'package:invoice_app/presentation/_widgets/app_loader.dart';
-import 'dart:developer' as developer;
-
 import 'package:invoice_app/utils/logger_util.dart';
 
 
@@ -27,7 +23,7 @@ class InvoiceCtrl extends GetxController {
   RxBool isLoading = false.obs;
   static const _pageSize = 20;
   PagingController<int, TypeInvoiceEntities>? pagingTypeInvoiceController;
-  PagingController<int, InvoiceResponse>? pagingIvoiceController;
+  PagingController<int, InvoiceResponse> pagingIvoiceController = PagingController<int, InvoiceResponse>(firstPageKey: 0);
   List<TypeInvoiceEntities> allTypeInvoice = [];
   List<InvoiceResponse> allInvoice = [];
   PagingController<int, DepositTaxEntities>? pagingDepositTaxController;
@@ -106,7 +102,7 @@ class InvoiceCtrl extends GetxController {
 
       result.fold(
             (failure) {
-              pagingIvoiceController?.error = failure.message;
+              pagingIvoiceController.error = failure.message;
         },
             (response) {
           final List<InvoiceResponse> newItems = response.content ?? [];
@@ -119,10 +115,10 @@ class InvoiceCtrl extends GetxController {
 
           final isLastPage = pageKey >= (response.totalPages ?? 1) - 1;
           if (isLastPage) {
-            pagingIvoiceController?.appendLastPage(newItems);
+            pagingIvoiceController.appendLastPage(newItems);
           } else {
             final nextPageKey = pageKey + 1;
-            pagingIvoiceController?.appendPage(newItems, nextPageKey);
+            pagingIvoiceController.appendPage(newItems, nextPageKey);
           }
         },
       );
