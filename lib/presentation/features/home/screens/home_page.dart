@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:invoice_app/presentation/features/complaint/screens/complaint_page.dart';
 import 'package:invoice_app/presentation/features/pos/screens/pos_page.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 
@@ -29,7 +30,7 @@ class HomePage extends StatelessWidget {
                 const DashboardPage(),
                 const InvoiceList(),
                 const PosPage(isManage: false),
-                Container(),
+                ComplaintPage()//Container(),
                 //Container(),
               ],
             ),
