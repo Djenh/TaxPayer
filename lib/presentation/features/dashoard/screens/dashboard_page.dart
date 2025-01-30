@@ -20,7 +20,10 @@ import 'package:invoice_app/presentation/features/dashoard/widgets/tab_bar_widge
 import 'package:invoice_app/presentation/features/pos/screens/pos_form_page.dart';
 import 'package:invoice_app/presentation/features/registration/_strings/register_str.dart';
 import 'package:invoice_app/presentation/features/sales/invoice/screens/verify_invoice/scan_verify_page.dart';
+import 'package:invoice_app/presentation/res/assets/app_assets.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
+
+import '../../../../utils/custom_image_view.dart';
 
 
 
@@ -61,11 +64,23 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return Obx(() =>Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.only(left: padding,right: padding),
       child: RefreshIndicator(
         onRefresh: () => Future.sync(() => _refreshData()),
         child: ListView(
           children: [
+            CustomImageView(
+              onTap: (){
+
+              },
+              height: 5,
+              width: 209,
+              imagePath: $appAssets.svgs.svframe,
+              fit: BoxFit.contain,
+            ),
+            const SizedBox(
+              height: padding15,
+            ),
             Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -80,13 +95,19 @@ class _DashboardPageState extends State<DashboardPage> {
                         return KCircleButton(
                           color: KStyles.cardGrey,
                           onPressed: () => Scaffold.of(context).openDrawer(),
-                          child: const Icon(Iconsax.user,color: KStyles.blackColor),
+                          child: CustomImageView(
+                            height: 24,
+                            width: 24,
+                            imagePath: $appAssets.svgs.menu,
+                            fit: BoxFit.contain,
+                          ),
                         );
                       },
                     ),
                     const SizedBox(
                       width: padding,
                     ),
+                    /*
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,12 +122,23 @@ class _DashboardPageState extends State<DashboardPage> {
                         ),
                       ],
                     ),
+                     */
                   ],
+                ),
+                CustomImageView(
+                  onTap: (){
+
+                  },
+                  height: 32,
+                  width: 94,
+                  imagePath: $appAssets.imgs.imgLogoHeader,
+                  fit: BoxFit.contain,
                 ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    /*
                     Container(
                         padding: const EdgeInsets.only(left: 6, right: 6),
                         height: 35,
@@ -161,23 +193,40 @@ class _DashboardPageState extends State<DashboardPage> {
                           ),
                         )
                     ),
+                     */
+                    KCircleButton(
+                      color: KStyles.cardGrey,
+                      onPressed: () {
+
+                      },
+                      child: const Icon(Iconsax.message_text,color: KStyles.blackColor),
+                    ),
                     const SizedBox(
-                      width: padding15,
+                      width: padding,
+                    ),
+                    KCircleButton(
+                      color: KStyles.cardGrey,
+                      onPressed: () {
+
+                      },
+                      child: const Icon(Iconsax.command_square,color: KStyles.blackColor),
+                    ),
+                    const SizedBox(
+                      width: padding,
                     ),
                     KCircleButton(
                       color: KStyles.cardGrey,
                       onPressed: () => Get.to(() => const ScanVerifyPage()),
                       child: const Icon(Iconsax.scan,color: KStyles.blackColor),
                     ),
-                    const SizedBox(
-                      width: padding15,
-                    ),
+                    /*
                     KCircleButton(
                       onPressed: () {
                         Get.to(() => AgencyPage());
                       },
                       child: const Icon(Iconsax.add, color: Colors.white),
                     ),
+                     */
                   ],
                 ),
               ],
