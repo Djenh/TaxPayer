@@ -214,7 +214,7 @@ class _TombolaPageState extends State<TombolaPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              buildText(context, "Liste de participation", 15, Colors.black, fontWeight: FontWeight.w700),
+              buildText(context, "Liste de participation", 16, Colors.black, fontWeight: FontWeight.w700),
               const SizedBox(height: padding20,),
               ListView.builder(
                 shrinkWrap: true,
