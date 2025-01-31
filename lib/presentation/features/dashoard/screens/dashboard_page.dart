@@ -362,32 +362,41 @@ class _DashboardPageState extends State<DashboardPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            KStatisticard(
-                              title: "32",
-                              subTitle:  "Achats",
-                              onPressed: (){
+                            Expanded(
+                              child: KStatisticard(
+                                title: "32",
+                                subTitle:  "Achats",
+                                onPressed: (){
 
-                              },
-                              width: 100,
-                              height: 80,
+                                },
+                                height: 80,
+                              ),
                             ),
-                            KStatisticard(
-                              title: "12",
-                              subTitle:  "Taxe",
-                              onPressed: (){
-
-                              },
-                              width: 100,
-                              height: 80,
+                            const SizedBox(
+                              width: padding,
                             ),
-                            KStatisticard(
-                              width: 100,
-                              height: 80,
-                              title: "10",
-                              subTitle:  "Clients",
-                              onPressed: (){
+                            Expanded(
+                              child: KStatisticard(
+                                title: "12",
+                                subTitle:  "Taxe",
+                                onPressed: (){
 
-                              },
+                                },
+                                height: 80,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: padding,
+                            ),
+                            Expanded(
+                              child: KStatisticard(
+                                height: 80,
+                                title: "10",
+                                subTitle:  "Clients",
+                                onPressed: (){
+
+                                },
+                              ),
                             ),
                           ],
                         ),
@@ -410,57 +419,60 @@ class _DashboardPageState extends State<DashboardPage> {
                                 const SizedBox(height: 10),
                                 SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: DataTable(
-                                      headingRowColor: MaterialStateColor.resolveWith(
-                                              (states) => KStyles.primaryColor),
-                                      headingTextStyle: const TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
+                                  child: SizedBox(
+                                    width: MediaQuery.of(context).size.width,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: DataTable(
+                                        headingRowColor: MaterialStateColor.resolveWith(
+                                                (states) => KStyles.primaryColor),
+                                        headingTextStyle: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        columns: const [
+                                          DataColumn(label: Text("MOIS",style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white))),
+                                          DataColumn(label: Text("NBRE FACTURE",style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white))),
+                                          DataColumn(label: Text("TOTAL",style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white))),
+                                        ],
+                                        rows: const [
+                                          DataRow(cells: [
+                                            DataCell(Text("Janvier")),
+                                            DataCell(Text("100")),
+                                            DataCell(Text("120K")),
+                                          ]),
+                                          DataRow(cells: [
+                                            DataCell(Text("Février")),
+                                            DataCell(Text("120")),
+                                            DataCell(Text("62M")),
+                                          ]),
+                                          DataRow(cells: [
+                                            DataCell(Text("Mars")),
+                                            DataCell(Text("60")),
+                                            DataCell(Text("12K")),
+                                          ]),
+                                          DataRow(cells: [
+                                            DataCell(Text("Mars")),
+                                            DataCell(Text("60")),
+                                            DataCell(Text("12K")),
+                                          ]),
+                                          DataRow(cells: [
+                                            DataCell(Text("Mars")),
+                                            DataCell(Text("60")),
+                                            DataCell(Text("12K")),
+                                          ]),
+                                          DataRow(cells: [
+                                            DataCell(Text("Mars")),
+                                            DataCell(Text("60")),
+                                            DataCell(Text("12K")),
+                                          ]),
+                                          DataRow(cells: [
+                                            DataCell(Text("Mars")),
+                                            DataCell(Text("60")),
+                                            DataCell(Text("12K")),
+                                          ]),
+                                        ],
                                       ),
-                                      columns: const [
-                                        DataColumn(label: Text("MOIS",style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white))),
-                                        DataColumn(label: Text("NBRE FACTURE",style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white))),
-                                        DataColumn(label: Text("TOTAL",style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white))),
-                                      ],
-                                      rows: const [
-                                        DataRow(cells: [
-                                          DataCell(Text("Janvier")),
-                                          DataCell(Text("100")),
-                                          DataCell(Text("120K")),
-                                        ]),
-                                        DataRow(cells: [
-                                          DataCell(Text("Février")),
-                                          DataCell(Text("120")),
-                                          DataCell(Text("62M")),
-                                        ]),
-                                        DataRow(cells: [
-                                          DataCell(Text("Mars")),
-                                          DataCell(Text("60")),
-                                          DataCell(Text("12K")),
-                                        ]),
-                                        DataRow(cells: [
-                                          DataCell(Text("Mars")),
-                                          DataCell(Text("60")),
-                                          DataCell(Text("12K")),
-                                        ]),
-                                        DataRow(cells: [
-                                          DataCell(Text("Mars")),
-                                          DataCell(Text("60")),
-                                          DataCell(Text("12K")),
-                                        ]),
-                                        DataRow(cells: [
-                                          DataCell(Text("Mars")),
-                                          DataCell(Text("60")),
-                                          DataCell(Text("12K")),
-                                        ]),
-                                        DataRow(cells: [
-                                          DataCell(Text("Mars")),
-                                          DataCell(Text("60")),
-                                          DataCell(Text("12K")),
-                                        ]),
-                                      ],
                                     ),
                                   ),
                                 ),
