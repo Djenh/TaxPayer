@@ -47,6 +47,30 @@ class _TombolaPageState extends State<TombolaPage> {
       'type': 'Tombola ABY',
       'statut': "En attente"
     },
+    {'reference': 'IHok7059642',
+      'type': 'Tombola ABY',
+      'statut': "En attente"
+    },
+    {'reference': 'IHok7059642',
+      'type': 'Tombola ABY',
+      'statut': "Gagnant"
+    },
+    {'reference': 'IHok7059642',
+      'type': 'Tombola ABY',
+      'statut': "Non gagnant"
+    },
+    {'reference': 'IHok7059642',
+      'type': 'Tombola ABY',
+      'statut': "Non gagnant"
+    },
+    {'reference': 'IHok7059642',
+      'type': 'Tombola ABY',
+      'statut': "Gagnant"
+    },
+    {'reference': 'IHok7059642',
+      'type': 'Tombola ABY',
+      'statut': "En attente"
+    },
   ];
 
 
@@ -64,47 +88,56 @@ class _TombolaPageState extends State<TombolaPage> {
   {
     if(statut.toLowerCase().startsWith("en"))
     {
-      return OutlinedButton(
-        onPressed: () {},
-        style: OutlinedButton.styleFrom(
-          backgroundColor: KStyles.textLightColor.withOpacity(0.2),
-          foregroundColor: KStyles.textLightColor,
-          side: const BorderSide(color: KStyles.textLightColor),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
+      return Container(
+          padding: const EdgeInsets.all(padding),
+          width: 90,
+          decoration: BoxDecoration(
+              color: KStyles.textLightColor.withOpacity(0.2),
+              border: Border.all(
+                  width: 1,
+                  color: KStyles.textLightColor,
+                  strokeAlign: BorderSide.strokeAlignCenter),
+              borderRadius: BorderRadius.circular(8)
           ),
-        ),
-        child:  const Text("En attente", style: TextStyle(fontSize: 10, fontWeight: FontWeight.normal),),
+        child: const Text("En attente", textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 10, fontWeight: FontWeight.normal,
+              color:KStyles.textLightColor),),
       );
     }
     else if(statut.toLowerCase().startsWith("gagn"))
     {
-      return OutlinedButton(
-        onPressed: () {},
-        style: OutlinedButton.styleFrom(
-          backgroundColor: KStyles.secondaryColor.withOpacity(0.2),
-          foregroundColor: KStyles.secondaryColor,
-          side: const BorderSide(color: KStyles.secondaryColor),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
+      return Container(
+        padding: const EdgeInsets.all(padding),
+        width: 90,
+        decoration: BoxDecoration(
+            color: KStyles.secondaryColor.withOpacity(0.2),
+            border: Border.all(
+                width: 1,
+                color: KStyles.secondaryColor,
+                strokeAlign: BorderSide.strokeAlignCenter),
+            borderRadius: BorderRadius.circular(8)
         ),
-        child:  const Text("Gagnant", style: TextStyle(fontSize: 10, fontWeight: FontWeight.normal),),
+        child: const Text("Gagnant", textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 10, fontWeight: FontWeight.normal,
+              color:KStyles.secondaryColor),),
       );
     }
     else
     {
-      return OutlinedButton(
-        onPressed: () {},
-        style: OutlinedButton.styleFrom(
-          backgroundColor: KStyles.dangerColor.withOpacity(0.2),
-          foregroundColor: KStyles.dangerColor,
-          side: const BorderSide(color: KStyles.dangerColor),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
+      return Container(
+        padding: const EdgeInsets.all(padding),
+        width: 90,
+        decoration: BoxDecoration(
+            color: KStyles.dangerColor.withOpacity(0.2),
+            border: Border.all(
+                width: 1,
+                color: KStyles.dangerColor,
+                strokeAlign: BorderSide.strokeAlignCenter),
+            borderRadius: BorderRadius.circular(8)
         ),
-        child:  const Text("Non gagnant", style: TextStyle(fontSize: 10, fontWeight: FontWeight.normal),),
+        child: const Text("Non gagnant", textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 10, fontWeight: FontWeight.normal,
+              color:KStyles.dangerColor),),
       );
     }
   }
@@ -123,16 +156,17 @@ class _TombolaPageState extends State<TombolaPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Flexible(
-                flex: 2,
-                child: buildText(context, "Réf facture", 10, KStyles.textLightColor, fontWeight: FontWeight.w400),
+                flex: 1,
+                child: buildText(context, "Réf facture", 11, KStyles.textSecondaryColor, fontWeight: FontWeight.w400),
               ),
               Flexible(
                 flex: 1,
-                child: buildText(context, "Type de tirage", 10, KStyles.textLightColor, fontWeight: FontWeight.w400),
+                fit: FlexFit.tight,
+                child: buildText(context, "Type de tirage", 11, KStyles.textSecondaryColor, fontWeight: FontWeight.w400),
               ),
               Flexible(
-                flex: 2,
-                child: buildText(context, "Statut", 10, KStyles.textLightColor, fontWeight: FontWeight.w400),
+                flex: 1,
+                child: buildText(context, "Statut", 11, KStyles.textSecondaryColor, fontWeight: FontWeight.w400),
               ),
             ],
           ),
@@ -141,7 +175,7 @@ class _TombolaPageState extends State<TombolaPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Flexible(
-                flex: 2,
+                flex: 1,
                 child: buildText(context, tombola["reference"]??"", 12,
                     KStyles.blackColor, fontWeight: FontWeight.w600),
               ),
@@ -173,21 +207,25 @@ class _TombolaPageState extends State<TombolaPage> {
           actionList: [],
           bgColor: Colors.white
       ),
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: padding, vertical: padding),
-        child: Column(
-          children: [
-            buildText(context, "Liste de participation", 15, Colors.black, fontWeight: FontWeight.w700),
-            const SizedBox(height: padding,),
-            ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: listParticipation!.length,
-              itemBuilder: (BuildContext context, int idx){
-                return buildParticipateTombola(listParticipation![idx]);
-              },
-            ),
-          ],
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: padding, vertical: padding),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              buildText(context, "Liste de participation", 15, Colors.black, fontWeight: FontWeight.w700),
+              const SizedBox(height: padding20,),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: listParticipation!.length,
+                itemBuilder: (BuildContext context, int idx){
+                  return buildParticipateTombola(listParticipation![idx]);
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

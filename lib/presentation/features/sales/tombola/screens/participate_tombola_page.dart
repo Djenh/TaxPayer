@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:invoice_app/core/configs/injection_container.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
 import 'package:invoice_app/presentation/features/sales/tombola/screens/participate_tombola_end_page.dart';
@@ -54,23 +53,24 @@ class _ParticipateTombolaPageState extends State<ParticipateTombolaPage> {
   Widget buildRecap()
   {
     return Container(
-        // height: 75,
         padding: const EdgeInsets.all(padding),
         decoration: BoxDecoration(
-        color: KStyles.textSecondaryColor.withOpacity(0.4),
-        border: Border.all(
-        width: 1,
-        color: KStyles.textSecondaryColor.withOpacity(0.4),
-        strokeAlign: BorderSide.strokeAlignCenter),
-        borderRadius: BorderRadius.circular(8)
+          color: KStyles.fieldGrey.withOpacity(0.4),
+          border: Border.all(
+          width: 1,
+          color: KStyles.fieldGrey.withOpacity(0.4),
+          strokeAlign: BorderSide.strokeAlignCenter),
+          borderRadius: BorderRadius.circular(8)
         ),
         child: Column(
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                buildText(context, "Référence de la facture", 13, KStyles.textSecondaryColor, fontWeight: FontWeight.w400),
-                buildText(context, factureData["reference"], 13, KStyles.textSecondaryColor, fontWeight: FontWeight.w400),
+                buildText(context, "Référence de la facture", 13,
+                    KStyles.textSecondaryColor, fontWeight: FontWeight.w400),
+                buildText(context, factureData["reference"], 13,
+                    KStyles.blackColor, fontWeight: FontWeight.w700),
               ],
             ),
             const SizedBox(height: padding,),
@@ -78,7 +78,7 @@ class _ParticipateTombolaPageState extends State<ParticipateTombolaPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 buildText(context, "Type de facture", 13, KStyles.textSecondaryColor, fontWeight: FontWeight.w400),
-                buildText(context, factureData["type"], 13, KStyles.textSecondaryColor, fontWeight: FontWeight.w400),
+                buildText(context, factureData["type"], 13, KStyles.blackColor, fontWeight: FontWeight.w700),
               ],
             ),
             const SizedBox(height: padding,),
@@ -86,7 +86,7 @@ class _ParticipateTombolaPageState extends State<ParticipateTombolaPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 buildText(context, "Nombre d'article", 13, KStyles.textSecondaryColor, fontWeight: FontWeight.w400),
-                buildText(context, factureData["nbrArticle"], 13, KStyles.textSecondaryColor, fontWeight: FontWeight.w400),
+                buildText(context, "${factureData["nbrArticle"]}", 13, KStyles.blackColor, fontWeight: FontWeight.w700),
               ],
             ),
             const SizedBox(height: padding,),
@@ -94,7 +94,7 @@ class _ParticipateTombolaPageState extends State<ParticipateTombolaPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 buildText(context, "Montant de la facture", 13, KStyles.textSecondaryColor, fontWeight: FontWeight.w400),
-                buildText(context, factureData["montant"], 13, KStyles.textSecondaryColor, fontWeight: FontWeight.w400),
+                buildText(context, factureData["montant"], 13, KStyles.blackColor, fontWeight: FontWeight.w700),
               ],
             ),
             const SizedBox(height: padding,),
@@ -102,7 +102,7 @@ class _ParticipateTombolaPageState extends State<ParticipateTombolaPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 buildText(context, "Date d'émission", 13, KStyles.textSecondaryColor, fontWeight: FontWeight.w400),
-                buildText(context, factureData["dateEmission"], 13, KStyles.textSecondaryColor, fontWeight: FontWeight.w400),
+                buildText(context, factureData["dateEmission"], 13, KStyles.blackColor, fontWeight: FontWeight.w700),
               ],
             ),
           ],
@@ -127,7 +127,7 @@ class _ParticipateTombolaPageState extends State<ParticipateTombolaPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             buildRecap(),
-            const SizedBox(height: padding,),
+            const SizedBox(height: padding20,),
             Form(
               key: formKey,
               child: Column(
@@ -142,6 +142,7 @@ class _ParticipateTombolaPageState extends State<ParticipateTombolaPage> {
                       decoration: AppInputStyles.defaultInputDecoration(
                           labelText: "Nom du participant"),
                     ),
+                    const SizedBox(height: padding,),
                     TextFormField(
                       controller: telController,
                       enabled: true,
@@ -151,13 +152,19 @@ class _ParticipateTombolaPageState extends State<ParticipateTombolaPage> {
                           labelText: "Téléphone du participant"),
                     ),
                     const SizedBox(height: padding20,),
-                    ActionBtn(
-                        title: "Participer au tirage",
-                        loading: prodCtr.isLoading,
-                        onPressed: () async {
-                          // --- to be implemented
-                          Get.to(() => const ParticipateTombolaEndPage());
-                        }
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ActionBtn(
+                              title: "Participer au tirage",
+                              loading: prodCtr.isLoading,
+                              onPressed: () async {
+                                // --- to be implemented
+                                Get.to(() => const ParticipateTombolaEndPage());
+                              }
+                          ),
+                        )
+                      ],
                     ),
                   ]
               ),

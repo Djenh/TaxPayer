@@ -31,7 +31,7 @@ class HomePage extends StatelessWidget {
                 const DashboardPage(),
                 const InvoiceList(),
                 const PosPage(isManage: false),
-                ParticipateTombolaPage()//Container(),
+                ParticipateTombolaPage(),
                 //Container(),
               ],
             ),

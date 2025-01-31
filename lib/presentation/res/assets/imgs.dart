@@ -10,4 +10,5 @@ class Imgs {
   final String img5 = _path1('5');
   final String img6 = _path1('6');
   final String imgLogoHeader = _path('logo_header');
+  final String imgWinTombola = _path('win_tombola');
 }

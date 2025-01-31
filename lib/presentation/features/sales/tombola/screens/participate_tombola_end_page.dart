@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:invoice_app/core/configs/injection_container.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
+import 'package:invoice_app/presentation/features/sales/tombola/screens/tombola_page.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 
 import '../../../../_widgets/action_btn.dart';
 import '../../../../_widgets/app_bar_custom.dart';
 import '../../../../controllers/product_ctrl.dart';
-import '../../invoice/screens/verify_invoice/participate_tombola_page.dart';
 
 
 
@@ -39,12 +39,10 @@ class _ParticipateTombolaEndPageState extends State<ParticipateTombolaEndPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: appBarHome(context, "Participer au tombola",
-          actionList: [],
-          bgColor: Colors.white
-      ),
+      appBar: appBarOther(context, "Participer au tombola", actionList: [] ),
       body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: padding, vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: padding, vertical: padding20),
+        margin: const EdgeInsets.only(top: padding20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -61,7 +59,7 @@ class _ParticipateTombolaEndPageState extends State<ParticipateTombolaEndPage> {
                     child: ActionBtn(
                       title: 'Quitter',
                       loading: prodCtr.isLoading,
-                      onPressed: ()=> Get.to(() => const ParticipateTombolaPage()),
+                      onPressed: ()=> Get.to(() => const TombolaPage()),
                     )
                 ),
               ],
