@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:invoice_app/presentation/_widgets/simple_btn.dart';
+import 'package:invoice_app/core/configs/injection_container.dart';
+import 'package:invoice_app/core/services/toast_service.dart';
+import 'package:invoice_app/presentation/_widgets/action_btn.dart';
+import 'package:invoice_app/presentation/controllers/invoice_ctrl.dart';
 import 'package:invoice_app/presentation/features/sales/invoice/screens/verify_invoice/result_verify_invoice_page.dart';
 
 import '../../../../../_widgets/app_bar_custom.dart';
@@ -17,6 +20,7 @@ class ManualCheckPage extends StatefulWidget {
 
 class _ManualCheckPageState extends State<ManualCheckPage> {
 
+  final invCtr = locator<InvoiceCtrl>();
   final formKey = GlobalKey<FormState>();
   TextEditingController? verifyController;
 
@@ -33,6 +37,16 @@ class _ManualCheckPageState extends State<ManualCheckPage> {
     // TODO: implement dispose
     super.dispose();
     verifyController?.dispose();
+  }
+
+
+  Future<void> _verifyInvoice() async {
+    String sig = verifyController!.text.trim();
+    await invCtr.invoiceVerify(context, sig, true).then((val){
+      if(val != null){
+        Get.to(() => ResultVerifyInvoicePage(dataInvoice: val));
+      }
+    });
   }
 
 
@@ -76,17 +90,16 @@ class _ManualCheckPageState extends State<ManualCheckPage> {
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: SimpleBtn(
-          titleBtn: "Vérifier",
-          sizeFont: 16,
+        child: ActionBtn(
+          title: "Vérifier",
+          loading: invCtr.isLoading,
           onPressed: (){
-            /*showDialog(
-              context: context,
-              builder: (context) {
-                return const ErrorScanDialog();
-              },
-            );*/
-            Get.to(() => const ResultVerifyInvoicePage());
+            if(verifyController!.text.isNotEmpty){
+              _verifyInvoice();
+            }else{
+              ToastService.showWarning(context, "Vérification Facture",
+                  description: "Veuillez renseignez la signature de la facture");
+            }
           },
         ),
       ),

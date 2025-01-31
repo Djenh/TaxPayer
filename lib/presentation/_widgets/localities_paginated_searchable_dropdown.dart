@@ -6,6 +6,7 @@ import 'package:invoice_app/core/services/toast_service.dart';
 import 'package:invoice_app/domain/entities/company/localities_list_response.dart';
 import 'package:invoice_app/presentation/controllers/company_ctrl.dart';
 import 'package:invoice_app/presentation/res/app_input_styles.dart';
+import 'package:invoice_app/presentation/res/style/e_style.dart';
 
 class LocalitiesPaginatedSearchableDropdown extends StatefulWidget {
   const LocalitiesPaginatedSearchableDropdown({super.key});
@@ -88,11 +89,29 @@ class _LocalitiesPaginatedSearchableDropdownState extends State<LocalitiesPagina
   Widget build(BuildContext context) {
     return Column(
       children: [
-        IconButton(
-            onPressed: () => Get.back(),
-            icon: const Icon(Iconsax.close_square)
+        Align(
+          alignment: Alignment.topRight,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 20.0, right: 20.0),
+            child: InkWell(
+              onTap: (){
+                Navigator.pop(context);
+              },
+              child: Container(
+                padding: const EdgeInsets.all(4),
+                width: 30, height: 30,
+                decoration: BoxDecoration(
+                  color: KStyles.primaryColor,
+                  borderRadius: BorderRadius.circular(6),
+                  shape: BoxShape.rectangle
+                ),
+                child: const Center(
+                  child: Icon(Icons.close_outlined, color: Colors.white, size: 18,),
+                ),
+              ),
+            ),
+          ),
         ),
-        const SizedBox(height: 20),
         Padding(
           padding: const EdgeInsets.all(20.0),
           child: TextField(

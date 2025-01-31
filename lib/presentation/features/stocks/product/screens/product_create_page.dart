@@ -408,7 +408,8 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
                   keyboardType: TextInputType.text,
                   inputFormatters: noSpaceNoEmoji,
                   onTap: () async {
-                    await Get.to(() => const CategoryPage(isManage: true))?.then((val){
+                    await Get.to(() => const CategoryPage(isManage: true),
+                         fullscreenDialog: true)?.then((val){
                       if(val is CategoriesEntities){
                         setState(() {
                           ctgController?.text = val.name!;
@@ -432,7 +433,8 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
                     keyboardType: TextInputType.text,
                     inputFormatters: noSpaceNoEmoji,
                     onTap: () async {
-                      await Get.to(() => const UnitPage())?.then((val){
+                      await Get.to(() => const UnitPage(),
+                          fullscreenDialog: true)?.then((val){
                         if(val is UnitMEntities){
                           setState(() {
                             unitMController?.text = val.code!;
@@ -471,7 +473,8 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
                           keyboardType: TextInputType.text,
                           inputFormatters: noSpaceNoEmoji,
                           onTap: () async {
-                            await Get.to(() => const TaxGroupPage())?.then((val){
+                            await Get.to(() => const TaxGroupPage(),
+                                fullscreenDialog: true)?.then((val){
                               if(val is TaxGroupEntities){
                                 setState(() {
                                   taxGroupController?.text = val.name!;

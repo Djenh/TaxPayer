@@ -35,7 +35,7 @@ class AddInvoiceDto {
   String typeInvoiceCode;
   String tin;
   String posCode;
-  String securityTaxCode;
+  String? securityTaxCode;
   String? comment;
   List<ItemInvoiceDto> items;
 
@@ -49,10 +49,12 @@ class AddInvoiceDto {
       'typeInvoiceCode': typeInvoiceCode,
       'tin': tin,
       'posCode': posCode,
-      'securityTaxCode': securityTaxCode,
       'items': items
     };
 
+   if(securityTaxCode != null){
+     data["securityTaxCode"] = securityTaxCode;
+   }
 
     if(comment != null){
       data["comment"] = comment;

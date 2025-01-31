@@ -157,7 +157,7 @@ class _PosFormPageState extends State<PosFormPage> {
           onTap: () async {
             await showModalBottomSheet(
               context: context,
-              //backgroundColor: Colors.white,
+              backgroundColor: Colors.white,
               isScrollControlled: true,
               builder: (context) => SizedBox(
                 height: MediaQuery.of(context).size.height * 0.8,

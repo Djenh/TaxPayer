@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -7,6 +6,7 @@ import 'package:invoice_app/core/configs/injection_container.dart';
 import 'package:invoice_app/domain/entities/product/unit_m_list_response.dart';
 import 'package:invoice_app/presentation/_widgets/app_bar_custom.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
+import 'package:invoice_app/presentation/_widgets/float_btn.dart';
 import 'package:invoice_app/presentation/_widgets/paged_first_error.dart';
 import 'package:invoice_app/presentation/_widgets/paged_new_page_error.dart';
 import 'package:invoice_app/presentation/controllers/product_ctrl.dart';
@@ -65,24 +65,7 @@ class _UnitPageState extends State<UnitPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: appBarOther(context, "Unité de mesure",
-            actionList: [
-              /*IconButton(
-                onPressed: () {
-                  Get.to(() => const CategorySearchPage(isManage: true));
-                }, icon: const Icon(Iconsax.search_normal)),*/
-              IconButton(
-                  onPressed: () async {
-                    await Get.to(() => const AddUnitPage())?.then((val){
-                      if(val == true){
-                        prodCtr.pagingUmController?.refresh();
-                      }
-                    });
-                  },
-                  icon: const Icon(CupertinoIcons.add_circled_solid,
-                      color: KStyles.primaryColor, size: 32)
-              ),
-            ]),
+        appBar: appBarOther(context, "Unité de mesure"),
         body: RefreshIndicator(
           onRefresh: () => Future.sync(() => prodCtr.pagingCtgController?.refresh()),
           child: Column(
@@ -138,7 +121,18 @@ class _UnitPageState extends State<UnitPage> {
               )
             ],
           ),
-        )
+        ),
+        floatingActionButton: FloatBtn(
+        onAction: () async {
+          await Get.to(() => const AddUnitPage(),
+              fullscreenDialog: true)?.then((val){
+            if(val == true){
+              prodCtr.pagingUmController?.refresh();
+            }
+          });
+        },
+        icn: Iconsax.add,
+      ),
     );
   }
 

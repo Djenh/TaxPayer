@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:invoice_app/domain/entities/invoice/invoice_response.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
 import 'package:invoice_app/presentation/features/sales/invoice/screens/verify_invoice/participate_tombola_page.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
@@ -11,7 +12,9 @@ import '../template_invoice/modern_view_invoice_page.dart';
 
 
 class ResultVerifyInvoicePage extends StatefulWidget {
-  const ResultVerifyInvoicePage({super.key});
+
+  final InvoiceResponse dataInvoice;
+  const ResultVerifyInvoicePage({super.key, required this.dataInvoice});
 
   @override
   State<ResultVerifyInvoicePage> createState() => _ResultVerifyInvoicePageState();
@@ -128,7 +131,8 @@ class _ResultVerifyInvoicePageState extends State<ResultVerifyInvoicePage> {
                  color: Colors.white,
                  borderRadius: BorderRadius.circular(6)
                ),
-               child: const ModernViewInvoicePage(isSaleInvoice: true),
+               child: ModernViewInvoicePage(
+                   invoiceResponse: widget.dataInvoice, isSaleInvoice: true),
              ),
              const SizedBox(height: 20)
            ],

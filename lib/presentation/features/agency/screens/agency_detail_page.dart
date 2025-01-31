@@ -258,7 +258,7 @@ class _AgencyDetailPageState extends State<AgencyDetailPage> {
                           itemBuilder: (context, typ, index) {
                             return InvoiceItem(
                               invoiceResponse: typ,
-                              onTap: () => Get.to(() =>  InvoiceDetailPage(invoiceResponse: typ)),
+                              onTap: () => Get.to(() =>  InvoiceDetailPage(invoiceResponse: typ, isSaleInvoice: true)),
                             );
                           },
                           firstPageProgressIndicatorBuilder: (_) => const Center(child: CircularProgressIndicator()),

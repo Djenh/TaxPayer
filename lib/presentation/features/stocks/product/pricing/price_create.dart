@@ -130,7 +130,8 @@ class _PriceCreateState extends State<PriceCreate> {
                   textInputAction: TextInputAction.done,
                   keyboardType: TextInputType.text,
                   onTap: () async {
-                    await Get.to(() => const TaxGroupPage())?.then((val){
+                    await Get.to(() => const TaxGroupPage(),
+                         fullscreenDialog: true)?.then((val){
                       if(val is TaxGroupEntities){
                         setState(() {
                           taxGroupController?.text = val.name!;

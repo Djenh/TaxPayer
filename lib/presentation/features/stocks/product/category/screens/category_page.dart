@@ -1,10 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:invoice_app/domain/entities/product/categories_entities.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
+import 'package:invoice_app/presentation/_widgets/float_btn.dart';
 import 'package:invoice_app/presentation/res/app_input_styles.dart';
 
 import '../../../../../../core/configs/injection_container.dart';
@@ -68,26 +68,10 @@ class _CategoryPageState extends State<CategoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: widget.isManage
-            ? appBarOther(context, "Catégorie de produit",
-                   actionList: [
-            /*IconButton(
-                onPressed: () {
-                  Get.to(() => const CategorySearchPage(isManage: true));
-                }, icon: const Icon(Iconsax.search_normal)),*/
-            IconButton(
-                onPressed: () async {
-                  await Get.to(() => const AddCategoryPage())?.then((val){
-                    if(val == true){
-                      prodCtr.pagingCtgController?.refresh();
-                    }
-                  });
-                },
-                icon: const Icon(CupertinoIcons.add_circled_solid,
-                    color: KStyles.primaryColor, size: 32)
-            ),
-          ])
-            : appBarOther(context, "Choisir une catégorie"),
+        appBar: appBarOther(context, widget.isManage
+            ? "Catégorie de produit"
+            : "Choisir une catégorie"
+        ),
         body: RefreshIndicator(
           onRefresh: () => Future.sync(() => prodCtr.pagingCtgController?.refresh()),
           child: Column(
@@ -143,7 +127,20 @@ class _CategoryPageState extends State<CategoryPage> {
               )
             ],
           ),
-        )
+        ),
+      floatingActionButton: widget.isManage
+          ? FloatBtn(
+        onAction: () async {
+          await Get.to(() => const AddCategoryPage(),
+              fullscreenDialog: true)?.then((val){
+            if(val == true){
+              prodCtr.pagingCtgController?.refresh();
+            }
+          });
+        },
+        icn: Iconsax.add,
+      )
+          : null,
     );
   }
 

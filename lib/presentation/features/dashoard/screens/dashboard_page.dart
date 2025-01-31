@@ -15,6 +15,7 @@ import 'package:invoice_app/presentation/features/agency/screens/agency_page.dar
 import 'package:invoice_app/presentation/features/company/widgets/card_company_page.dart';
 import 'package:invoice_app/presentation/features/company/widgets/draggabledcrollabledheet_list.dart';
 import 'package:invoice_app/presentation/features/repports/screens/repports_revenue.dart';
+import 'package:invoice_app/presentation/features/sales/invoice/screens/verify_invoice/manual_check_page.dart';
 import 'package:invoice_app/presentation/features/statistics/screens/card_business_page.dart';
 import 'package:invoice_app/presentation/features/dashoard/widgets/tab_bar_widget.dart';
 import 'package:invoice_app/presentation/features/pos/screens/pos_form_page.dart';
@@ -217,6 +218,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     KCircleButton(
                       color: KStyles.cardGrey,
                       onPressed: () => Get.to(() => const ScanVerifyPage()),
+                      //onPressed: () => Get.to(() => const ManualCheckPage()),
                       child: const Icon(Iconsax.scan,color: KStyles.blackColor),
                     ),
                     /*

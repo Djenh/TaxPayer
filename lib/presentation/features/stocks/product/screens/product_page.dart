@@ -1,9 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
+import 'package:invoice_app/presentation/_widgets/float_btn.dart';
+import 'package:invoice_app/presentation/features/stocks/product/pricing/price_create.dart';
 import 'package:invoice_app/presentation/features/stocks/product/screens/product_create_page.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 
@@ -63,17 +64,52 @@ class _ProductPageState extends State<ProductPage> {
   }
 
 
+  void addPrinceInfo(ProductResponse dataProd){
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: buildText(context, "Produit", 16, Colors.black,
+            fontWeight: FontWeight.w600),
+        content: Text("Votre produit ${dataProd.name} ne dispose pas encore de prix."
+            " Voulez-vous en ajouter ?"),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(false);
+            },
+            child: const Text('NON'),
+          ),
+          TextButton(
+            onPressed: () async {
+              Navigator.of(context).pop(true);
+              await Get.to(() => PriceCreate(prod: dataProd),
+                  fullscreenDialog: true)?.then((vl){
+                Future.sync(() => prodCtr.pagingProdController?.refresh());
+              });
+            },
+            child: const Text('OUI'),
+          ),
+        ],
+      ),
+    );
+  }
+
+
   Widget _buildProductList(ProductResponse ctg) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: InkWell(
-        onTap: (){
-          if(widget.isManage){
-            //Get.to(() => const ProductDetailPage());
-          }else{
+    return InkWell(
+      onTap: (){
+        if(widget.isManage){
+          //Get.to(() => const ProductDetailPage());
+        }else{
+          if(ctg.price != null){
             Get.back(result: ctg);
+          } else {
+            addPrinceInfo(ctg);
           }
-        },
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
         child: Row(
           children: [
             Expanded(
@@ -173,25 +209,9 @@ class _ProductPageState extends State<ProductPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: widget.isManage
-          ? appBarOther(context, "Produits", actionList: [
-        /*IconButton(
-            onPressed: () {
-              Get.to(() => const ProductSearchPage(isManage: true));
-            }, icon: const Icon(Iconsax.search_normal)),*/
-        IconButton(
-            onPressed: () async {
-              await Get.to(() => ProductCreatePage(isManage: widget.isManage))?.then((val){
-                if(val == true){
-                  prodCtr.pagingProdController?.refresh();
-                }
-              });
-            },
-            icon: const Icon(CupertinoIcons.add_circled_solid,
-                color: KStyles.primaryColor, size: 32)
-        ),
-      ])
-          : appBarOther(context, "Sélectionner un produit"),
+      appBar: appBarOther(context, widget.isManage
+          ? "Produits"
+          : "Sélectionner un produit"),
         body: RefreshIndicator(
           onRefresh: () => Future.sync(() => prodCtr.pagingProdController?.refresh()),
           child: Column(
@@ -230,7 +250,20 @@ class _ProductPageState extends State<ProductPage> {
               )
             ],
           ),
+        ),
+        floatingActionButton: widget.isManage
+            ? FloatBtn(
+          onAction: () async {
+            await Get.to(() => ProductCreatePage(isManage: widget.isManage),
+                fullscreenDialog: true)?.then((val){
+              if(val == true){
+                prodCtr.pagingProdController?.refresh();
+              }
+            });
+          },
+          icn: Iconsax.add,
         )
+            : null,
     );
   }
 

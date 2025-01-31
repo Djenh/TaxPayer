@@ -1,4 +1,3 @@
-import 'package:diacritic/diacritic.dart';
 
 
 class NameVo {
@@ -38,10 +37,10 @@ class NameVo {
   @override
   String toString() => value;
 
-  bool _valideName(String str) {
+  /*bool _valideName(String str) {
     final RegExp regex1 = RegExp(r"^[a-zA-Z'à-öø-ÿ]{2,}( [a-zA-Z'à-öø-ÿ]{2,})*$");
     final RegExp regex2 = RegExp(r'^(\w{2,}\s{0,}){0,}\w{2,}$');
     return regex1.hasMatch(removeDiacritics(str)) &&
         regex2.hasMatch(removeDiacritics(str));
-  }
+  }*/
 }
