@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:invoice_app/domain/entities/invoice/invoice_response.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
+import 'package:invoice_app/utils/utils.dart';
 
 
 class InvoiceItem extends StatelessWidget {
@@ -60,7 +61,7 @@ class InvoiceItem extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        _buildText(context, "${invoiceResponse!.total?.ttc??0} XOF", 14, Colors.black, FontWeight.w500),
+        _buildText(context, Utils.getFormattedAmount(invoiceResponse!.total?.ttc??0), 14, Colors.black, FontWeight.w500),
         /*const SizedBox(height: 4),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),

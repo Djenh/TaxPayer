@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:invoice_app/presentation/features/complaint/screens/complaint_page.dart';
 import 'package:invoice_app/presentation/features/pos/screens/pos_page.dart';
+import 'package:invoice_app/presentation/features/registration/_strings/register_str.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 
 import '../../dashoard/screens/dashboard_page.dart';
