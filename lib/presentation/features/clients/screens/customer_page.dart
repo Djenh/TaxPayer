@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -14,6 +13,7 @@ import 'package:invoice_app/presentation/res/app_input_styles.dart';
 
 import '../../../_widgets/app_bar_custom.dart';
 import '../../../_widgets/build_text.dart';
+import '../../../_widgets/float_btn.dart';
 import '../../../res/style/e_style.dart';
 import 'add_customer_page.dart';
 
@@ -100,21 +100,10 @@ class _CustomerPageState extends State<CustomerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: widget.isManage
-            ? appBarOther(context, "Clients", actionList: [
-          IconButton(
-              onPressed: () async {
-                await Get.to(() => const AddCustomerPage())?.then((val){
-                  if(val == true){
-                    customerCtr.pagingCusController?.refresh();
-                  }
-                });
-              },
-              icon: const Icon(CupertinoIcons.add_circled_solid,
-                  color: KStyles.primaryColor, size: 32)
-          ),
-        ])
-            : appBarOther(context, "Sélectionner un client"),
+        appBar: appBarOther(context,  widget.isManage
+            ? "Clients"
+            : "Sélectionner un client"
+        ),
         body: RefreshIndicator(
           onRefresh: () => Future.sync(() => customerCtr.pagingCusController?.refresh()),
           child: Column(
@@ -159,7 +148,20 @@ class _CustomerPageState extends State<CustomerPage> {
               )
             ],
           ),
-        )
+        ),
+        floatingActionButton: widget.isManage
+          ? FloatBtn(
+        onAction: () async {
+          await Get.to(() => const AddCustomerPage(),
+              fullscreenDialog: true)?.then((val){
+            if(val == true){
+              customerCtr.pagingCusController?.refresh();
+            }
+          });
+        },
+        icn: Iconsax.add,
+      )
+          : null,
     );
   }
 

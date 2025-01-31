@@ -72,7 +72,7 @@ class _TaxGroupState extends State<TaxGroupPage> {
                   itemBuilder: (context, gp, index) {
                     final String letter = String.fromCharCode(65 + index % 26);
 
-                    return GestureDetector(
+                    return InkWell(
                       onTap: (){
                         Get.back(result: gp);
                       },

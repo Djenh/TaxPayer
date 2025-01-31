@@ -94,7 +94,7 @@ class _InvoiceSearchPageState extends State<InvoiceSearchPage> {
         itemBuilder: (BuildContext context, int inv){
           return InvoiceItem(
             invoiceResponse: null,
-            onTap: () => Get.to(() => const InvoiceDetailPage(invoiceResponse: null)),
+            onTap: () => Get.to(() => const InvoiceDetailPage(invoiceResponse: null, isSaleInvoice: true)),
           );
         }
     );

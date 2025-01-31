@@ -35,7 +35,6 @@ class _AgencyDetailPageState extends State<AgencyDetailPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    invoiceCtr.pagingIvoiceController = PagingController<int, InvoiceResponse>(firstPageKey: 0);
     invoiceCtr.pagingIvoiceController.addPageRequestListener((pageKey) {
       invoiceCtr.allInvoiceData(widget.dataAgency.company?.tin??"",pageKey);
     });
@@ -257,7 +256,7 @@ class _AgencyDetailPageState extends State<AgencyDetailPage> {
                           itemBuilder: (context, typ, index) {
                             return InvoiceItem(
                               invoiceResponse: typ,
-                              onTap: () => Get.to(() =>  InvoiceDetailPage(invoiceResponse: typ)),
+                              onTap: () => Get.to(() =>  InvoiceDetailPage(invoiceResponse: typ, isSaleInvoice: true)),
                             );
                           },
                           firstPageProgressIndicatorBuilder: (_) => const Center(child: CircularProgressIndicator()),

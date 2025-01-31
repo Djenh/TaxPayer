@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:invoice_app/core/configs/injection_container.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
+import 'package:invoice_app/presentation/controllers/invoice_ctrl.dart';
+import 'package:invoice_app/presentation/features/sales/invoice/screens/verify_invoice/result_verify_invoice_page.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 import '_widgets/error_scan_dialog.dart';
@@ -13,6 +17,36 @@ class ScanVerifyPage extends StatefulWidget {
 
 class _ScanVerifyPageState extends State<ScanVerifyPage> {
 
+  final invCtr = locator<InvoiceCtrl>();
+  late MobileScannerController controller;
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    controller = MobileScannerController(
+      detectionSpeed: DetectionSpeed.noDuplicates,
+    );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    controller.dispose();
+  }
+
+
+  Future<void> _verifyInvoice(String sig) async {
+    await invCtr.invoiceVerify(context, sig, false).then((val){
+      if(val != null){
+        Get.to(() => ResultVerifyInvoicePage(dataInvoice: val))!.then((val){
+          controller.start();
+        });
+      }
+    });
+  }
 
 
   @override
@@ -43,24 +77,29 @@ class _ScanVerifyPageState extends State<ScanVerifyPage> {
           const SizedBox(height: 20),
           Expanded(
             child: MobileScanner(
-              controller: MobileScannerController(
-                detectionSpeed: DetectionSpeed.noDuplicates
-              ),
+              controller: controller,
               onDetect: (BarcodeCapture capture) {
                 final List<Barcode> barcodes = capture.barcodes;
 
-                for (final barcode in barcodes){
+                for (final barcode in barcodes) {
                   debugPrint('Barcode détecté : ${barcode.rawValue}');
                   final String? code = barcode.rawValue;
 
-                  if(code != null || code!.trim().isNotEmpty){
+                  if(code != null && code.trim().isNotEmpty) {
                     debugPrint('Code scanné : $code');
-                    if(code == "https://flutter.dev/"){
-                      //Get.to(() => const ResultVerifyInvoicePage());
+                    debugPrint('Longueur du code : ${code.length}');
+
+                    controller.stop();
+                    final RegExp formatRegex = RegExp(r'^[A-Z0-9]{52}$');
+
+                    if(formatRegex.hasMatch(code)) {
+                      _verifyInvoice(code);
+                    } else {
+                      debugPrint("Format de QR code invalide");
                       _showErrorDialog(context);
                     }
                     break;
-                  } else{
+                  } else {
                     debugPrint("Erreur : code QR vide ou invalide détecté.");
                     _showErrorDialog(context);
                     break;
@@ -74,6 +113,7 @@ class _ScanVerifyPageState extends State<ScanVerifyPage> {
                 return Center(
                   child: Text(
                     'Erreur de caméra : ${exception.errorCode}',
+                    textAlign: TextAlign.center,
                     style: const TextStyle(color: Colors.red),
                   ),
                 );

@@ -78,11 +78,6 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
       return;
     }
 
-    if (dataTaxDeposit == null) {
-      _showToast('Veuillez sélectionner une taxe de sécurité');
-      return;
-    }
-
     if (dataCustomer == null) {
       _showToast('Veuillez sélectionner un client');
       return;
@@ -219,8 +214,9 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
                     onPressed: () => _decrementQuantity(index),
                   ),
                   Container(
-                    width: 30,
+                    //width: 30,
                     height: 30,
+                    padding: const EdgeInsets.all(4),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey.shade400),
@@ -294,7 +290,7 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
 
     await invCtr.invoiceSetData(context, invCtr.addInvoiceDto.value).then((val){
       if(val != null){
-        Get.off(() => InvoiceDetailPage(invoiceResponse: val));
+        Get.off(() => InvoiceDetailPage(invoiceResponse: val, isSaleInvoice: true));
       }
     });
 
@@ -370,7 +366,7 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
                 ),
                 TextButton(
                   onPressed: () {
-                    invCtr.restInvoiceDto;
+                    invCtr.cleanInvoiceData();
                     Navigator.of(context).pop(true);
                   },
                   child: const Text('Quitter'),

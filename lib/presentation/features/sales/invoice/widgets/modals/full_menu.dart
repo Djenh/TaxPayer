@@ -3,79 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:invoice_app/domain/entities/invoice/invoice_response.dart';
+import 'package:invoice_app/presentation/features/sales/invoice/credit_invoice/credit_invoice_page.dart';
 import 'package:invoice_app/presentation/features/sales/invoice/screens/invoice_recuring_page.dart';
 import 'package:screenshot/screenshot.dart';
 
-
-
-
- /*class FullMenu extends StatelessWidget {
-  const FullMenu({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        Container(
-          color: Colors.transparent,
-            child: Wrap(
-              children: ListTile.divideTiles(context: context, tiles: [
-                const KMenuItem(
-                  icon: Icons.edit,
-                  title: "Edit",
-                  routed: false,
-                ),
-                const KMenuItem(
-                  icon: Icons.remove_red_eye_outlined,
-                  title: "View ",
-                  next: InvoicePrintViewPage(),
-                ),
-                const KMenuItem(
-                  icon: Icons.refresh,
-                  title: "Recurring",
-                  next: InvoiceRecurringPage(),
-                ),
-              ]).toList(),
-            )),
-        Container(
-          color: Colors.white,
-          height: 5,
-        ),
-        Wrap(
-          children: ListTile.divideTiles(context: context, tiles: [
-            const KMenuItem(
-              icon: Icons.dashboard_outlined,
-              title: "Change Template",
-              next: InvoiceTemplateChoicePage(),
-            ),
-            const KMenuItem(
-              icon: Icons.copy,
-              title: "Duplicate Invoice ",
-              pop: false,
-              routed: false,
-            ),
-            KMenuItem(
-              icon: Icons.check_circle_outline,
-              title: "Mark as paid",
-              routed: false,
-              onTap: () {},
-            ),
-          ]).toList(),
-        ),
-        Container(
-          color: Colors.white,
-          height: 5,
-        ),
-        const ExportMenu(totalInfo: false),
-       Container(
-         color: Colors.white,
-         height: 5,
-       ),
-        const DeleteMenu(),
-      ],
-    );
-  }
-}*/
 
 class FullMenu extends StatelessWidget {
   final InvoiceResponse? invoiceResponse;
@@ -86,6 +17,7 @@ class FullMenu extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final List<Map<String, dynamic>> actions = [
+      {"icon": Iconsax.document, "label": "Créer une facture d'avoir", "action": () => _navigateToInvoiceA(context)},
       {"icon": Iconsax.edit, "label": "Modifier", "action": () => _navigateToEdit(context)},
       {"icon": Iconsax.eye, "label": "Visualiser", "action": () => _navigateToView(context)},
       {"icon": Iconsax.refresh, "label": "Recurring", "action": () => _navigateToRecurring(context)},
@@ -131,6 +63,10 @@ class FullMenu extends StatelessWidget {
 
 
   // Fonctions de navigation pour chaque action
+  void _navigateToInvoiceA(BuildContext context) {
+    Get.to(() => CreditInvoicePage(dataInvoice: invoiceResponse));
+  }
+
   void _navigateToEdit(BuildContext context) {}
 
   void _navigateToView(BuildContext context) {}
@@ -146,8 +82,6 @@ class FullMenu extends StatelessWidget {
   void _markAsPaid(BuildContext context) {
     debugPrint("Marquer comme payé !");
   }
-
-
 
   void _sendEmail(BuildContext context) {
     debugPrint("Envoyer par Email !");

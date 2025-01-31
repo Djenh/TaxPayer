@@ -6,7 +6,7 @@ class Utils{
     return NumberFormat.currency(
       locale: ui.window.locale.languageCode,
       decimalDigits: 2,
-      symbol: '', // if you want to add currency symbol then pass that in this else leave it empty.
+      symbol: '',
     ).format(solde);
   }
 }

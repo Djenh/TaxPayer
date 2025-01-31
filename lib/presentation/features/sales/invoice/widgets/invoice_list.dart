@@ -28,18 +28,18 @@ class InvoiceList extends StatefulWidget {
 
 class _InvoiceListState extends State<InvoiceList> {
 
+  final invoiceCtr = locator<InvoiceCtrl>();
+  String? tin;
+
   final List<String> filters = ["factures de ventes", "factures d’avoir"];
   int selectedFilter = 0;
-
-  final invoiceCtr = locator<InvoiceCtrl>();
-
 
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    String? tin = AppServices.instance.currentCompany.value?.tin;
+    tin = AppServices.instance.currentCompany.value?.tin;
     invoiceCtr.pagingIvoiceController.addPageRequestListener((pageKey) {
       invoiceCtr.allInvoiceData(tin!,pageKey);
     });
@@ -73,20 +73,6 @@ class _InvoiceListState extends State<InvoiceList> {
       ),
     );
   }
-
-
-  /*
-  Widget itemList(){
-    return ListView.builder(
-        itemCount: 4,
-        itemBuilder: (BuildContext context, int inv){
-          return InvoiceItem(
-            onTap: () => Get.to(() => const InvoiceDetailPage()),
-          );
-        }
-    );
-  }
-   */
 
 
 
@@ -160,7 +146,7 @@ class _InvoiceListState extends State<InvoiceList> {
                         itemBuilder: (context, typ, index) {
                           return InvoiceItem(
                             invoiceResponse: typ,
-                            onTap: () => Get.to(() =>  InvoiceDetailPage(invoiceResponse: typ)),
+                            onTap: () => Get.to(() =>  InvoiceDetailPage(invoiceResponse: typ, isSaleInvoice: true)),
                           );
                         },
                         firstPageProgressIndicatorBuilder: (_) => const Center(child: CircularProgressIndicator()),

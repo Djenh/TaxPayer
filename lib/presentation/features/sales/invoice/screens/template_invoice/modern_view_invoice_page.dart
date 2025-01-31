@@ -9,10 +9,14 @@ import 'package:qr_flutter/qr_flutter.dart';
 import '../../../../../res/style/e_style.dart';
 
 class ModernViewInvoicePage extends StatefulWidget {
-  final InvoiceResponse? invoiceResponse;
-  const ModernViewInvoicePage({super.key, required this.isSaleInvoice,this.invoiceResponse});
 
+  final InvoiceResponse? invoiceResponse;
   final bool isSaleInvoice;
+
+  const ModernViewInvoicePage({super.key, required this.isSaleInvoice,
+    this.invoiceResponse});
+
+
 
   @override
   State<ModernViewInvoicePage> createState() => _ModernViewInvoicePageState();
@@ -124,6 +128,8 @@ class _ModernViewInvoicePageState extends State<ModernViewInvoicePage> {
       ],
     );
   }
+
+
   /*
   Widget _buildItemArticle(ItemsEntities itemsEntities) {
     return Column(
@@ -295,7 +301,7 @@ class _ModernViewInvoicePageState extends State<ModernViewInvoicePage> {
           padding:  const EdgeInsets.symmetric(vertical: 8.0),
           child: _buildRecapArticle(
               e.taxGroup?.name??"", "*${e.total}", "${e.taxGroup?.code} (${e.taxGroup?.rate}%)", ""),
-        )).toList(),
+        )),
         const SizedBox(height: 40),
         Container(
           padding: const EdgeInsets.all(8),

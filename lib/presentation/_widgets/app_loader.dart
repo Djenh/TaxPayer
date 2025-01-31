@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:invoice_app/presentation/res/style/e_style.dart';
 
 class AppLoaderDialog {
 
@@ -18,10 +16,8 @@ class AppLoaderDialog {
             content: const Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SpinKitCircle(
-                  color: KStyles.primaryColor,
-                  size: 50.0,
-                ),
+                //SpinKitCircle(color: KStyles.primaryColor, size: 50.0),
+                CircularProgressIndicator(),
                 SizedBox(height: 20),
                 Text(
                   "Veuillez patienter...",
