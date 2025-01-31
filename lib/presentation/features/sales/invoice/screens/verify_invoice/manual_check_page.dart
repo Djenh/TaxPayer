@@ -6,6 +6,7 @@ import 'package:invoice_app/core/services/toast_service.dart';
 import 'package:invoice_app/presentation/_widgets/action_btn.dart';
 import 'package:invoice_app/presentation/controllers/invoice_ctrl.dart';
 import 'package:invoice_app/presentation/features/sales/invoice/screens/verify_invoice/result_verify_invoice_page.dart';
+import 'package:invoice_app/presentation/features/sales/invoice/screens/verify_invoice/scan_verify_page.dart';
 
 import '../../../../../_widgets/app_bar_custom.dart';
 import '../../../../../res/app_input_styles.dart';
@@ -78,9 +79,12 @@ class _ManualCheckPageState extends State<ManualCheckPage> {
                       )
                   ),
                   const SizedBox(width: 10),
-                  const Flexible(
-                    flex: 1,
-                    child: Icon(Iconsax.scan_barcode, color: Colors.black,)
+                  GestureDetector(
+                    onTap: () => Get.to(() => const ScanVerifyPage()),
+                    child: const Flexible(
+                      flex: 1,
+                      child: Icon(Iconsax.scan_barcode, color: Colors.black,)
+                    ),
                   )
                 ],
               ),

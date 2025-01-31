@@ -40,8 +40,7 @@ class _InvoiceListState extends State<InvoiceList> {
     // TODO: implement initState
     super.initState();
     tin = AppServices.instance.currentCompany.value?.tin;
-    invoiceCtr.pagingIvoiceController = PagingController<int, InvoiceResponse>(firstPageKey: 0);
-    invoiceCtr.pagingIvoiceController?.addPageRequestListener((pageKey) {
+    invoiceCtr.pagingIvoiceController.addPageRequestListener((pageKey) {
       invoiceCtr.allInvoiceData(tin!,pageKey);
     });
   }
@@ -49,8 +48,7 @@ class _InvoiceListState extends State<InvoiceList> {
   @override
   void dispose() {
     super.dispose();
-    invoiceCtr.pagingIvoiceController?.dispose();
-    invoiceCtr.pagingIvoiceController = null;
+    invoiceCtr.pagingIvoiceController.dispose();
   }
 
   Widget _buildFilterChip(String label, bool isSelected, VoidCallback onTap) {
@@ -81,7 +79,7 @@ class _InvoiceListState extends State<InvoiceList> {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: () => Future.sync(() => invoiceCtr.pagingIvoiceController?.refresh()),
+      onRefresh: () => Future.sync(() => invoiceCtr.pagingIvoiceController.refresh()),
       child: DefaultTabController(
         length: 2,
         child: Scaffold(
@@ -138,7 +136,7 @@ class _InvoiceListState extends State<InvoiceList> {
                 child: LayoutBuilder(
                   builder: (_, cxs) {
                     return PagedListView<int, InvoiceResponse>.separated(
-                      pagingController: invoiceCtr.pagingIvoiceController!,
+                      pagingController: invoiceCtr.pagingIvoiceController,
                       separatorBuilder: (context, index) => Padding(
                         padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                         child: Divider(

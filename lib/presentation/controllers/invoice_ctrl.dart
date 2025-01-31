@@ -26,7 +26,7 @@ class InvoiceCtrl extends GetxController {
   RxBool isLoading = false.obs;
   static const _pageSize = 20;
   PagingController<int, TypeInvoiceEntities>? pagingTypeInvoiceController;
-  PagingController<int, InvoiceResponse>? pagingIvoiceController;
+  PagingController<int, InvoiceResponse> pagingIvoiceController = PagingController<int, InvoiceResponse>(firstPageKey: 0);
   List<TypeInvoiceEntities> allTypeInvoice = [];
   List<InvoiceResponse> allInvoice = [];
   PagingController<int, DepositTaxEntities>? pagingDepositTaxController;
@@ -131,7 +131,7 @@ class InvoiceCtrl extends GetxController {
 
       result.fold(
             (failure) {
-              pagingIvoiceController?.error = failure.message;
+              pagingIvoiceController.error = failure.message;
         },
             (response) {
           final List<InvoiceResponse> newItems = response.content ?? [];
@@ -144,10 +144,10 @@ class InvoiceCtrl extends GetxController {
 
           final isLastPage = pageKey >= (response.totalPages ?? 1) - 1;
           if (isLastPage) {
-            pagingIvoiceController?.appendLastPage(newItems);
+            pagingIvoiceController.appendLastPage(newItems);
           } else {
             final nextPageKey = pageKey + 1;
-            pagingIvoiceController?.appendPage(newItems, nextPageKey);
+            pagingIvoiceController.appendPage(newItems, nextPageKey);
           }
         },
       );

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:invoice_app/domain/entities/invoice/invoice_response.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
+import 'package:invoice_app/utils/utils.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../../../res/style/e_style.dart';
@@ -114,7 +115,7 @@ class _ModernViewInvoicePageState extends State<ModernViewInvoicePage> {
           children: [
             buildText(context, "${itemsEntities.item!.product?.name??""}  [${itemsEntities.item!.product?.price?.taxGroup?.code??""}]", 12, Colors.black,
                 fontWeight: FontWeight.w500),
-            buildText(context, "*${itemsEntities.item?.total?.ttc??""}", 12, Colors.black,
+            buildText(context, "*${Utils.getFormattedAmount(itemsEntities.total?.ttc!.toInt() as num)}", 12, Colors.black,
                 fontWeight: FontWeight.w500),
           ],
         ),
@@ -291,7 +292,7 @@ class _ModernViewInvoicePageState extends State<ModernViewInvoicePage> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: _buildRecapArticle(
-              "TOTAL", "*${widget.invoiceResponse!.total?.ttc??0}", "", ""),
+              "TOTAL", "*${Utils.getFormattedAmount(widget.invoiceResponse!.total?.ttc??0)}", "", ""),
         ),
         buildText(
             context, "Répartition des taxes".toUpperCase(), 10, KStyles.primaryColor,
@@ -333,7 +334,7 @@ class _ModernViewInvoicePageState extends State<ModernViewInvoicePage> {
                   const SizedBox(height: 4),
                   _buildRowDataSign("Ref logiciel", "9LEHE"),
                   const SizedBox(height: 4),
-                  _buildRowDataSign("Date, Heure", "${widget.invoiceResponse?.signatureData?.certifiedDate.toString()}")
+                  _buildRowDataSign("Date, Heure", widget.invoiceResponse?.signatureData?.certifiedDate?.toString()??"")
                 ],
               ))
             ],
