@@ -1,22 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:invoice_app/core/configs/injection_container.dart';
-import 'package:invoice_app/core/services/app_service.dart';
-import 'package:invoice_app/domain/entities/invoice/invoice_response.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
-import 'package:invoice_app/presentation/_widgets/paged_first_error.dart';
-import 'package:invoice_app/presentation/_widgets/paged_new_page_error.dart';
-import 'package:invoice_app/presentation/controllers/invoice_ctrl.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 
 import '../../../../_widgets/action_btn.dart';
 import '../../../../_widgets/app_bar_custom.dart';
 import '../../../../controllers/product_ctrl.dart';
-import '../../../../res/app_input_styles.dart';
-import '../../../../res/input_formaters.dart';
 import '../../invoice/screens/verify_invoice/participate_tombola_page.dart';
 
 
@@ -117,7 +108,7 @@ class _TombolaDetailPageState extends State<TombolaDetailPage> {
                     child: ActionBtn(
                       title: "Réclamer le lot gagné",
                       loading: prodCtr.isLoading,
-                      onPressed: ()=> Get.to(() => ParticipateTombolaPage()),
+                      onPressed: ()=> Get.to(() => const ParticipateTombolaPage()),
                     )
                 ),
               ],
