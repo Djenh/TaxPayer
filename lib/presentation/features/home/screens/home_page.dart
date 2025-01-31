@@ -7,6 +7,7 @@ import 'package:invoice_app/presentation/res/style/e_style.dart';
 
 import '../../dashoard/screens/dashboard_page.dart';
 import '../../sales/invoice/widgets/invoice_list.dart';
+import '../../sales/tombola/screens/participate_tombola_page.dart';
 import '../controler/home_controller.dart';
 import '../widgets/menus/side_menu.dart';
 
@@ -30,7 +31,7 @@ class HomePage extends StatelessWidget {
                 const DashboardPage(),
                 const InvoiceList(),
                 const PosPage(isManage: false),
-                ComplaintPage()//Container(),
+                ParticipateTombolaPage()//Container(),
                 //Container(),
               ],
             ),
