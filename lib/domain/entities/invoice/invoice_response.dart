@@ -24,10 +24,11 @@ class InvoiceResponse {
   List<TaxBreakDownEntities>? taxBreakDown;
   OriginalInvoice? originalInvoice;
   List<ReimbursementInvoices>? reimbursementInvoices;
+  bool? fullyReimbursed;
 
   InvoiceResponse({this.invoice, this.numberItems, this.totalInletters,
     this.signatureData, this.total,  this.taxBreakDown, this.originalInvoice,
-    this.reimbursementInvoices});
+    this.reimbursementInvoices,this.fullyReimbursed});
 
   factory InvoiceResponse.fromJson(Map<String, dynamic> json) =>
       _$InvoiceResponseFromJson(json);

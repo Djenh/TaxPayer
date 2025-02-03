@@ -31,6 +31,7 @@ InvoiceResponse _$InvoiceResponseFromJson(Map<String, dynamic> json) =>
           ?.map(
               (e) => ReimbursementInvoices.fromJson(e as Map<String, dynamic>))
           .toList(),
+          fullyReimbursed: json['fullyReimbursed'],
     );
 
 Map<String, dynamic> _$InvoiceResponseToJson(InvoiceResponse instance) =>
@@ -42,8 +43,8 @@ Map<String, dynamic> _$InvoiceResponseToJson(InvoiceResponse instance) =>
       'total': instance.total?.toJson(),
       'taxBreakDown': instance.taxBreakDown?.map((e) => e.toJson()).toList(),
       'originalInvoice': instance.originalInvoice?.toJson(),
-      'reimbursementInvoices':
-          instance.reimbursementInvoices?.map((e) => e.toJson()).toList(),
+      'reimbursementInvoices': instance.reimbursementInvoices?.map((e) => e.toJson()).toList(),
+      'fullyReimbursed': instance.fullyReimbursed,
     };
 
 InvoiceEntities _$InvoiceEntitiesFromJson(Map<String, dynamic> json) =>

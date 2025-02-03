@@ -7,7 +7,6 @@ import 'package:invoice_app/domain/entities/product/pricing_response.dart';
 import 'package:invoice_app/domain/entities/product/tax_group_response.dart';
 import 'package:invoice_app/domain/entities/product/unit_m_list_response.dart';
 import 'package:invoice_app/domain/repositories/i_product_repository.dart';
-
 import '../../core/errors/request_failures.dart';
 import '../entities/product/categories_entities.dart';
 import '../entities/product/categories_list_response.dart';

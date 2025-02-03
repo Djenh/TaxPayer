@@ -5,6 +5,7 @@ const padding=10.0;
 const padding20=20.0;
 const padding15=15.0;
 const padding5=5.0;
+const padding2=2.0;
 
 class  KStyles {
   // **Palette de couleurs modernes**

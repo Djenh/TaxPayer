@@ -17,56 +17,43 @@ class ProductItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child:
-      Row(
+      child: Row(
         children: [
-          Expanded(child: Row(
-            children: [
-              Container(
-                height: 100,
-                width: 80,
-                decoration: BoxDecoration(
-                    color: KStyles.textLightColor.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(padding)),
-              ),
-              const SizedBox(
-                width: padding,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(ctg.name??"",
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                    maxLines: 2,
-                  ),
-
-                  KtextGray(Utils.typeProduct(ctg.productType!)),
-                  const SizedBox(
-                    height: padding/2,
-                  ),
-
-                  const KtextGray("Quantité"),
-
-                ],
-              ),
-            ],
-          )),
+          Container(
+            height: 100,
+            width: 80,
+            decoration: BoxDecoration(
+                color: KStyles.textLightColor.withOpacity(0.5),
+                borderRadius: BorderRadius.circular(padding)),
+          ),
           const SizedBox(
             width: padding,
           ),
-          const Column(
-            children: [
-              /*
-              Icon(
-                Iconsax.box,
-                color: Colors.grey,
-              ),
-               */
-              SizedBox(
-                height: padding*4,
-              ),
-              Text("29/20"),
-            ],
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(ctg.name??"",
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  maxLines: 2,
+                ),
+
+                KtextGray(Utils.typeProduct(ctg.productType!)),
+                const SizedBox(
+                  height: padding2,
+                ),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(child: KtextGray("Quantité")),
+                    SizedBox(
+                      width: padding*3,
+                    ),
+                    Flexible(child: Text("29/20")),
+                  ],
+                )
+              ],
+            ),
           ),
         ],
       ),

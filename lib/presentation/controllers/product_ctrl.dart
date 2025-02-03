@@ -32,7 +32,9 @@ class ProductCtrl extends GetxController {
   PagingController<int, UnitMEntities>? pagingUmController;
   List<UnitMEntities> allUnitM = [];
   PagingController<int, CategoriesEntities>? pagingCtgController;
+  PagingController<int, PricingResponse>? productPricesController;
   List<CategoriesEntities> allCategories = [];
+  List<PricingResponse> productPrices = [];
   PagingController<int, ProductResponse>? pagingProdController;
   List<ProductResponse> allProducts = [];
   PagingController<int, TaxGroupEntities>? pagingTaxGroupController;
@@ -51,7 +53,36 @@ class ProductCtrl extends GetxController {
       Get.back();
     }
   }
+  Future<void> getProductPrices(String code, int pageKey) async {
+    try {
+      final result = await productUc.executePricingProductByCode(code,pageKey, _pageSize);
 
+      result.fold(
+            (failure) {
+              productPricesController?.error = failure.message;
+        },
+            (response) {
+          final List<PricingResponse> newItems = response.content ?? [];
+
+          if (pageKey == 0) {
+            productPrices.clear();
+          }
+
+          productPrices.addAll(newItems);
+
+          final isLastPage = pageKey >= (response.totalPages ?? 1) - 1;
+          if (isLastPage) {
+            productPricesController?.appendLastPage(newItems);
+          } else {
+            final nextPageKey = pageKey + 1;
+            productPricesController?.appendPage(newItems, nextPageKey);
+          }
+        },
+      );
+    } catch (error) {
+      productPricesController?.error = error.toString();
+    }
+  }
 
   ///func to create unit-of-measurements
   Future<UnitMEntities?> addUnitM(BuildContext context, AddUnitDto params) async {

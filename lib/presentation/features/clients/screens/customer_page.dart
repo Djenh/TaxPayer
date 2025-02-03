@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -102,8 +103,23 @@ class _CustomerPageState extends State<CustomerPage> {
         backgroundColor: Colors.white,
         appBar: appBarOther(context,  widget.isManage
             ? "Clients"
-            : "Sélectionner un client"
+            : "Sélectionner un client",
+            actionList: [
+              IconButton(
+                  onPressed: () async{
+                    await Get.to(() => const AddCustomerPage(), fullscreenDialog: true)?.then((val){
+                      if(val == true){
+                        customerCtr.pagingCusController?.refresh();
+                      }
+                    });
+                  },
+                  icon: const Icon(CupertinoIcons.add_circled_solid,
+                      color: KStyles.primaryColor, size: 32
+                  )
+              ),
+            ]
         ),
+
         body: RefreshIndicator(
           onRefresh: () => Future.sync(() => customerCtr.pagingCusController?.refresh()),
           child: Column(

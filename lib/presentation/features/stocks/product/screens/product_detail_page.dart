@@ -1,13 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:invoice_app/core/configs/injection_container.dart';
+import 'package:invoice_app/domain/entities/product/pricing_response.dart';
 import 'package:invoice_app/domain/entities/product/product_response.dart';
+import 'package:invoice_app/presentation/_widgets/build_text.dart';
+import 'package:invoice_app/presentation/_widgets/paged_first_error.dart';
+import 'package:invoice_app/presentation/_widgets/paged_new_page_error.dart';
+import 'package:invoice_app/presentation/controllers/product_ctrl.dart';
 import 'package:invoice_app/presentation/features/stocks/product/widgets/price_card.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 import '../widgets/product_item.dart';
 
-class ProductDetailPage extends StatelessWidget {
+
+
+class ProductDetailPage extends StatefulWidget {
   final ProductResponse ctg;
-  ProductDetailPage({super.key,required this.ctg});
+  const ProductDetailPage({super.key,required this.ctg});
+
+  @override
+  State<ProductDetailPage> createState() => _ProductDetailPageState();
+}
+
+class _ProductDetailPageState extends State<ProductDetailPage> {
+  final prodCtr = locator<ProductCtrl>();
+  TextEditingController? searchController;
+
+
+  @override
+  void initState() {
+    super.initState();
+    prodCtr.productPricesController = PagingController<int, PricingResponse>(firstPageKey: 0);
+    prodCtr.productPricesController?.addPageRequestListener((pageKey) {
+      prodCtr.getProductPrices(widget.ctg.code??"",pageKey);
+    });
+  }
+
+
+  @override
+  void dispose() {
+    super.dispose();
+    prodCtr.productPricesController?.dispose();
+    prodCtr.productPricesController = null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +67,7 @@ class ProductDetailPage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: padding * 2),
         child: Column(
           children: [
-            ProductItem(ctg: ctg),
+            ProductItem(ctg: widget.ctg),
             const SizedBox(
               height: padding,
             ),
@@ -143,62 +178,41 @@ class ProductDetailPage extends StatelessWidget {
                                     onPressed: () {},
                                     style: ElevatedButton.styleFrom(
                                         elevation: 0,
-                                      backgroundColor: Colors.grey[300],
-                                      foregroundColor: Colors.black,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      fixedSize: const Size(120, 40)
+                                        backgroundColor: Colors.grey[300],
+                                        foregroundColor: Colors.black,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(20),
+                                        ),
+                                        fixedSize: const Size(120, 40)
                                     ),
                                     child: const Text("Ajouter",style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal),),
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 16),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Flexible(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Text("12/09/2024 10:09:32", style: TextStyle(color: Colors.black54, fontSize: 12)),
-                                        SizedBox(height: 4),
-                                        Text(
-                                          "10.000 FCFA",
-                                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold,color: KStyles.blackColor),
-                                        ),
-                                        SizedBox(height: 8),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  ElevatedButton(
-                                    onPressed: () {},
-                                    style: ElevatedButton.styleFrom(
-                                      elevation: 0,
-                                      backgroundColor: Colors.grey[300],
-                                      foregroundColor: Colors.black,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                        fixedSize: const Size(120, 40)
-                                    ),
-                                    child: const Text("Prix courant",style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal),),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 16),
+                              const SizedBox(height: 26),
                               Expanded(
-                                child: ListView.separated(
-                                  itemCount: priceHistory.length,
-                                  separatorBuilder: (context, index) => const Divider(),
-                                  itemBuilder: (context, index) {
-                                    return PriceCard(
-                                      date: priceHistory[index]["date"],
-                                      price: priceHistory[index]["price"],
-                                      index: index,
+                                child:  LayoutBuilder(
+                                  builder: (_, cxs) {
+                                    return PagedListView<int, PricingResponse>.separated(
+                                      pagingController: prodCtr.productPricesController!,
+                                      separatorBuilder: (context, index) => Padding(
+                                        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                                        child: Divider(
+                                            height: 1, thickness: 1, color: Colors.grey.shade300),
+                                      ),
+                                      builderDelegate: PagedChildBuilderDelegate<PricingResponse>(
+                                        itemBuilder: (context, ctg, index) {
+                                          return PriceCard(
+                                            pricingResponse: ctg,
+                                            index: index,
+                                          );
+                                        },
+                                        firstPageProgressIndicatorBuilder: (_) => const Center(child: CircularProgressIndicator()),
+                                        newPageProgressIndicatorBuilder: (_) => const Center(child: CircularProgressIndicator()),
+                                        noItemsFoundIndicatorBuilder: (_) => _noItem(),
+                                        firstPageErrorIndicatorBuilder: (_) => PagedFirstError(pagingController: prodCtr.productPricesController, cxs: cxs),
+                                        newPageErrorIndicatorBuilder: (_) => PagedNewPageError(pagingController: prodCtr.productPricesController),
+                                      ),
                                     );
                                   },
                                 ),
@@ -217,15 +231,13 @@ class ProductDetailPage extends StatelessWidget {
       ),
     );
   }
-
-  final List<Map<String, dynamic>> priceHistory = [
-    {"date": "12/09/2024 10:09:32", "price": "10.000 FCFA"},
-    {"date": "12/09/2024 11:09:32", "price": "20.000 FCFA"},
-    {"date": "12/09/2024 12:09:32", "price": "10.000 FCFA"},
-    {"date": "12/09/2024 13:09:32", "price": "50.000 FCFA"},
-    {"date": "12/09/2024 15:09:32", "price": "30.000 FCFA"},
-    {"date": "12/09/2024 16:09:32", "price": "60.000 FCFA"},
-  ];
+  Widget _noItem(){
+    return Center(
+      child: buildText(context, "Aucun Prix disponible.", 16, Colors.black,
+          fontWeight: FontWeight.w500, textAlign: TextAlign.center),
+    );
+  }
 }
+
 
 

@@ -121,13 +121,13 @@ class _AgencyDetailPageState extends State<AgencyDetailPage> {
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                Expanded(child: cardWiget("Agence N°1\n",widget.dataAgency.address?.description??"")),
+                                Expanded(child: cardWiget("Agence N° ${widget.dataAgency.code??""}\n",widget.dataAgency.address?.description??"")),
                                 const SizedBox(width: padding),
                                 Expanded(child: cardWiget("1.200.000\n","Chiffre d'affaire")),
                               ],
                             ),
                           ),
-                          const SizedBox(height: padding,),
+                          const SizedBox(height: padding),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [

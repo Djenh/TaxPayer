@@ -23,7 +23,7 @@ class ResultVerifyInvoicePage extends StatefulWidget {
 
 class _ResultVerifyInvoicePageState extends State<ResultVerifyInvoicePage> {
 
-  bool isDanger = true;
+  bool isDanger = false;
   String textDanger = "Cette facture a été entièrement annulée et ne peut en aucun cas être utilisée pour une déduction ou une déclaration.";
   String textDanger1 = "Si vous estimez que cette facture a été annulée de manière frauduleuse malgré le règlement de la transaction commerciale, nous vous invitons vivement à déposer une plainte.";
 
@@ -123,7 +123,7 @@ class _ResultVerifyInvoicePageState extends State<ResultVerifyInvoicePage> {
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
          child: Column(
            children: [
-             if(isDanger)...[
+             if(widget.dataInvoice.fullyReimbursed != null && widget.dataInvoice.fullyReimbursed!)...[
                _buildDangerContainer(),
                const SizedBox(height: 20),
              ],

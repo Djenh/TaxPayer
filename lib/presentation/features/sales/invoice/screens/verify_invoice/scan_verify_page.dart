@@ -4,6 +4,7 @@ import 'package:invoice_app/core/configs/injection_container.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
 import 'package:invoice_app/presentation/controllers/invoice_ctrl.dart';
 import 'package:invoice_app/presentation/features/sales/invoice/screens/verify_invoice/result_verify_invoice_page.dart';
+import 'package:invoice_app/utils/utils.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 import '_widgets/error_scan_dialog.dart';
@@ -40,10 +41,13 @@ class _ScanVerifyPageState extends State<ScanVerifyPage> {
 
   Future<void> _verifyInvoice(String sig) async {
     await invCtr.invoiceVerify(context, sig, false).then((val){
+      debugPrint('invoiceVerify du code codeExtracted : $val');
       if(val != null){
         Get.to(() => ResultVerifyInvoicePage(dataInvoice: val))!.then((val){
           controller.start();
         });
+      }else{
+        _showErrorDialog(context);
       }
     });
   }
@@ -90,10 +94,11 @@ class _ScanVerifyPageState extends State<ScanVerifyPage> {
                     debugPrint('Longueur du code : ${code.length}');
 
                     controller.stop();
-                    final RegExp formatRegex = RegExp(r'^[A-Z0-9]{52}$');
-
-                    if(formatRegex.hasMatch(code)) {
-                      _verifyInvoice(code);
+                    //final RegExp formatRegex = RegExp(r'^[A-Z0-9]{52}$');
+                    String codeExtracted = Utils.extract52CharsBeforeLastSemicolon(code);
+                    debugPrint('Longueur du code codeExtracted : $codeExtracted');
+                    if(codeExtracted.length == 52) {
+                      _verifyInvoice(codeExtracted);
                     } else {
                       debugPrint("Format de QR code invalide");
                       _showErrorDialog(context);
