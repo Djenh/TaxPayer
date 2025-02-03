@@ -43,7 +43,7 @@ class AppDioService {
     baseUrl: locator<EnvironmentConfig>().baseUrlApi,
     headers: <String, dynamic>{
       'Accept': 'application/json',
-      'Content-Type': 'application/json',
+      //'Content-Type': 'application/json',
       'Cache-Control': 'no-cache',
     },
     connectTimeout: const Duration(milliseconds: connectTimeout),
@@ -65,7 +65,7 @@ class AppDioService {
   static ApiAuth getApiAuth() {
     if (apiAuth == null) {
       AppDioService.getInstance();
-      apiAuth = ApiAuth(dio, baseUrl: locator<EnvironmentConfig>().baseUrlApi);
+      apiAuth = ApiAuth(dio, baseUrl: locator<EnvironmentConfig>().keycloakUrl);
     }
     return apiAuth!;
   }
@@ -185,6 +185,7 @@ class AppDioService {
     dio.interceptors.add(InterceptorsWrapper(
       onRequest:
           (RequestOptions options, RequestInterceptorHandler handler) async {
+
         final List<ConnectivityResult> connectivityResult =
             await Connectivity().checkConnectivity();
         if (connectivityResult.first == ConnectivityResult.none) {
@@ -196,6 +197,14 @@ class AppDioService {
             ),
           );
         }
+
+
+        if (options.path.contains("/token")) {
+          options.headers["Content-Type"] = "application/x-www-form-urlencoded";
+        } else {
+          options.headers["Content-Type"] = "application/json";
+        }
+
 
         final String? authToken = AppServices.instance.authTokenUser;
         if (authToken != null && authToken.isNotEmpty) {
@@ -258,8 +267,6 @@ class AppDioService {
   Future<dynamic> _handleUnauthorizedError(DioException e,
       ErrorInterceptorHandler handler) async {
     /*try {
-        await _handleRefreshToken();
-        // Retenter la requête originale avec le nouveau token
         e.requestOptions.headers["Authorization"] = "Bearer ${AppServices.instance.authTokenUser}";
         e.requestOptions.extra['retry'] = true;
         final response = await _retry(e.requestOptions);

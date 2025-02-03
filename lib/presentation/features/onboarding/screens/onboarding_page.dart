@@ -150,8 +150,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
   int selected = 0;
 
 
-  void navigateToRegister() {
-    if(AppServices.instance.currentCompany.value != null){
+  void navigateTo() {
+    final String? authToken = AppServices.instance.authTokenUser;
+
+    if(authToken != null && authToken.isNotEmpty){
       Navigator.pushAndRemoveUntil(context,
           MaterialPageRoute(builder: (context) =>
           HomePage()), (route) => false);
@@ -175,7 +177,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextButton(
-                onPressed: () => navigateToRegister(),
+                onPressed: () => navigateTo(),
                 child: const Text("Ignorer")),
           ),
         ],
@@ -199,7 +201,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     child: KElevatedButton(
                                   onPressed: (){
                     debugPrint("Page $selected");
-                    navigateToRegister();
+                    navigateTo();
                                   },
                                   child: const Text("Commencer"),
                                 ),

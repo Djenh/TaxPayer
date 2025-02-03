@@ -8,6 +8,7 @@ import 'package:invoice_app/core/services/app_storage.dart';
 import 'package:invoice_app/domain/entities/company/company_tin_response.dart';
 import 'package:invoice_app/presentation/controllers/company_ctrl.dart';
 import 'package:invoice_app/presentation/features/registration/_strings/register_str.dart';
+import 'package:invoice_app/presentation/features/registration/screens/login_page.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 
 import '../../../../core/configs/injection_container.dart';
@@ -160,7 +161,8 @@ class _IdentityPageState extends State<IdentityPage> {
   Future<void> saveDataCompanyToLocal() async {
     await AppStorage.instance.setInstance(key: dataCompany, value: widget.dataCompany);
     await AppServices.instance.checkCompanyData();
-    Get.to(() => HomePage());
+    Get.offAll(() => const LoginPage());
+    //Get.to(() => HomePage());
     //Get.to(() => const ChoosingMethodPage());
   }
 

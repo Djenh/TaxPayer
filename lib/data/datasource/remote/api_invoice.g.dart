@@ -58,33 +58,36 @@ class _ApiInvoice implements ApiInvoice {
   }
 
   @override
-  Future<HttpResponse<InvoiceEntitiesResponse>> getAllInvoice(
-      Map<String, dynamic> pageable,String tin) async {
+  Future<HttpResponse<InvoiceEntitiesListResponse>> getAllInvoice(
+    Map<String, dynamic> pageable,
+    String tin,
+  ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.addAll(pageable);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<HttpResponse<TypeInvoiceResponse>>(Options(
+    final _options =
+        _setStreamType<HttpResponse<InvoiceEntitiesListResponse>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
-        .compose(
-      _dio.options,
-      '/invoice/tin/${tin}',
-      queryParameters: queryParameters,
-      data: _data,
-    )
-        .copyWith(
-        baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
+            .compose(
+              _dio.options,
+              '/invoice',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late InvoiceEntitiesResponse _value;
+    late InvoiceEntitiesListResponse _value;
     try {
-      _value = InvoiceEntitiesResponse.fromJson(_result.data!);
+      _value = InvoiceEntitiesListResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -92,6 +95,7 @@ class _ApiInvoice implements ApiInvoice {
     final httpResponse = HttpResponse(_value, _result);
     return httpResponse;
   }
+
   @override
   Future<HttpResponse<DepositTaxResponse>> getAllDepositTax(
       Map<String, dynamic> pageable) async {

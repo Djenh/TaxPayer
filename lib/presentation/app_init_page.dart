@@ -40,6 +40,8 @@ class _AppInitPageState extends State<AppInitPage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    final String? authToken = AppServices.instance.authTokenUser;
+
     return ScreenUtilInit(
       designSize: const Size(430, 932),
       minTextAdapt: true,
@@ -58,7 +60,7 @@ class _AppInitPageState extends State<AppInitPage> with WidgetsBindingObserver {
               themeMode: ThemeMode.system,
               theme: KThemes.lightTheme(context),
               darkTheme: KThemes.darkTheme(context),
-              home: AppServices.instance.currentCompany.value != null
+              home: (authToken != null && authToken.isNotEmpty)
                   ? HomePage()
                   : const OnboardingPage(),
               /*

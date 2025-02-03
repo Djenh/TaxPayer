@@ -3,6 +3,7 @@ import 'package:invoice_app/core/errors/request_failures.dart';
 import 'package:invoice_app/data/dtos/add_invoice_dto.dart';
 import 'package:invoice_app/data/dtos/reimbursement_invoice_dto.dart';
 import 'package:invoice_app/domain/entities/invoice/deposit_tax_response.dart';
+import 'package:invoice_app/domain/entities/invoice/invoice_entities_list_response.dart';
 import 'package:invoice_app/domain/entities/invoice/invoice_response.dart';
 import 'package:invoice_app/domain/entities/invoice/type_invoice_response.dart';
 import 'package:invoice_app/domain/repositories/i_invoice_repository.dart';
@@ -18,7 +19,7 @@ class InvoiceUc {
     return await invoiceRepository.allTypeInvoice(page, size);
   }
 
-  Future<Either<Failure, InvoiceEntitiesResponse>> executeAllInvoice(
+  Future<Either<Failure, InvoiceEntitiesListResponse>> executeAllInvoice(
       String tin,int page, int size) async {
     return await invoiceRepository.allInvoice(tin,page, size);
   }
