@@ -100,6 +100,7 @@ class _VerifyOtpPwdPageState extends State<VerifyOtpPwdPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: KDefaultLayout(
         isReversed: true,
         title: RegisterStr.titleLayout,

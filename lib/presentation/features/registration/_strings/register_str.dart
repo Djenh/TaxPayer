@@ -12,6 +12,7 @@ class RegisterStr {
   static const String emptyInvoice = 'Vous n’avez actuellement  aucune facture. cliquez pour créer une facture';
   static const String createAgency = 'Créer une agence';
   static const String createInvoice = 'Créer une facture';
+  static const String addInvoice = 'Ajouter une facture';
   static const String statistiques = 'Statistiques';
   static const String agences = 'Agences';
   static const String rapports = 'Rapports';

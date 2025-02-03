@@ -14,9 +14,7 @@ class FirstPosPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
         extendBodyBehindAppBar: true,
-
         body: KDefaultLayout(
           title: "Félicitations 👏🏾👏🏾",
           subtitle: "OMEGA NUMERIC IT, pour bénéficier du système, vous devez définir une activité, service, magasin ou autre ",

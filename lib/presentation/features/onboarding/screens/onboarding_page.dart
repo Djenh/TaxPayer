@@ -167,6 +167,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
+      backgroundColor: Colors.white,
       extendBody: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,

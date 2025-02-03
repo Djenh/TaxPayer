@@ -17,7 +17,7 @@ class KElevatedButton extends StatelessWidget {
         elevation: 2, // button's elevation when it's pressed
         backgroundColor: KStyles.primaryColor,
         foregroundColor: Colors.white,
-        textStyle: const TextStyle(  fontSize: 16),
+        textStyle: const TextStyle(fontSize: 16),
 
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),

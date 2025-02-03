@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:invoice_app/core/services/app_service.dart';
 import 'package:invoice_app/presentation/features/clients/screens/customer_page.dart';
+import 'package:invoice_app/presentation/features/repports/screens/repports_screen.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 
 import '../../../pos/screens/pos_page.dart';
@@ -84,7 +85,7 @@ class SideMenu extends StatelessWidget {
               color: Theme.of(context).primaryColor,
             ),
             title: const Text("Rapport"),
-            onTap: () {},
+            onTap: () => Get.to(() => RepportPage()),
           ),
           /*ListTile(
             leading: Icon(

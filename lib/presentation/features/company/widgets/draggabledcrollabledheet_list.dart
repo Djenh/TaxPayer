@@ -5,6 +5,7 @@ import 'package:invoice_app/presentation/features/company/widgets/card_company_p
 import 'package:invoice_app/presentation/features/company/widgets/mouvement_item.dart';
 import 'package:invoice_app/presentation/features/company/widgets/section_item.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
+import 'package:invoice_app/utils/utils.dart';
 
 
 
@@ -67,11 +68,20 @@ class CompanyDetails extends StatelessWidget {
                         const Divider(
                           color: Colors.black54,
                         ),
-                        SectionItem(icon: Iconsax.call, title: "Télephone", value: AppServices.instance.currentCompany.value?.contact?.phoneNumber??""),
+                        SectionItem(
+                            icon: Iconsax.call, title: "Télephone", 
+                            value: AppServices.instance.currentCompany.value?.contact?.phoneNumber??"",
+                          onPressed: (){
+                              Utils.makePhoneCall(AppServices.instance.currentCompany.value?.contact?.phoneNumber??"");
+                          },
+                        ),
                         const Divider(
                           color: Colors.black54,
                         ),
-                        SectionItem(icon: Iconsax.sms, title: "Email", value: AppServices.instance.currentCompany.value?.contact?.email??""),
+                        SectionItem(icon: Iconsax.sms, title: "Email", value: AppServices.instance.currentCompany.value?.contact?.email??"",
+                          onPressed: (){
+                          Utils.makeMail(AppServices.instance.currentCompany.value?.contact?.phoneNumber??"");
+                          },),
                         const Divider(
                           color: Colors.black54,
                         ),

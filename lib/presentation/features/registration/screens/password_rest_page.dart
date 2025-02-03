@@ -92,6 +92,7 @@ class _PasswordRestPageState extends State<PasswordRestPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: KDefaultLayout(
         isReversed: true,
         title: RegisterStr.titleLayout,

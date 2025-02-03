@@ -28,10 +28,10 @@ class HomePage extends StatelessWidget {
           child: Obx(
             () => IndexedStack(
               index: controller.selectedIndex.value,
-              children: [
-                const DashboardPage(),
-                const InvoiceList(),
-                const PosPage(isManage: false),
+              children: const [
+                DashboardPage(),
+                InvoiceList(),
+                PosPage(isManage: false),
                 ParticipateTombolaPage(),
                 //Container(),
               ],

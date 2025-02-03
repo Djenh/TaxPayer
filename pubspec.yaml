@@ -39,6 +39,7 @@ dependencies:
   path_provider: ^2.1.5
   share: ^2.0.4
   open_filex: ^4.6.0
+  url_launcher: ^6.3.1
 
   #Injection Dependance
   get_it:

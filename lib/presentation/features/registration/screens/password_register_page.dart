@@ -97,6 +97,7 @@ class _PasswordRegisterPageState extends State<PasswordRegisterPage> {
       canPop: false,
       onPopInvoked: authCtr.onPopInvoked,
       child: Scaffold(
+        backgroundColor: Colors.white,
         /*appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.transparent,

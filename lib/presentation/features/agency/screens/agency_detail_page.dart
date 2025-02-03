@@ -9,6 +9,7 @@ import 'package:invoice_app/domain/entities/invoice/invoice_response.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
 import 'package:invoice_app/presentation/_widgets/paged_first_error.dart';
 import 'package:invoice_app/presentation/_widgets/paged_new_page_error.dart';
+import 'package:invoice_app/presentation/controllers/dashboard_ctrl.dart';
 import 'package:invoice_app/presentation/controllers/invoice_ctrl.dart';
 import 'package:invoice_app/presentation/features/registration/_strings/register_str.dart';
 import 'package:invoice_app/presentation/features/sales/invoice/screens/invoice_create_page.dart';
@@ -29,7 +30,7 @@ class _AgencyDetailPageState extends State<AgencyDetailPage> {
 
   final invoiceCtr = locator<InvoiceCtrl>();
 
-
+  final dashboardCtr = locator<DashboardCtrl>();
 
   @override
   void initState() {
@@ -158,7 +159,7 @@ class _AgencyDetailPageState extends State<AgencyDetailPage> {
                       const SizedBox(width: padding),
                       GestureDetector(
                         onTap: (){
-
+                          dashboardCtr.pickDateRange(context,false);
                         },
                         child: Container(
                           height: 50,
@@ -191,7 +192,7 @@ class _AgencyDetailPageState extends State<AgencyDetailPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Flexible(
+                      Expanded(
                         child: KAgencycard(
                           title: "Factures",
                           subTitle: "14",
@@ -205,7 +206,7 @@ class _AgencyDetailPageState extends State<AgencyDetailPage> {
                       const SizedBox(
                         width: padding,
                       ),
-                      Flexible(
+                      Expanded(
                         child: KAgencycard(
                           title: "Recettes",
                           subTitle: "200 FCFA",
@@ -236,7 +237,7 @@ class _AgencyDetailPageState extends State<AgencyDetailPage> {
                             borderRadius: BorderRadius.circular(20),
                           ),
                         ),
-                        child: const Text(RegisterStr.createAgency,style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12,color:  KStyles.tabColor)),
+                        child: const Text(RegisterStr.addInvoice,style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12,color:  KStyles.tabColor)),
                       ),
                     ],
                   ),

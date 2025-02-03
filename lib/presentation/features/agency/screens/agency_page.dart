@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:invoice_app/commons/ui/kagencycard.dart';
+import 'package:invoice_app/core/configs/injection_container.dart';
 import 'package:invoice_app/domain/entities/company/pos_data_response.dart';
+import 'package:invoice_app/presentation/controllers/dashboard_ctrl.dart';
 import 'package:invoice_app/presentation/features/agency/screens/agency_item.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 
@@ -9,7 +11,7 @@ import 'package:invoice_app/presentation/res/style/e_style.dart';
 class AgencyPage extends StatelessWidget {
   List<PosDataResponse>? dataAgency;
   AgencyPage({super.key,this.dataAgency});
-
+  final dashboardCtr = locator<DashboardCtrl>();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,7 +33,7 @@ class AgencyPage extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: (){
-
+                  dashboardCtr.pickDateRange(context,false);
                 },
                 child: Container(
                   height: 50,

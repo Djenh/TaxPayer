@@ -109,6 +109,7 @@ class _VerifyingPageState extends State<VerifyingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       key: scaffoldState,
       /*appBar: AppBar(
         elevation: 0,

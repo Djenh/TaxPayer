@@ -51,6 +51,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: KDefaultLayout(
         isReversed: false,
         title: RegisterStr.titleLayout,

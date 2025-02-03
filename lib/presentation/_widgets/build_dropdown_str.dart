@@ -25,6 +25,7 @@ class BuildDropdownString extends StatelessWidget {
               hint: buildText(context, hint, 14, Colors.black,
                   fontWeight: FontWeight.w500),
               isExpanded: true,
+              dropdownColor: Colors.white,
               decoration: AppInputStyles.dropDownInputDecoration1(
                   labelText: label),
               value: null,

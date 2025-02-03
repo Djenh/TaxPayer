@@ -82,6 +82,7 @@ class _ChoosingMethodPageState extends State<ChoosingMethodPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       /*appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,

@@ -49,5 +49,10 @@
     <string>Nous avons besoin de votre localisation pour afficher des données pertinentes.</string>
     <key>NSLocationAlwaysUsageDescription</key>
     <string>Nous avons besoin de votre localisation pour afficher des données pertinentes.</string>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>sms</string>
+      <string>tel</string>
+    </array>
 </dict>
 </plist>

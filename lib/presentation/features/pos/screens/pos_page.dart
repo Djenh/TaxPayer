@@ -9,6 +9,7 @@ import 'package:invoice_app/domain/entities/company/pos_data_response.dart';
 import 'package:invoice_app/presentation/_widgets/app_bar_custom.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
 import 'package:invoice_app/presentation/controllers/company_ctrl.dart';
+import 'package:invoice_app/presentation/features/agency/screens/agency_detail_page.dart';
 import 'package:invoice_app/presentation/features/pos/screens/pos_form_page.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 import '../../../../core/constants/strings.dart';
@@ -107,9 +108,7 @@ class _PosPageState extends State<PosPage> {
           itemCount: dataAgency.length,
           itemBuilder: (BuildContext context, int ps){
             return ListTile(
-              onTap: (){
-                //Get.to(()=>const PosDetail());
-              },
+              onTap: () => Get.to(() => AgencyDetailPage(dataAgency: dataAgency[ps])),
               onLongPress: (){
                 saveDataCurrentPosToLocal(dataAgency[ps]);
               },

@@ -112,6 +112,9 @@ class _CustomerPageState extends State<CustomerPage> {
                 padding: const EdgeInsets.all(16.0),
                 child: TextField(
                   controller: searchController,
+                  style: TextStyle(color: Theme.of(Get.context!).brightness == Brightness.dark
+                      ? Colors.white
+                      : Colors.black),
                   decoration: AppInputStyles.searchInput("Rechercher un client"),
                 ),
               ),

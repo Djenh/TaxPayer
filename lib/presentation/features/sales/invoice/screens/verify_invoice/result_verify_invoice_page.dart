@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:invoice_app/domain/entities/invoice/invoice_response.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
+import 'package:invoice_app/presentation/features/complaint/screens/complaint_create_page.dart';
 import 'package:invoice_app/presentation/features/sales/invoice/screens/verify_invoice/participate_tombola_page.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 
@@ -58,7 +59,7 @@ class _ResultVerifyInvoicePageState extends State<ResultVerifyInvoicePage> {
 
   Widget _buildBtnComplain(){
     return GestureDetector(
-      onTap: (){},
+      onTap: () => Get.to(() => const ComplaintCreatePage()),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
@@ -111,6 +112,7 @@ class _ResultVerifyInvoicePageState extends State<ResultVerifyInvoicePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: appBarOther(context, "Vérification de facture", actionList: [
         IconButton(
           onPressed: (){},

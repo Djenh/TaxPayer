@@ -6,7 +6,9 @@ import 'package:invoice_app/presentation/_widgets/build_text.dart';
 import 'package:invoice_app/presentation/_widgets/float_btn.dart';
 import 'package:invoice_app/presentation/features/stocks/product/pricing/price_create.dart';
 import 'package:invoice_app/presentation/features/stocks/product/screens/product_create_page.dart';
+import 'package:invoice_app/presentation/features/stocks/product/screens/product_detail_page.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
+import 'package:invoice_app/utils/utils.dart';
 
 import '../../../../../core/configs/injection_container.dart';
 import '../../../../../domain/entities/product/product_response.dart';
@@ -59,10 +61,6 @@ class _ProductPageState extends State<ProductPage> {
   }
 
 
-  String typeProduct(String type){
-    return (type == "goods") ? "Biens" : "Services";
-  }
-
 
   void addPrinceInfo(ProductResponse dataProd){
     showDialog(
@@ -99,7 +97,7 @@ class _ProductPageState extends State<ProductPage> {
     return InkWell(
       onTap: (){
         if(widget.isManage){
-          //Get.to(() => const ProductDetailPage());
+          Get.to(() => ProductDetailPage(ctg: ctg));
         }else{
           if(ctg.price != null){
             Get.back(result: ctg);
@@ -133,7 +131,7 @@ class _ProductPageState extends State<ProductPage> {
                         ),
                         padding: const EdgeInsets.all(4),
                         //child: buildText(context, "${typeProduct(ctg.productType!)}/${ctg.category!.name}", 10,
-                        child: buildText(context, typeProduct(ctg.productType!), 10,
+                        child: buildText(context, Utils.typeProduct(ctg.productType!), 10,
                             KStyles.primaryColor,
                             fontWeight: FontWeight.w400),
                       ),
@@ -220,6 +218,9 @@ class _ProductPageState extends State<ProductPage> {
                 padding: const EdgeInsets.all(16.0),
                 child: TextField(
                   controller: searchController,
+                  style: TextStyle(color: Theme.of(Get.context!).brightness == Brightness.dark
+                      ? Colors.white
+                      : Colors.black),
                   decoration: AppInputStyles.searchInput("Rechercher un produit"),
                 ),
               ),

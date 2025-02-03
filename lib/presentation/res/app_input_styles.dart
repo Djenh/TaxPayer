@@ -17,7 +17,7 @@ class AppInputStyles {
       Color? fillColor}) {
     return InputDecoration(
       hintText: hintText,
-      label: Text(labelText ?? ""),
+      label: Text(labelText ?? "",style: const TextStyle(color: Colors.black)),
       fillColor: fillColor ?? Colors.transparent,
       prefixIcon: prefixIcon,
       suffixIcon: suffixIcon,
@@ -92,13 +92,16 @@ class AppInputStyles {
 
   static InputDecoration dropDownInputDecoration1({String? labelText}) {
     return  InputDecoration(
-      label: Text(labelText ?? ""),
+      fillColor: Theme.of(Get.context!).brightness == Brightness.dark
+          ? Colors.white // Fond sombre en mode dark
+          : Colors.white,
+      label: Text(labelText ?? "",style: const TextStyle(color: KStyles.blackColor)),
       enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: const BorderSide(color: KStyles.fieldGrey, width: 1.5)
       ),
       focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: KStyles.primaryColor)),
+          borderSide: BorderSide(color: Theme.of(Get.context!).primaryColor)),
     );
   }
 
@@ -121,7 +124,7 @@ class AppInputStyles {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8.0),
-        borderSide: const BorderSide(color: KStyles.primaryColor,
+        borderSide: BorderSide(color: Theme.of(Get.context!).primaryColor,
             width: 0.5),
       ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 12),

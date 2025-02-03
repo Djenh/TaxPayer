@@ -137,6 +137,7 @@ class _ParticipateTombolaPageState extends State<ParticipateTombolaPage> {
                     TextFormField(
                       controller: nomController,
                       enabled: true,
+                      style: const TextStyle(color: Colors.black),
                       keyboardType: TextInputType.text,
                       inputFormatters: noSpaceNoEmoji,
                       decoration: AppInputStyles.defaultInputDecoration(
@@ -146,6 +147,7 @@ class _ParticipateTombolaPageState extends State<ParticipateTombolaPage> {
                     TextFormField(
                       controller: telController,
                       enabled: true,
+                      style: const TextStyle(color: Colors.black),
                       keyboardType: TextInputType.text,
                       inputFormatters: noSpaceNoEmoji,
                       decoration: AppInputStyles.defaultInputDecoration(
