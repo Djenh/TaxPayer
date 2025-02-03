@@ -10,6 +10,10 @@ class EnvironmentConfig {
 
   String get baseUrl => _getEnvValue('BASE_URL');
   String get baseUrlApi => _getEnvValue('BASE_URL_API');
+
+  String get clientId => _getEnvValue('CLIENT_ID');
+  String get keycloakUrl => _getEnvValue('URL_KEYCLOAK');
+
   String get baseUrlCompany => _getEnvValue('URL_COMPANY');
   String get baseUrlCustomers => _getEnvValue('URL_CUSTOMERS');
   String get baseUrlProducts => _getEnvValue('URL_PRODUCTS');

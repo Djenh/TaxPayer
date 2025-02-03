@@ -7,6 +7,7 @@ import 'package:invoice_app/data/datasource/remote/api_invoice.dart';
 import 'package:invoice_app/data/dtos/add_invoice_dto.dart';
 import 'package:invoice_app/data/dtos/reimbursement_invoice_dto.dart';
 import 'package:invoice_app/domain/entities/invoice/deposit_tax_response.dart';
+import 'package:invoice_app/domain/entities/invoice/invoice_entities_list_response.dart';
 import 'package:invoice_app/domain/entities/invoice/invoice_response.dart';
 import 'package:invoice_app/domain/entities/invoice/type_invoice_response.dart';
 import 'package:invoice_app/domain/repositories/i_invoice_repository.dart';
@@ -64,13 +65,13 @@ class InvoiceRemoteRepository implements IInvoiceRepository {
 
 
   @override
-  Future<Either<Failure, InvoiceEntitiesResponse>> allInvoice(String tin,
+  Future<Either<Failure, InvoiceEntitiesListResponse>> allInvoice(String tin,
       int page, int size) async {
     // TODO: implement allTypeInvoice
     final Map<String, dynamic> pageable = {"page": page, "size": size};
 
     try {
-      final HttpResponse<InvoiceEntitiesResponse> httpResponse =
+      final HttpResponse<InvoiceEntitiesListResponse> httpResponse =
           await apiInvoice.getAllInvoice(pageable,tin);
       if (httpResponse.response.statusCode == HttpStatus.ok) {
         return Right(httpResponse.data);

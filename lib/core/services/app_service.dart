@@ -15,13 +15,13 @@ class AppServices extends GetxService {
   Rx<CompanyTinResponse?> currentCompany = Rx<CompanyTinResponse?>(null);
   Rx<PosDataResponse?> currentPos = Rx<PosDataResponse?>(null);
   String? authTokenUser;
+  String? refreshAuthTokenUser;
 
   Future<AppServices> init() async {
     await AppStorage.instance.storage;
+    await checkUserToken();
     await checkCompanyData();
     await checkCurrentPosData();
-    await checkUser();
-    await checkUserToken();
     return this;
   }
 
@@ -59,9 +59,11 @@ class AppServices extends GetxService {
   Future<void> checkUserToken() async {
     if (AppStorage.instance.exist(usrTokenAuth)) {
       authTokenUser = await AppStorage.instance.getDataStorage(usrTokenAuth);
+      refreshAuthTokenUser = await AppStorage.instance.getDataStorage(usrRefreshTokenAuth);
       AppLogger.info("token auth user : $authTokenUser");
     } else {
       authTokenUser = "";
+      refreshAuthTokenUser = "";
     }
   }
 

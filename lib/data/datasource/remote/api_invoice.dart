@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:invoice_app/domain/entities/invoice/deposit_tax_response.dart';
+import 'package:invoice_app/domain/entities/invoice/invoice_entities_list_response.dart';
 import 'package:invoice_app/domain/entities/invoice/invoice_response.dart';
 import 'package:invoice_app/domain/entities/invoice/type_invoice_response.dart';
 import 'package:retrofit/retrofit.dart';
@@ -16,7 +17,7 @@ abstract class ApiInvoice {
       @Queries() Map<String, dynamic> pageable);
 
   @GET("/invoice")
-  Future<HttpResponse<InvoiceEntitiesResponse>> getAllInvoice(
+  Future<HttpResponse<InvoiceEntitiesListResponse>> getAllInvoice(
       @Queries() Map<String, dynamic> pageable,String tin);
 
 

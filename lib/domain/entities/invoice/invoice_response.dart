@@ -3,12 +3,10 @@ import 'package:invoice_app/domain/entities/customer/customer_list_response.dart
 import 'package:invoice_app/domain/entities/invoice/deposit_tax_response.dart';
 import 'package:invoice_app/domain/entities/invoice/signature_entities.dart';
 import 'package:invoice_app/domain/entities/invoice/tax_break_down_entities.dart';
-import 'package:invoice_app/domain/entities/pageable.dart';
 import 'package:invoice_app/domain/entities/product/categories_entities.dart';
 import 'package:invoice_app/domain/entities/product/pricing_response.dart';
 import 'package:invoice_app/domain/entities/product/tax_group_response.dart';
 import 'package:invoice_app/domain/entities/invoice/type_invoice_response.dart';
-import 'package:invoice_app/domain/entities/sort_entities.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 
@@ -38,30 +36,6 @@ class InvoiceResponse {
 }
 
 
-class InvoiceEntitiesResponse {
-
-  List<InvoiceResponse>? content;
-  Pageable1? pageable;
-  bool? last;
-  int? totalPages;
-  int? totalElements;
-  bool? first;
-  int? size;
-  int? number;
-  SortEntities? sort;
-  int? numberOfElements;
-  bool? empty;
-
-
-  InvoiceEntitiesResponse({this.content, this.pageable, this.last, this.totalPages,
-    this.totalElements, this.first, this.size, this.number, this.sort,
-    this.numberOfElements, this.empty});
-
-  factory InvoiceEntitiesResponse.fromJson(Map<String, dynamic> json) =>
-      _$InvoiceEntitiesResponseFromJson(json);
-
-  Map<String, dynamic> toJson() => _$InvoiceEntitiesResponseToJson(this);
-}
 @JsonSerializable(explicitToJson: true)
 class InvoiceEntities {
 
