@@ -17,7 +17,8 @@ abstract class ApiProducts {
 
 
   @POST("/unit-of-measurements")
-  Future<HttpResponse<UnitMEntities>> createUnitM(@Body() Map<String, dynamic> params);
+  Future<HttpResponse<UnitMEntities>> createUnitM(
+      @Body() Map<String, dynamic> params);
 
   @PUT("/unit-of-measurements/{uuid}")
   Future<HttpResponse<UnitMEntities>> updatedUnitM(@Path("uuid") String uuid,
@@ -27,21 +28,36 @@ abstract class ApiProducts {
   Future<HttpResponse<UnitMListResponse>> getAllUnitM(@Query("page") int page,
       @Query("size") int size);
 
+
   @POST("/categories")
-  Future<HttpResponse<CategoriesEntities>> createCategory(@Body() Map<String, dynamic> params);
+  Future<HttpResponse<CategoriesEntities>> createCategory(
+      @Body() Map<String, dynamic> params);
 
   @GET("/categories")
-  Future<HttpResponse<CategoriesListResponse>> getAllCategories(@Query("page") int page, @Query("size") int size);
+  Future<HttpResponse<CategoriesListResponse>> getAllCategories(
+      @Query("page") int page, @Query("size") int size);
+
 
   @POST("/products")
-  Future<HttpResponse<ProductResponse>> createProduct(@Body() Map<String, dynamic> params);
+  Future<HttpResponse<ProductResponse>> createProduct(
+      @Body() Map<String, dynamic> params);
+
+  @PUT("/products/{uuid}")
+  Future<HttpResponse<ProductResponse>> updProduct(@Path("uuid") String uuid,
+      @Body() Map<String, dynamic> params);
+
+  @GET("/products/{uuid}")
+  Future<HttpResponse<ProductResponse>> getProductById(
+      @Path("uuid") String uuid);
 
   @GET("/products")
-  Future<HttpResponse<ProductListResponse>> getAllProducts(@Query("page") int page, @Query("size") int size);
+  Future<HttpResponse<ProductListResponse>> getAllProducts(
+      @Query("page") int page, @Query("size") int size);
 
   @GET("/products/company/{tin}")
-  Future<HttpResponse<ProductListResponse>> getAllProductsByTin(@Path("tin") String tin,
-      @Queries() Map<String, dynamic> pageable);
+  Future<HttpResponse<ProductListResponse>> getAllProductsByTin(
+      @Path("tin") String tin, @Queries() Map<String, dynamic> pageable);
+
 
 
   @GET("/tax-groups")

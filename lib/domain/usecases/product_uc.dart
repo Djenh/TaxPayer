@@ -38,6 +38,14 @@ class ProductUc {
     return await productRepository.createProduct(params);
   }
 
+  Future<Either<Failure, ProductResponse>> executeProductM(String uuid, AddProductDto params) async {
+    return await productRepository.mProduct(uuid, params);
+  }
+
+  Future<Either<Failure, ProductResponse>> executeProductById(String uuid) async {
+    return await productRepository.productById(uuid);
+  }
+
   Future<Either<Failure, CategoriesListResponse>> executeAllCategory(int page, int size) async {
     return await productRepository.allCategories(page, size);
   }

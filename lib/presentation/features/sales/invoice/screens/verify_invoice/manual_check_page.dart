@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -79,12 +80,12 @@ class _ManualCheckPageState extends State<ManualCheckPage> {
                       )
                   ),
                   const SizedBox(width: 10),
-                  GestureDetector(
-                    onTap: () => Get.to(() => const ScanVerifyPage()),
-                    child: const Flexible(
-                      flex: 1,
-                      child: Icon(Iconsax.scan_barcode, color: Colors.black,)
-                    ),
+                  Flexible(
+                    flex: 1,
+                    child: GestureDetector(
+                        onTap: () => Get.to(() => const ScanVerifyPage()),
+                        child: const Icon(Iconsax.scan_barcode, color: Colors.black)
+                    )
                   )
                 ],
               ),

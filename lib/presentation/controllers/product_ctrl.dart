@@ -53,6 +53,8 @@ class ProductCtrl extends GetxController {
       Get.back();
     }
   }
+
+
   Future<void> getProductPrices(String code, int pageKey) async {
     try {
       final result = await productUc.executePricingProductByCode(code,pageKey, _pageSize);
@@ -261,7 +263,7 @@ class ProductCtrl extends GetxController {
   }
 
 
-  ///func to product
+  ///func to create product
   Future<ProductResponse?> addProduct(BuildContext context, AddProductDto params) async {
     ProductResponse? response;
 
@@ -283,6 +285,59 @@ class ProductCtrl extends GetxController {
       rethrow;
     } finally {
       _setLoading(false);
+    }
+
+    return response;
+  }
+
+  ///func to modify product
+  Future<ProductResponse?> mProduct(BuildContext context,String uid, AddProductDto params) async {
+    ProductResponse? response;
+
+    try {
+      _setLoading(true);
+
+      final Either<Failure, ProductResponse> result = await productUc.executeProductM(uid, params);
+
+      result.fold((Failure failure) {
+        AppLogger.error("data save failed: ${failure.message}");
+        ToastService.showError(context, 'Produits', description: failure.message);
+      }, (ProductResponse prodData) {
+        AppLogger.info("prodData successful: ${prodData.toJson()}");
+        ToastService.showSuccess(context, 'Produits', description: "Produit modifier avec succès !");
+        response = prodData;
+      });
+    } catch (e) {
+      AppLogger.error('An error occurred during mProduct: $e');
+      rethrow;
+    } finally {
+      _setLoading(false);
+    }
+
+    return response;
+  }
+
+  ///func to get product by id
+  Future<ProductResponse?> productById(BuildContext context,String uid) async {
+    ProductResponse? response;
+
+    try {
+      //_setLoading(true);
+
+      final Either<Failure, ProductResponse> result = await productUc.executeProductById(uid);
+
+      result.fold((Failure failure) {
+        AppLogger.error("data save failed: ${failure.message}");
+        ToastService.showError(context, 'Produits', description: failure.message);
+      }, (ProductResponse prodData) {
+        AppLogger.info("prodData successful: ${prodData.toJson()}");
+        response = prodData;
+      });
+    } catch (e) {
+      AppLogger.error('An error occurred during productById : $e');
+      rethrow;
+    } finally {
+      //_setLoading(false);
     }
 
     return response;
