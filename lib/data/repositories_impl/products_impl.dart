@@ -219,4 +219,36 @@ class ProductRemoteRepository implements IProductRepository{
         NetworkFailure(message: 'Une erreur inattendue s\'est produite.'));
   }
 
+  @override
+  Future<Either<Failure, ProductResponse>> mProduct(String uuid, AddProductDto params) async {
+    // TODO: implement mProduct
+    try {
+      final HttpResponse<ProductResponse> httpResponse = await apiProducts.updProduct(uuid, params.toJson());
+      if (httpResponse.response.statusCode == HttpStatus.ok) {
+        return Right(httpResponse.data);
+      }
+    } on DioException catch (e) {
+      return DioErrorHandler.handle(error: e);
+    } catch (e) {
+      return Left(NetworkFailure(message: e.toString()));
+    }
+    return const Left(NetworkFailure(message: 'Une erreur inattendue s\'est produite.'));
+  }
+
+  @override
+  Future<Either<Failure, ProductResponse>> productById(String uuid) async {
+    // TODO: implement productById
+    try {
+      final HttpResponse<ProductResponse> httpResponse = await apiProducts.getProductById(uuid);
+      if (httpResponse.response.statusCode == HttpStatus.ok) {
+        return Right(httpResponse.data);
+      }
+    } on DioException catch (e) {
+      return DioErrorHandler.handle(error: e);
+    } catch (e) {
+      return Left(NetworkFailure(message: e.toString()));
+    }
+    return const Left(NetworkFailure(message: 'Une erreur inattendue s\'est produite.'));
+  }
+
 }

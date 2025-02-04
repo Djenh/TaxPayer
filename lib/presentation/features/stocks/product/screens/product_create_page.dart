@@ -7,6 +7,7 @@ import 'package:invoice_app/core/services/app_service.dart';
 import 'package:invoice_app/core/services/toast_service.dart';
 import 'package:invoice_app/data/dtos/add_product_dto.dart';
 import 'package:invoice_app/data/dtos/pricing_dto.dart';
+import 'package:invoice_app/domain/entities/product/product_response.dart';
 import 'package:invoice_app/domain/entities/product/tax_group_response.dart';
 import 'package:invoice_app/domain/entities/product/categories_entities.dart';
 import 'package:invoice_app/domain/entities/product/unit_m_list_response.dart';
@@ -27,20 +28,21 @@ import '../../../../res/app_input_styles.dart';
 import '../../../../res/input_formaters.dart';
 import '../category/screens/category_page.dart';
 
-
-
 class ProductCreatePage extends StatefulWidget {
-  const ProductCreatePage({super.key, required this.isManage});
-
   final bool isManage;
+  final bool? isUpd;
+  final ProductResponse? prod;
+
+  const ProductCreatePage(
+      {super.key, required this.isManage, this.isUpd, this.prod});
 
   @override
   State<ProductCreatePage> createState() => _ProductCreatePageState();
 }
 
 class _ProductCreatePageState extends State<ProductCreatePage> {
-
   final prodCtr = locator<ProductCtrl>();
+  bool? isEdit;
   final formKey = GlobalKey<FormState>();
   File? _selectedImage;
   final ImagePicker _picker = ImagePicker();
@@ -62,26 +64,40 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
   bool ttc = false;
   bool ht = false;
 
-
   void _showToast(String description) {
     ToastService.showWarning(context, 'Produit', description: description);
   }
-
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    codeController = TextEditingController();
-    nameProdController = TextEditingController();
-    nameOfficialProdController = TextEditingController();
-    ctgController = TextEditingController();
-    unitMController = TextEditingController();
-    priceController = TextEditingController();
-    taxGroupController = TextEditingController();
-    taxSpController = TextEditingController();
+    initFields();
   }
 
+  void initFields() {
+    if (widget.isUpd == null || widget.isUpd == false) {
+      nameProdController = TextEditingController();
+      nameOfficialProdController = TextEditingController();
+      ctgController = TextEditingController();
+      unitMController = TextEditingController();
+      priceController = TextEditingController();
+      taxGroupController = TextEditingController();
+      taxSpController = TextEditingController();
+    } else {
+      isEdit = true;
+      goods = (widget.prod?.productType == "goods") ? true : false;
+      services = (widget.prod?.productType != "goods") ? true : false;
+      codeController = TextEditingController(text: widget.prod?.code ?? "");
+      nameProdController = TextEditingController(text: widget.prod?.name);
+      nameOfficialProdController =
+          TextEditingController(text: widget.prod?.officialProductNo);
+      ctgController =
+          TextEditingController(text: widget.prod?.category?.name ?? "");
+      codeCtg = widget.prod?.category?.code ?? "";
+      unitMController = TextEditingController();
+    }
+  }
 
   @override
   void dispose() {
@@ -97,11 +113,10 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
     taxSpController?.dispose();
   }
 
-
-
   /// Fonction pour sélectionner une image
   Future<void> _pickImage() async {
-    final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    final XFile? pickedFile =
+        await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
         _selectedImage = File(pickedFile.path);
@@ -117,7 +132,6 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
       });
     });
   }
-
 
   Widget _buildSelectionCard({
     required String title,
@@ -179,65 +193,16 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
     }
   }
 
-
-  Future<void> _addProductByManage() async {
-    String? tin =  AppServices.instance.currentCompany.value!.tin;
-    String? posId =  AppServices.instance.currentPos.value!.code;
-
-    AddProductDto params = AddProductDto(
-        name: nameProdController!.text.trim(),
-        officalProductNo: nameOfficialProdController!.text.trim(),
-        categoryCode: codeCtg!,
-        productType: goods ? "goods" : "services",
-        companyTin: tin!,
-        unitOfMeasurementCode: unitMController!.text.trim(),
-        posCode: posId!
-    );
-
-    await prodCtr.addProduct(context, params).then((val) async {
-      if(val != null){
-        await Get.to(() => PriceCreate(prod: val),
-            fullscreenDialog: true)?.then((vl){
-          Get.back(result: true);
-        });
-      }
-    });
-
-  }
-
-  Future<void> _addProductByNotManage() async {
-    String? tin =  AppServices.instance.currentCompany.value!.tin;
-    String? posId =  AppServices.instance.currentPos.value!.code;
-
-    AddProductDto params = AddProductDto(
-        name: nameProdController!.text.trim(),
-        categoryCode: codeCtg!,
-        productType: goods ? "goods" : "services",
-        companyTin: tin!,
-        posCode: posId!,
-        price: PricingDto(
-            amount: int.parse(priceController!.text.trim()),
-            taxGroupCode: codeTaxGp!,
-            taxSpecific: int.parse(taxSpController!.text.trim()),
-            priceDefinitionMode: ttc ? "TTC" : "HT"
-        ),
-    );
-
-    AppLogger.info("params => ${params.toJson()}");
-
-    await prodCtr.addProduct(context, params).then((val) async {
-      if(val != null){
-        Get.back(result: true);
-      }
-    });
-
-  }
-
   void onActionAdd() {
     if (!validate()) return;
 
     if (codeCtg == null) {
       _showToast('Veuillez sélectionner une catégorie');
+      return;
+    }
+
+    if (AppServices.instance.currentPos.value == null) {
+      _showToast("Veuillez définir une agence par défaut pour continuer.");
       return;
     }
 
@@ -264,299 +229,365 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
     }
   }
 
+  Future<void> _addProductByManage() async {
+    String? tin = AppServices.instance.currentCompany.value!.tin;
+    String? posId = AppServices.instance.currentPos.value!.code;
 
+    AddProductDto params = AddProductDto(
+        name: nameProdController!.text.trim(),
+        officalProductNo: nameOfficialProdController!.text.trim(),
+        categoryCode: codeCtg!,
+        productType: goods ? "goods" : "services",
+        companyTin: tin!,
+        unitOfMeasurementCode: unitMController!.text.trim(),
+        posCode: posId!);
 
+    if (isEdit == true) {
+      debugPrint("params => ${params.toJson()}");
+      await prodCtr
+          .mProduct(context, widget.prod!.id!, params)
+          .then((val) async {
+        if (val != null) {
+          Get.back(result: true);
+        }
+      });
+    } else {
+      await prodCtr.addProduct(context, params).then((val) async {
+        if (val != null) {
+          await Get.to(() => PriceCreate(prod: val), fullscreenDialog: true)
+              ?.then((vl) {
+            Get.back(result: true);
+          });
+        }
+      });
+    }
+  }
 
+  Future<void> _addProductByNotManage() async {
+    String? tin = AppServices.instance.currentCompany.value!.tin;
+    String? posId = AppServices.instance.currentPos.value!.code;
+
+    AddProductDto params = AddProductDto(
+      name: nameProdController!.text.trim(),
+      categoryCode: codeCtg!,
+      productType: goods ? "goods" : "services",
+      companyTin: tin!,
+      posCode: posId!,
+      price: PricingDto(
+          amount: int.parse(priceController!.text.trim()),
+          taxGroupCode: codeTaxGp!,
+          taxSpecific: int.parse(taxSpController!.text.trim()),
+          priceDefinitionMode: ttc ? "TTC" : "HT"),
+    );
+
+    AppLogger.info("params => ${params.toJson()}");
+
+    await prodCtr.addProduct(context, params).then((val) async {
+      if (val != null) {
+        Get.back(result: true);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: appBarOther(context, "Créer un produit"),
+      appBar: appBarOther(context,
+          (isEdit == true) ? "Modifier le produit" : "Créer un produit"),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         child: Obx(() => IgnorePointer(
-          ignoring: prodCtr.ignorePointer.isTrue,
-          child: Form(
-            key: formKey,
-            child: Column(
-              children: [
-                Stack(
+              ignoring: prodCtr.ignorePointer.isTrue,
+              child: Form(
+                key: formKey,
+                child: Column(
                   children: [
-                    Container(
-                      height: 200,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: _selectedImage == null
-                          ? GestureDetector(
-                        onTap: _pickImage,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(Iconsax.gallery_add, size: 40,
-                                color: Colors.black),
-                            const SizedBox(height: 8),
-                            buildText(context, "Ajouter une image du produit",
-                                14, Colors.black, fontWeight: FontWeight.w400),
-                          ],
-                        ),
-                      )
-                          : ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: Image.file(
-                          _selectedImage!,
-                          fit: BoxFit.cover,
+                    Stack(
+                      children: [
+                        Container(
+                          height: 200,
                           width: double.infinity,
-                          height: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: _selectedImage == null
+                              ? GestureDetector(
+                                  onTap: _pickImage,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Icon(Iconsax.gallery_add,
+                                          size: 40, color: Colors.black),
+                                      const SizedBox(height: 8),
+                                      buildText(
+                                          context,
+                                          "Ajouter une image du produit",
+                                          14,
+                                          Colors.black,
+                                          fontWeight: FontWeight.w400),
+                                    ],
+                                  ),
+                                )
+                              : ClipRRect(
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: Image.file(
+                                    _selectedImage!,
+                                    fit: BoxFit.cover,
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                  ),
+                                ),
                         ),
-                      ),
+                        if (_selectedImage != null)
+                          Positioned(
+                            top: 8,
+                            right: 8,
+                            child: CircleAvatar(
+                              backgroundColor: Colors.red.shade100,
+                              radius: 18,
+                              child: IconButton(
+                                icon: const Icon(Iconsax.trash,
+                                    color: Colors.red, size: 18),
+                                onPressed: _deleteImage,
+                              ),
+                            ),
+                          ),
+                      ],
                     ),
-                    if (_selectedImage != null)
-                      Positioned(
-                        top: 8,
-                        right: 8,
-                        child: CircleAvatar(
-                          backgroundColor: Colors.red.shade100,
-                          radius: 18,
-                          child: IconButton(
-                            icon: const Icon(Iconsax.trash,
-                                color: Colors.red, size: 18),
-                            onPressed: _deleteImage,
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _buildSelectionCard(
+                            title: "Biens",
+                            subtitle: "Les tangibles",
+                            isSelected: goods,
+                            onTap: () {
+                              setState(() {
+                                goods = !goods;
+                                services = false;
+                              });
+                            },
                           ),
                         ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: _buildSelectionCard(
+                            title: "Services",
+                            subtitle: "Les immatériels",
+                            isSelected: services,
+                            onTap: () {
+                              setState(() {
+                                services = !services;
+                                goods = false;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 30),
+                    if (isEdit == true) ...[
+                      TextFormField(
+                        controller: codeController,
+                        enabled: true,
+                        readOnly: true,
+                        textInputAction: TextInputAction.next,
+                        textCapitalization: TextCapitalization.sentences,
+                        keyboardType: TextInputType.text,
+                        inputFormatters: noSpaceNoEmoji,
+                        decoration: AppInputStyles.defaultInputDecoration(
+                            labelText: "Code"),
                       ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                Row(
-                  children: [
-                    Expanded(
-                      child: _buildSelectionCard(
-                        title: "Biens",
-                        subtitle: "Les tangibles",
-                        isSelected: goods,
-                        onTap: () {
-                          setState(() {
-                            goods = !goods;
-                            services = false;
+                      const SizedBox(height: 20)
+                    ],
+                    TextFormField(
+                      controller: nameProdController,
+                      textInputAction: TextInputAction.next,
+                      textCapitalization: TextCapitalization.sentences,
+                      keyboardType: TextInputType.text,
+                      onChanged: (v) => nameError.value = null,
+                      decoration: AppInputStyles.defaultInputDecoration(
+                          labelText: "Nom du Produit",
+                          errorText: nameError.value
+                          //prefixIcon: const Icon(Iconsax.clipboard)
+                          ),
+                    ),
+                    const SizedBox(height: 20),
+                    if (widget.isManage) ...[
+                      TextFormField(
+                        controller: nameOfficialProdController,
+                        textInputAction: TextInputAction.done,
+                        textCapitalization: TextCapitalization.sentences,
+                        keyboardType: TextInputType.text,
+                        //onChanged: (v) => nameOfficialError.value = null,
+                        decoration: AppInputStyles.defaultInputDecoration(
+                            labelText: "Nom du officiel produit",
+                            errorText: nameOfficialError.value
+                            //prefixIcon: const Icon(Iconsax.clipboard)
+                            ),
+                      ),
+                      const SizedBox(height: 20),
+                    ],
+                    TextFormField(
+                      controller: ctgController,
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.text,
+                      inputFormatters: noSpaceNoEmoji,
+                      onTap: () async {
+                        await Get.to(() => const CategoryPage(isManage: true),
+                                fullscreenDialog: true)
+                            ?.then((val) {
+                          if (val is CategoriesEntities) {
+                            setState(() {
+                              ctgController?.text = val.name!;
+                              codeCtg = val.code;
+                            });
+                          }
+                        });
+                      },
+                      decoration: AppInputStyles.defaultInputDecoration(
+                          labelText: "Categorie",
+                          hintText: "Sélectionnez une catégorie",
+                          //prefixIcon: const Icon(Iconsax.category_2),
+                          suffixIcon: const Icon(Icons.arrow_drop_down_sharp,
+                              size: 22)),
+                    ),
+                    const SizedBox(height: 20),
+                    if (widget.isManage) ...[
+                      TextFormField(
+                        controller: unitMController,
+                        textInputAction: TextInputAction.done,
+                        keyboardType: TextInputType.text,
+                        inputFormatters: noSpaceNoEmoji,
+                        onTap: () async {
+                          await Get.to(() => const UnitPage(),
+                                  fullscreenDialog: true)
+                              ?.then((val) {
+                            if (val is UnitMEntities) {
+                              setState(() {
+                                unitMController?.text = val.code!;
+                                codeUnit = val.code;
+                              });
+                            }
                           });
                         },
+                        decoration: AppInputStyles.defaultInputDecoration(
+                            labelText: "Unité de mesure",
+                            hintText: "Sélectionnez une unité",
+                            //prefixIcon: const Icon(Iconsax.category_2),
+                            suffixIcon: const Icon(Icons.arrow_drop_down_sharp,
+                                size: 22)),
+                      )
+                    ],
+                    if (!widget.isManage) ...[
+                      TextFormField(
+                        controller: priceController,
+                        textInputAction: TextInputAction.next,
+                        textCapitalization: TextCapitalization.sentences,
+                        keyboardType: TextInputType.number,
+                        decoration: AppInputStyles.defaultInputDecoration(
+                          labelText: "Prix",
+                          //prefixIcon: const Icon(Iconsax.clipboard)
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: _buildSelectionCard(
-                        title: "Services",
-                        subtitle: "Les immatériels",
-                        isSelected: services,
-                        onTap: () {
-                          setState(() {
-                            services = !services;
-                            goods = false;
-                          });
-                        },
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: TextFormField(
+                              controller: taxGroupController,
+                              textInputAction: TextInputAction.next,
+                              keyboardType: TextInputType.text,
+                              inputFormatters: noSpaceNoEmoji,
+                              onTap: () async {
+                                await Get.to(() => const TaxGroupPage(),
+                                        fullscreenDialog: true)
+                                    ?.then((val) {
+                                  if (val is TaxGroupEntities) {
+                                    setState(() {
+                                      taxGroupController?.text = val.name!;
+                                      codeTaxGp = val.code;
+                                    });
+                                  }
+                                });
+                              },
+                              decoration: AppInputStyles.defaultInputDecoration(
+                                  labelText: "Groupe de taxation",
+                                  hintText: "Sélectionnez une groupe",
+                                  //prefixIcon: const Icon(Iconsax.category_2),
+                                  suffixIcon: const Icon(
+                                      Icons.arrow_drop_down_sharp,
+                                      size: 22)),
+                            ),
+                          ),
+                          const SizedBox(width: 4),
+                          Expanded(
+                            child: TextFormField(
+                              controller: taxSpController,
+                              textInputAction: TextInputAction.done,
+                              textCapitalization: TextCapitalization.sentences,
+                              keyboardType: TextInputType.number,
+                              decoration: AppInputStyles.defaultInputDecoration(
+                                labelText: "Taxe spécifique",
+                                //prefixIcon: const Icon(Iconsax.clipboard)
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
+                      const SizedBox(height: 20),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: BuildSelectionCard(
+                              title: "TTC",
+                              isSelected: ttc,
+                              onTap: () {
+                                setState(() {
+                                  ttc = !ttc;
+                                  ht = false;
+                                });
+                              },
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: BuildSelectionCard(
+                              title: "HT",
+                              isSelected: ht,
+                              onTap: () {
+                                setState(() {
+                                  ht = !ht;
+                                  ttc = false;
+                                });
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                    const SizedBox(height: 20),
                   ],
-                ),
-                const SizedBox(height: 30),
-                /*TextFormField(
-                controller: codeController,
-                textInputAction: TextInputAction.next,
-                textCapitalization: TextCapitalization.sentences,
-                keyboardType: TextInputType.text,
-                inputFormatters: noSpaceNoEmoji,
-                decoration: AppInputStyles.defaultInputDecoration(
-                  labelText: "Code",
-                  prefixIcon: const Icon(Iconsax.note_2)
                 ),
               ),
-              const SizedBox(height: 20),*/
-                TextFormField(
-                  controller: nameProdController,
-                  textInputAction: TextInputAction.next,
-                  textCapitalization: TextCapitalization.sentences,
-                  keyboardType: TextInputType.text,
-                  onChanged: (v) => nameError.value = null,
-                  decoration: AppInputStyles.defaultInputDecoration(
-                    labelText: "Nom du Produit", errorText: nameError.value
-                    //prefixIcon: const Icon(Iconsax.clipboard)
-                  ),
-                ),
-                const SizedBox(height: 20),
-                if(widget.isManage)...[
-                  TextFormField(
-                    controller: nameOfficialProdController,
-                    textInputAction: TextInputAction.done,
-                    textCapitalization: TextCapitalization.sentences,
-                    keyboardType: TextInputType.text,
-                    //onChanged: (v) => nameOfficialError.value = null,
-                    decoration: AppInputStyles.defaultInputDecoration(
-                        labelText: "Nom du officiel produit",
-                        errorText: nameOfficialError.value
-                      //prefixIcon: const Icon(Iconsax.clipboard)
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                ],
-                TextFormField(
-                  controller: ctgController,
-                  textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.text,
-                  inputFormatters: noSpaceNoEmoji,
-                  onTap: () async {
-                    await Get.to(() => const CategoryPage(isManage: true),
-                         fullscreenDialog: true)?.then((val){
-                      if(val is CategoriesEntities){
-                        setState(() {
-                          ctgController?.text = val.name!;
-                          codeCtg = val.code;
-                        });
-                      }
-                    });
-                  },
-                  decoration: AppInputStyles.defaultInputDecoration(
-                      labelText: "Categorie",
-                      hintText: "Sélectionnez une catégorie",
-                      //prefixIcon: const Icon(Iconsax.category_2),
-                      suffixIcon: const Icon(Icons.arrow_drop_down_sharp, size: 22)
-                  ),
-                ),
-                const SizedBox(height: 20),
-                if(widget.isManage)...[
-                  TextFormField(
-                    controller: unitMController,
-                    textInputAction: TextInputAction.done,
-                    keyboardType: TextInputType.text,
-                    inputFormatters: noSpaceNoEmoji,
-                    onTap: () async {
-                      await Get.to(() => const UnitPage(),
-                          fullscreenDialog: true)?.then((val){
-                        if(val is UnitMEntities){
-                          setState(() {
-                            unitMController?.text = val.code!;
-                            codeUnit = val.code;
-                          });
-                        }
-                      });
-                    },
-                    decoration: AppInputStyles.defaultInputDecoration(
-                        labelText: "Unité de mesure",
-                        hintText: "Sélectionnez une unité",
-                        //prefixIcon: const Icon(Iconsax.category_2),
-                        suffixIcon: const Icon(Icons.arrow_drop_down_sharp, size: 22)
-                    ),
-                  )
-                ],
-                if(!widget.isManage)...[
-                  TextFormField(
-                    controller: priceController,
-                    textInputAction: TextInputAction.next,
-                    textCapitalization: TextCapitalization.sentences,
-                    keyboardType: TextInputType.number,
-                    decoration: AppInputStyles.defaultInputDecoration(
-                        labelText: "Prix",
-                      //prefixIcon: const Icon(Iconsax.clipboard)
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: TextFormField(
-                          controller: taxGroupController,
-                          textInputAction: TextInputAction.next,
-                          keyboardType: TextInputType.text,
-                          inputFormatters: noSpaceNoEmoji,
-                          onTap: () async {
-                            await Get.to(() => const TaxGroupPage(),
-                                fullscreenDialog: true)?.then((val){
-                              if(val is TaxGroupEntities){
-                                setState(() {
-                                  taxGroupController?.text = val.name!;
-                                  codeTaxGp = val.code;
-                                });
-                              }
-                            });
-                          },
-                          decoration: AppInputStyles.defaultInputDecoration(
-                              labelText: "Groupe de taxation",
-                              hintText: "Sélectionnez une groupe",
-                              //prefixIcon: const Icon(Iconsax.category_2),
-                              suffixIcon: const Icon(Icons.arrow_drop_down_sharp, size: 22)
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 4),
-                      Expanded(
-                        child: TextFormField(
-                          controller: taxSpController,
-                          textInputAction: TextInputAction.done,
-                          textCapitalization: TextCapitalization.sentences,
-                          keyboardType: TextInputType.number,
-                          decoration: AppInputStyles.defaultInputDecoration(
-                            labelText: "Taxe spécifique",
-                            //prefixIcon: const Icon(Iconsax.clipboard)
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: BuildSelectionCard(
-                          title: "TTC",
-                          isSelected: ttc,
-                          onTap: () {
-                            setState(() {
-                              ttc = !ttc;
-                              ht = false;
-                            });
-                          },
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: BuildSelectionCard(
-                          title: "HT",
-                          isSelected: ht,
-                          onTap: () {
-                            setState(() {
-                              ht = !ht;
-                              ttc = false;
-                            });
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-                const SizedBox(height: 20),
-              ],
-            ),
-          ),
-        )),
+            )),
       ),
       bottomNavigationBar: Container(
         height: prodCtr.isLoading.value ? 90 : 70,
         padding: const EdgeInsets.all(12),
         color: KStyles.primaryColor.withOpacity(0.2),
         child: ActionBtn(
-          title: 'Ajouter',
+          title: (isEdit == true) ? 'Modifier' : "Ajouter",
           loading: prodCtr.isLoading,
-          onPressed: (){
+          onPressed: () {
             onActionAdd();
           },
         ),
       ),
     );
   }
-
-
 }

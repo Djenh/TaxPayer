@@ -52,7 +52,7 @@ class InvoiceCtrl extends GetxController {
   Rx<AddInvoiceDto> addInvoiceDto = AddInvoiceDto(
       clientCode: "",
       typeInvoiceCode: "",
-      tin: AppServices.instance.currentCompany.value!.tin!,
+      tin: AppServices.instance.currentCompany.value?.tin ?? "",
       posCode: (AppServices.instance.currentPos.value != null)
           ? AppServices.instance.currentPos.value!.code!
           : '',
@@ -78,7 +78,7 @@ class InvoiceCtrl extends GetxController {
   RxList<ItemInvoiceDto> finalItemInvoiceReimbursement = <ItemInvoiceDto>[].obs;
 
   Rx<ReimbursementInvoiceDto> addInvoiceReiDto = ReimbursementInvoiceDto(
-    tin: AppServices.instance.currentCompany.value!.tin!,
+    tin: AppServices.instance.currentCompany.value?.tin ?? "",
     originalInvoiceCode: '',
     items: [],
   ).obs;

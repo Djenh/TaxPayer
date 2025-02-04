@@ -55,8 +55,8 @@ class Utils{
 
   static Future<void> makePhoneCall(String phoneNumebr) async {
     String finalURL = 'tel://$phoneNumebr';
-    if (await canLaunch(finalURL)) {
-      await launch(finalURL);
+    if (await canLaunchUrl(Uri.parse(finalURL))) {
+      await launchUrl(Uri.parse(finalURL));
     } else {
       throw 'Could not launch $finalURL';
     }
@@ -64,8 +64,8 @@ class Utils{
 
   static Future<void> makeMail(String mail) async {
     final url = 'mailto:$mail';
-    if(await canLaunch(url)){
-      await launch(url);
+    if(await canLaunchUrl(Uri.parse(url))){
+      await launchUrl(Uri.parse(url));
     }
   }
 
@@ -74,14 +74,14 @@ class Utils{
     var whatsappURlAndroid = "whatsapp://send?phone=$whatsapp";
     var whatAppURLIos = "https://wa.me/$whatsapp";
     if (Platform.isIOS) {
-      if (await canLaunch(whatAppURLIos)) {
-        await launch(whatAppURLIos, forceSafariVC: false);
+      if (await canLaunchUrl(Uri.parse(whatAppURLIos))) {
+        await launchUrl(Uri.parse(whatAppURLIos));
       } else {
         throw 'Could not launch $whatAppURLIos';
       }
     } else {
-      if (await canLaunch(whatsappURlAndroid)) {
-        await launch(whatsappURlAndroid);
+      if (await canLaunchUrl(Uri.parse(whatsappURlAndroid))) {
+        await launchUrl(Uri.parse(whatsappURlAndroid));
       } else {
         throw 'Could not launch $whatsappURlAndroid';
       }

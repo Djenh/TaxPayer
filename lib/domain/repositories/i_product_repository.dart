@@ -19,6 +19,8 @@ abstract class IProductRepository {
   Future<Either<Failure, CategoriesEntities>> createCategory(AddCategoryDto params);
   Future<Either<Failure, CategoriesListResponse>> allCategories(int page, int size);
   Future<Either<Failure, ProductResponse>> createProduct(AddProductDto params);
+  Future<Either<Failure, ProductResponse>> mProduct(String uuid, AddProductDto params);
+  Future<Either<Failure, ProductResponse>> productById(String uuid);
   Future<Either<Failure, ProductListResponse>> allProduct(int page, int size);
   Future<Either<Failure, ProductListResponse>> allProductsByTin(String tin, int page, int size);
   Future<Either<Failure, TaxGroupResponse>> allTaxGroup(int page, int size);

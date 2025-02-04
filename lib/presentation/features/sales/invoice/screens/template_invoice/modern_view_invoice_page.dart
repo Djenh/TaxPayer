@@ -255,13 +255,13 @@ class _ModernViewInvoicePageState extends State<ModernViewInvoicePage> {
                 "N° ${widget.invoiceResponse?.invoice?.code??""}")),
         const SizedBox(height: 20),
         ListView.builder(
-            itemCount: widget.invoiceResponse!.invoice!.items!.length,
+            itemCount: widget.invoiceResponse?.invoice?.items?.length,
             shrinkWrap: true,
             itemBuilder: (BuildContext context, int i) {
-              final article = widget.invoiceResponse!.invoice!.items![i];
+              final article = widget.invoiceResponse?.invoice?.items?[i];
               return Padding(
                 padding: const EdgeInsets.only(bottom: 12.0),
-                child: _buildItemArticle(article),
+                child: _buildItemArticle(article!),
               );
               /*
               if (i < 2) {
@@ -292,7 +292,7 @@ class _ModernViewInvoicePageState extends State<ModernViewInvoicePage> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: _buildRecapArticle(
-              "TOTAL", "*${Utils.getFormattedAmount(widget.invoiceResponse!.total?.ttc??0)}", "", ""),
+              "TOTAL", "*${Utils.getFormattedAmount(widget.invoiceResponse?.total?.ttc??0)}", "", ""),
         ),
         buildText(
             context, "Répartition des taxes".toUpperCase(), 10, KStyles.primaryColor,
@@ -300,7 +300,7 @@ class _ModernViewInvoicePageState extends State<ModernViewInvoicePage> {
         ...?widget.invoiceResponse?.taxBreakDown?.map((e) => Padding(
           padding:  const EdgeInsets.symmetric(vertical: 8.0),
           child: _buildRecapArticle(
-              e.taxGroup?.name??"", "*${e.total}", "${e.taxGroup?.code} (${e.taxGroup?.rate}%)", ""),
+              e.taxGroup?.name??"", "*${e.total??0}", "${e.taxGroup?.code??""} (${e.taxGroup?.rate??0}%)", ""),
         )),
         const SizedBox(height: 40),
         Container(
@@ -344,7 +344,7 @@ class _ModernViewInvoicePageState extends State<ModernViewInvoicePage> {
         buildText(
             context,
             "Arrêté la présente facture à la somme"
-            " de ${widget.invoiceResponse?.totalInletters.toString()}",
+            " de ${widget.invoiceResponse?.totalInletters?.toString()??""}",
             8,
             Colors.black,
             fontWeight: FontWeight.w600,
