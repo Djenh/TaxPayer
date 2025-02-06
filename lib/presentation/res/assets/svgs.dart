@@ -9,4 +9,6 @@ class Svgs {
   final String svxls = _path('xls');
   final String svframe = _path('svframe');
   final String menu = _path('menu');
+  final String circle = _path('circle');
+  final String user = _path('user');
 }

@@ -5,13 +5,13 @@ import 'package:iconsax/iconsax.dart';
 import 'package:invoice_app/domain/entities/invoice/invoice_response.dart';
 import 'package:invoice_app/presentation/features/sales/invoice/credit_invoice/credit_invoice_page.dart';
 import 'package:invoice_app/presentation/features/sales/invoice/screens/invoice_recuring_page.dart';
-import 'package:screenshot/screenshot.dart';
+
 
 
 class FullMenu extends StatelessWidget {
   final InvoiceResponse? invoiceResponse;
-  final ScreenshotController? screenshotController;
-  const FullMenu({super.key,this.invoiceResponse,this.screenshotController});
+  final bool? isSaleInvoice;
+  const FullMenu({super.key,this.invoiceResponse,this.isSaleInvoice});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class FullMenu extends StatelessWidget {
       {"icon": Iconsax.edit, "label": "Change Template", "action": () => _navigateToTemplate(context)},
       {"icon": Iconsax.copy, "label": "Dupliquer la facture", "action": () => _navigateToDuplicate(context)},
       {"icon": Iconsax.tick_circle, "label": "Marquer comme payer", "action": () => _markAsPaid(context)},
-      {"icon": Iconsax.export, "label": "Exporter PDF", "action": () => GeneratePdfService.exportInvoiceToPdf(context,screenshotController!,invoiceResponse!)},
+      {"icon": Iconsax.export, "label": "Exporter PDF", "action": () => GeneratePdfService.generateAndPrintPdf(invoiceResponse!,isSaleInvoice!)},
       {"icon": Iconsax.sms, "label": "Envoyer par Email", "action": () => _sendEmail(context)},
       {"icon": Iconsax.save_2, "label": "Savegarder", "action": () => _save(context)},
       {"icon": Iconsax.trash, "label": "Supprimer", "action": () => _delete(context)},

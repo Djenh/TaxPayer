@@ -51,6 +51,7 @@ Map<String, dynamic> _$InvoiceResponseToJson(InvoiceResponse instance) =>
 InvoiceEntities _$InvoiceEntitiesFromJson(Map<String, dynamic> json) =>
     InvoiceEntities(
       id: json['id'] as String?,
+      externalInvoiceNo: json['externalInvoiceNo'],
       tin: json['tin'] as String?,
       code: json['code'] as String?,
       posCode: json['posCode'] as String?,
@@ -78,6 +79,7 @@ InvoiceEntities _$InvoiceEntitiesFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$InvoiceEntitiesToJson(InvoiceEntities instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'externalInvoiceNo': instance.externalInvoiceNo,
       'tin': instance.tin,
       'code': instance.code,
       'posCode': instance.posCode,
@@ -112,6 +114,8 @@ Map<String, dynamic> _$ItemsEntitiesToJson(ItemsEntities instance) =>
 
 ItemEntities _$ItemEntitiesFromJson(Map<String, dynamic> json) => ItemEntities(
       id: json['id'] as String?,
+      name: json['name'],
+      externalProductNo: json['externalProductNo'],
       taxGroup: json['taxGroup'] == null
           ? null
           : TaxGroupEntities.fromJson(json['taxGroup'] as Map<String, dynamic>),
@@ -123,20 +127,28 @@ ItemEntities _$ItemEntitiesFromJson(Map<String, dynamic> json) => ItemEntities(
       product: json['product'] == null
           ? null
           : ProductInvoice.fromJson(json['product'] as Map<String, dynamic>),
+      typeProduct: json['typeProduct'] == null
+          ? null
+          : ProductType.fromJson(json['typeProduct'] as Map<String, dynamic>),
       priceDefinitionMode: json['priceDefinitionMode'] as String?,
       taxSpecific: json['taxSpecific'] as num?,
+      price: json['price'],
     );
 
 Map<String, dynamic> _$ItemEntitiesToJson(ItemEntities instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'name': instance.name,
+      'externalProductNo': instance.externalProductNo,
       'taxGroup': instance.taxGroup?.toJson(),
       'comment': instance.comment,
       'quantity': instance.quantity,
       'product': instance.product?.toJson(),
+      'typeProduct': instance.typeProduct?.toJson(),
       'total': instance.total?.toJson(),
       'priceDefinitionMode': instance.priceDefinitionMode,
       'taxSpecific': instance.taxSpecific,
+      'price': instance.price,
     };
 
 ProductInvoice _$ProductInvoiceFromJson(Map<String, dynamic> json) =>

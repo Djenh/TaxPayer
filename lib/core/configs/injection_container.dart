@@ -3,14 +3,17 @@ import 'package:invoice_app/data/datasource/remote/api_auth.dart';
 import 'package:invoice_app/data/datasource/remote/api_company.dart';
 import 'package:invoice_app/data/datasource/remote/api_customers.dart';
 import 'package:invoice_app/data/datasource/remote/api_invoice.dart';
+import 'package:invoice_app/data/datasource/remote/api_invoice_sifec.dart';
 import 'package:invoice_app/data/datasource/remote/api_products.dart';
 import 'package:invoice_app/data/network/dio_service.dart';
 import 'package:invoice_app/data/repositories_impl/auth_impl.dart';
 import 'package:invoice_app/data/repositories_impl/company_impl.dart';
 import 'package:invoice_app/data/repositories_impl/invoice_impl.dart';
+import 'package:invoice_app/data/repositories_impl/invoice_sifec_impl.dart';
 import 'package:invoice_app/domain/usecases/auth_uc.dart';
 import 'package:invoice_app/domain/usecases/company_uc.dart';
 import 'package:invoice_app/domain/usecases/customer_uc.dart';
+import 'package:invoice_app/domain/usecases/invoice_sifec_uc.dart';
 import 'package:invoice_app/domain/usecases/invoice_uc.dart';
 import 'package:invoice_app/domain/usecases/product_uc.dart';
 import 'package:invoice_app/presentation/controllers/auth_ctrl.dart';
@@ -18,6 +21,7 @@ import 'package:invoice_app/presentation/controllers/company_ctrl.dart';
 import 'package:invoice_app/presentation/controllers/customer_ctrl.dart';
 import 'package:invoice_app/presentation/controllers/dashboard_ctrl.dart';
 import 'package:invoice_app/presentation/controllers/invoice_ctrl.dart';
+import 'package:invoice_app/presentation/controllers/invoice_sifec_ctrl.dart';
 import 'package:invoice_app/presentation/controllers/product_ctrl.dart';
 import '../../data/repositories_impl/customers_impl.dart';
 import '../../data/repositories_impl/products_impl.dart';
@@ -44,8 +48,11 @@ void setupLocator() {
 
   ///Invoice--- Repositories
   final ApiInvoice apiInvoice = AppDioService.getApiInvoice();
+  final ApiInvoiceSifec apiInvoiceSifec = AppDioService.getApiInvoiceSifec();
   locator.registerLazySingleton(() => InvoiceRemoteRepository(apiInvoice: apiInvoice));
+  locator.registerLazySingleton(() => InvoiceSifecRemoteRepository(apiInvoiceSifec: apiInvoiceSifec));
   locator.registerLazySingleton(() => InvoiceUc(locator<InvoiceRemoteRepository>()));
+  locator.registerLazySingleton(() => InvoiceSifeUc(locator<InvoiceSifecRemoteRepository>()));
 
   ///Company--- Repositories
   final ApiCompany apiCompany = AppDioService.getApiCompany();
@@ -65,6 +72,7 @@ void setupLocator() {
 
   //Ctrl globaux
   locator.registerLazySingleton(() => InvoiceCtrl(invoiceUc: locator<InvoiceUc>()));
+  locator.registerLazySingleton(() => InvoiceSifecCtrl(invoiceSifeUc: locator<InvoiceSifeUc>()));
   locator.registerLazySingleton(() => DashboardCtrl());
   locator.registerLazySingleton(() => CompanyCtrl(companyUc: locator<CompanyUc>()));
 

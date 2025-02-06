@@ -35,6 +35,7 @@ class  KStyles {
   static const Color bgContainerReppotsColor = Color(0xFFE4E4E7);
   static const Color bgStatColor = Color(0xFFECF0F1);
   static const Color violetColor = Color(0xFF915AC6);
+  static const Color invoiceBgColor = Color(0xFFE4EFFF);
 
 
 

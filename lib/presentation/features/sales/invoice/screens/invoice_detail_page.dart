@@ -3,7 +3,6 @@ import 'package:iconsax/iconsax.dart';
 import 'package:invoice_app/core/services/pdf_generate.dart';
 import 'package:invoice_app/domain/entities/invoice/invoice_response.dart';
 import 'package:invoice_app/presentation/features/sales/invoice/screens/template_invoice/modern_view_invoice_page.dart';
-import 'package:screenshot/screenshot.dart';
 import '../../../../_widgets/app_bar_custom.dart';
 import '../widgets/modals/full_menu.dart';
 
@@ -20,7 +19,6 @@ class InvoiceDetailPage extends StatefulWidget {
 }
 
 class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
-  ScreenshotController screenshotController = ScreenshotController();
 
 
 
@@ -32,7 +30,7 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
           "Fature ${widget.invoiceResponse?.invoice?.code??0}",
           actionList: [
         IconButton(
-          onPressed: ()=> GeneratePdfService.exportInvoiceToPdf(context,screenshotController,widget.invoiceResponse!),
+          onPressed: ()=> GeneratePdfService.generateAndPrintPdf(widget.invoiceResponse!,widget.isSaleInvoice),
           icon: const Icon(Iconsax.document_download),
         ),
         IconButton(
@@ -43,13 +41,10 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
         )
       ]
       ),
-      body: Screenshot(
-        controller: screenshotController,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
-          child: ModernViewInvoicePage(isSaleInvoice: widget.isSaleInvoice,
-              invoiceResponse: widget.invoiceResponse),
-        ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: ModernViewInvoicePage(isSaleInvoice: widget.isSaleInvoice,
+            invoiceResponse: widget.invoiceResponse),
       ),
     );
   }
@@ -66,7 +61,7 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
         ),
       ),
       builder: (context) => FullMenu(invoiceResponse: widget.invoiceResponse,
-          screenshotController: screenshotController),
+          isSaleInvoice: widget.isSaleInvoice),
     );
   }
 }

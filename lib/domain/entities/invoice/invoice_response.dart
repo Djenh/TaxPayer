@@ -1,6 +1,7 @@
 import 'package:invoice_app/domain/entities/company/pos_data_response.dart';
 import 'package:invoice_app/domain/entities/customer/customer_list_response.dart';
 import 'package:invoice_app/domain/entities/invoice/deposit_tax_response.dart';
+import 'package:invoice_app/domain/entities/invoice/product_type.dart';
 import 'package:invoice_app/domain/entities/invoice/signature_entities.dart';
 import 'package:invoice_app/domain/entities/invoice/tax_break_down_entities.dart';
 import 'package:invoice_app/domain/entities/product/categories_entities.dart';
@@ -41,6 +42,7 @@ class InvoiceResponse {
 class InvoiceEntities {
 
   String? id;
+  String? externalInvoiceNo;
   String? tin;
   String? code;
   String? posCode;
@@ -52,7 +54,7 @@ class InvoiceEntities {
   List<ItemsEntities>? items;
   String? comment;
 
-  InvoiceEntities({this.id, this.tin, this.code, this.posCode, this.typeInvoice,
+  InvoiceEntities({this.id,this.externalInvoiceNo, this.tin, this.code, this.posCode, this.typeInvoice,
     this.securityTax,this.pos, this.client, this.clientCode, this.items, this.comment});
 
   factory InvoiceEntities.fromJson(Map<String, dynamic> json) =>
@@ -82,16 +84,20 @@ class ItemsEntities {
 class ItemEntities {
 
   String? id;
+  String? name;
+  String? externalProductNo;
   TaxGroupEntities? taxGroup;
   String? comment;
   int? quantity;
   ProductInvoice? product;
+  ProductType? typeProduct;
   UnitData? total;
   String? priceDefinitionMode;
   num? taxSpecific;
+  num? price;
 
-  ItemEntities({this.id, this.taxGroup, this.comment, this.quantity, this.total,
-    this.product, this.priceDefinitionMode, this.taxSpecific});
+  ItemEntities({this.id,this.name,this.externalProductNo, this.taxGroup, this.comment, this.quantity, this.total,
+    this.product,  this.typeProduct, this.priceDefinitionMode, this.taxSpecific, this.price});
 
   factory ItemEntities.fromJson(Map<String, dynamic> json) =>
       _$ItemEntitiesFromJson(json);

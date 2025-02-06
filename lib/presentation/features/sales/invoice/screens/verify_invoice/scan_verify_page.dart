@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:invoice_app/core/configs/injection_container.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
-import 'package:invoice_app/presentation/controllers/invoice_ctrl.dart';
+import 'package:invoice_app/presentation/controllers/invoice_sifec_ctrl.dart';
 import 'package:invoice_app/presentation/features/sales/invoice/screens/verify_invoice/result_verify_invoice_page.dart';
 import 'package:invoice_app/utils/utils.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -18,7 +18,7 @@ class ScanVerifyPage extends StatefulWidget {
 
 class _ScanVerifyPageState extends State<ScanVerifyPage> {
 
-  final invCtr = locator<InvoiceCtrl>();
+  final invSifecCtr = locator<InvoiceSifecCtrl>();
   late MobileScannerController controller;
 
 
@@ -40,8 +40,7 @@ class _ScanVerifyPageState extends State<ScanVerifyPage> {
 
 
   Future<void> _verifyInvoice(String sig) async {
-    await invCtr.invoiceVerify(context, sig, false).then((val){
-      debugPrint('invoiceVerify du code codeExtracted : $val');
+    await invSifecCtr.invoiceVerify(context, sig, false).then((val){
       if(val != null){
         Get.to(() => ResultVerifyInvoicePage(dataInvoice: val))!.then((val){
           controller.start();
@@ -133,6 +132,7 @@ class _ScanVerifyPageState extends State<ScanVerifyPage> {
   void _showErrorDialog(BuildContext context) {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
         return const ErrorScanDialog();
       },

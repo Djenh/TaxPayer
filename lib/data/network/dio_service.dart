@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:invoice_app/data/datasource/remote/api_invoice_sifec.dart';
 import 'package:invoice_app/utils/network_util.dart';
 import 'package:talker_dio_logger/talker_dio_logger.dart';
 
@@ -28,6 +29,7 @@ class AppDioService {
   static AppDioService? appDioService;
   static ApiAuth? apiAuth;
   static ApiInvoice? apiInvoice;
+  static ApiInvoiceSifec? apiInvoiceSifec;
   static ApiCompany? apiCompany;
   static ApiProducts? apiProducts;
   static ApiCustomers? apiCustomers;
@@ -76,6 +78,13 @@ class AppDioService {
       apiInvoice = ApiInvoice(dio, baseUrl: locator<EnvironmentConfig>().baseUrlInvoices);
     }
     return apiInvoice!;
+  }
+  static ApiInvoiceSifec getApiInvoiceSifec() {
+    if (apiInvoiceSifec == null) {
+      AppDioService.getInstance();
+      apiInvoiceSifec = ApiInvoiceSifec(dio, baseUrl: locator<EnvironmentConfig>().baseUrlInvoicesSifec);
+    }
+    return apiInvoiceSifec!;
   }
 
   static ApiCompany getApiCompany() {
