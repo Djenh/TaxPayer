@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -9,8 +7,8 @@ import '../../../_widgets/app_bar_custom.dart';
 import '../../../_widgets/build_text.dart';
 import '../../../controllers/product_ctrl.dart';
 import '../../../res/style/e_style.dart';
+import '../../sales/invoice/screens/verify_invoice/manual_check_page.dart';
 import 'complaint_detail_page.dart';
-import 'complaint_page.dart';
 
 
 
@@ -64,7 +62,7 @@ class _ComplaintEndCreatePageState extends State<ComplaintEndCreatePage> {
               child: const Text('Oui'),
               onPressed: () {
                 // Navigator.pop(context, true);
-                Get.to(() => const ComplaintPage());
+                Get.offAll(() => const ManualCheckPage());
               },
             ),
           ],
@@ -86,7 +84,7 @@ class _ComplaintEndCreatePageState extends State<ComplaintEndCreatePage> {
         final bool shouldPop = await _showBackDialog() ?? false;
         if (context.mounted && shouldPop) {
           // Navigator.pop(context);
-          Get.to(() => const ComplaintPage());
+          Get.offAll(() => const ManualCheckPage());
         }
       },
       child: Scaffold(

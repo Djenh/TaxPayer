@@ -8,8 +8,7 @@ import '../../../_widgets/app_bar_custom.dart';
 import '../../../_widgets/build_text.dart';
 import '../../../controllers/product_ctrl.dart';
 import '../../../res/style/e_style.dart';
-import 'complaint_page.dart';
-
+import '../../sales/invoice/screens/verify_invoice/manual_check_page.dart';
 
 
 
@@ -63,7 +62,7 @@ class _ComplaintDetailPageState extends State<ComplaintDetailPage> {
               child: const Text('Oui'),
               onPressed: () {
                 // Navigator.pop(context, true);
-                Get.to(() => const ComplaintPage());
+                Get.offAll(() => const ManualCheckPage());
               },
             ),
           ],
@@ -71,6 +70,7 @@ class _ComplaintDetailPageState extends State<ComplaintDetailPage> {
       },
     );
   }
+
 
   Widget cardPlainte(String title, String date, String heure, Color? color)
   {
@@ -108,6 +108,7 @@ class _ComplaintDetailPageState extends State<ComplaintDetailPage> {
     );
   }
 
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -119,7 +120,7 @@ class _ComplaintDetailPageState extends State<ComplaintDetailPage> {
         final bool shouldPop = await _showBackDialog() ?? false;
         if (context.mounted && shouldPop) {
           // Navigator.pop(context);
-          Get.to(() => const ComplaintPage());
+          Get.offAll(() => const ManualCheckPage());
         }
       },
       child: Scaffold(

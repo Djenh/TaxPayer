@@ -30,41 +30,33 @@ class ParticipateTombolaPage extends StatefulWidget {
 class _ParticipateTombolaPageState extends State<ParticipateTombolaPage> {
 
   final lotteryCtrl = locator<LotteryCtrl>();
-  Map<String, dynamic> factureData =
-    {'reference': 'RefiO56798413651',
-      'type': 'Facture de vente',
-      'nbrArticle': 10,
-      'montant': "179 108 000 FCFA",
-      'dateEmission': "12/10/2024"
-    };
   final formKey = GlobalKey<FormState>();
-  TextEditingController? nomController;
-  TextEditingController? telController;
+  TextEditingController? nameController;
+  TextEditingController? phoneController;
   TextEditingController? emailController;
-  Rx<String?> nomError = Rx<String?>(null);
-  Rx<String?> telError = Rx<String?>(null);
+  Rx<String?> nameError = Rx<String?>(null);
+  Rx<String?> phoneError = Rx<String?>(null);
   Rx<String?> emailError = Rx<String?>(null);
 
 
   @override
   void initState() {
     super.initState();
-    nomController = TextEditingController();
-    telController = TextEditingController();
+    nameController = TextEditingController();
+    phoneController = TextEditingController();
     emailController = TextEditingController();
   }
 
   @override
   void dispose() {
     super.dispose();
-    nomController?.dispose();
-    telController?.dispose();
+    nameController?.dispose();
+    phoneController?.dispose();
     emailController?.dispose();
   }
 
 
-  Widget buildRecap()
-  {
+  Widget buildRecap() {
     return Container(
         padding: const EdgeInsets.all(padding),
         decoration: BoxDecoration(
@@ -82,6 +74,7 @@ class _ParticipateTombolaPageState extends State<ParticipateTombolaPage> {
               children: [
                 buildText(context, "Référence de la facture", 13,
                     KStyles.textSecondaryColor, fontWeight: FontWeight.w400),
+                const SizedBox(height: padding5,),
                 Expanded(
                     child: buildText(context, widget.dataInvoice.invoice?.code??"", 13,
                         KStyles.blackColor, fontWeight: FontWeight.w700),
@@ -137,18 +130,18 @@ class _ParticipateTombolaPageState extends State<ParticipateTombolaPage> {
 
 
   void getErrorsForm() {
-    nomError.value = NameVo.validate(nomController!.text.trim());
-    telError.value = NameVo.validate(telController!.text.trim());
+    nameError.value = NameVo.validate(nameController!.text.trim());
+    phoneError.value = NameVo.validate(phoneController!.text.trim());
     emailError.value = EmailVo.validate(emailController!.text.trim());
   }
 
   bool validateForm() {
     final FormState? form = formKey.currentState;
     getErrorsForm();
-    if (form!.validate() && NameVo.isValid(nomController!.text.trim())
-        && NameVo.isValid(telController!.text.trim())
-        && NameVo.isValid(emailController!.text.trim())){
-
+    if (form!.validate() && NameVo.isValid(nameController!.text.trim())
+        && NameVo.isValid(phoneController!.text.trim())
+        && NameVo.isValid(emailController!.text.trim()))
+    {
       return true;
     } else {
       return false;
@@ -179,28 +172,28 @@ class _ParticipateTombolaPageState extends State<ParticipateTombolaPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TextFormField(
-                      controller: nomController,
+                      controller: nameController,
                       enabled: true,
                       style: const TextStyle(color: Colors.black),
                       keyboardType: TextInputType.text,
-                      onChanged: (String v) => nomError.value = null,
+                      onChanged: (String v) => nameError.value = null,
                       decoration: AppInputStyles.defaultInputDecoration(
                           labelText: "Nom du participant",
-                          errorText: nomError.value),
+                          errorText: nameError.value),
                     ),
-                    const SizedBox(height: padding,),
+                    const SizedBox(height: padding20,),
                     TextFormField(
-                      controller: telController,
+                      controller: phoneController,
                       enabled: true,
                       style: const TextStyle(color: Colors.black),
                       keyboardType: TextInputType.text,
                       inputFormatters: noSpaceNoEmoji,
-                      onChanged: (String v) => telError.value = null,
+                      onChanged: (String v) => phoneError.value = null,
                       decoration: AppInputStyles.defaultInputDecoration(
                           labelText: "Téléphone du participant",
-                          errorText: telError.value),
+                          errorText: phoneError.value),
                     ),
-                    const SizedBox(height: padding,),
+                    const SizedBox(height: padding20,),
                     TextFormField(
                       controller: emailController,
                       enabled: true,
@@ -212,7 +205,7 @@ class _ParticipateTombolaPageState extends State<ParticipateTombolaPage> {
                           labelText: "Email du participant",
                           errorText: emailError.value),
                     ),
-                    const SizedBox(height: padding20,),
+                    const SizedBox(height: 30,),
                     Row(
                       children: [
                         Expanded(
@@ -242,13 +235,13 @@ class _ParticipateTombolaPageState extends State<ParticipateTombolaPage> {
     String signatureInvoice = widget.dataInvoice.signatureData?.signature?.toString()??"";
     num numTotalInvoice = widget.dataInvoice.total?.ttc??0;
     int totalInvoice = numTotalInvoice.toInt();
-    String heure = widget.dataInvoice.signatureData?.certifiedDate?.toString()??"";
+    // String issuedDate = widget.dataInvoice.signatureData?.certifiedDate?.toString()??"";
 
     AddLotteryDto params = AddLotteryDto(
       signature: signatureInvoice,
       issuedDateTimestamp: 0,
-      participant: nomController!.text.trim(),
-      phone: telController!.text.trim(),
+      participant: nameController!.text.trim(),
+      phone: phoneController!.text.trim(),
       email: emailController!.text.trim(),
       totalInvoice: totalInvoice
     );
@@ -258,7 +251,6 @@ class _ParticipateTombolaPageState extends State<ParticipateTombolaPage> {
         Get.to(() => const ParticipateTombolaEndPage());
       }
     });
-
   }
 
 }

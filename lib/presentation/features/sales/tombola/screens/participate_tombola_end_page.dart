@@ -48,10 +48,10 @@ class _ParticipateTombolaEndPageState extends State<ParticipateTombolaEndPage> {
           children: [
             buildText(context, "Félicitations",
                 18, Colors.black, fontWeight: FontWeight.w700),
-            const SizedBox(height: padding,),
+            const SizedBox(height: padding15,),
             buildText(context, "Votre participation au tirage mensuel a été effectué avec succès.",
                 15, Colors.black, fontWeight: FontWeight.w400, maxLine:4, textAlign: TextAlign.center),
-            const SizedBox(height: 25),
+            const SizedBox(height: 30),
             Row(
               children: [
                 Expanded(
