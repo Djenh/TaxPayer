@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
-import '../../../domain/entities/lottery/lottery_response.dart';
+import '../../../domain/entities/lottery/lottery_data_response.dart';
 
 
 part 'api_lottery.g.dart';

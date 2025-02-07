@@ -7,7 +7,7 @@ import 'package:invoice_app/presentation/res/style/e_style.dart';
 
 import '../../../../_widgets/action_btn.dart';
 import '../../../../_widgets/app_bar_custom.dart';
-import '../../../../controllers/product_ctrl.dart';
+import '../../../../controllers/lottery_ctrl.dart';
 
 
 
@@ -20,8 +20,7 @@ class ParticipateTombolaEndPage extends StatefulWidget {
 
 class _ParticipateTombolaEndPageState extends State<ParticipateTombolaEndPage> {
 
-  // final tombolaCtr = locator<TombolaCtrl>();
-  final prodCtr = locator<ProductCtrl>();
+  final lotteryCtrl = locator<LotteryCtrl>();
 
 
   @override
@@ -58,7 +57,7 @@ class _ParticipateTombolaEndPageState extends State<ParticipateTombolaEndPage> {
                 Expanded(
                     child: ActionBtn(
                       title: 'Quitter',
-                      loading: prodCtr.isLoading,
+                      loading: lotteryCtrl.isLoading,
                       onPressed: ()=> Get.to(() => const TombolaPage()),
                     )
                 ),

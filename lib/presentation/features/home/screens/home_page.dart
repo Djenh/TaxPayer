@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:invoice_app/presentation/features/complaint/screens/complaint_page.dart';
 import 'package:invoice_app/presentation/features/pos/screens/pos_page.dart';
-import 'package:invoice_app/presentation/features/registration/_strings/register_str.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 
 import '../../dashoard/screens/dashboard_page.dart';
+import '../../sales/invoice/screens/verify_invoice/manual_check_page.dart';
 import '../../sales/invoice/widgets/invoice_list.dart';
-import '../../sales/tombola/screens/participate_tombola_page.dart';
 import '../controler/home_controller.dart';
 import '../widgets/menus/side_menu.dart';
 
@@ -32,7 +30,7 @@ class HomePage extends StatelessWidget {
                 DashboardPage(),
                 InvoiceList(),
                 PosPage(isManage: false),
-                ParticipateTombolaPage(),
+                ManualCheckPage(),
                 //Container(),
               ],
             ),

@@ -14,6 +14,7 @@ import '../datasource/remote/api_auth.dart';
 import '../datasource/remote/api_company.dart';
 import '../datasource/remote/api_customers.dart';
 import '../datasource/remote/api_invoice.dart';
+import '../datasource/remote/api_lottery.dart';
 import '../datasource/remote/api_products.dart';
 
 
@@ -33,6 +34,7 @@ class AppDioService {
   static ApiCompany? apiCompany;
   static ApiProducts? apiProducts;
   static ApiCustomers? apiCustomers;
+  static ApiLottery? apiLottery;
 
   // Retry configuration
   static const int maxRetries = 3;
@@ -109,6 +111,14 @@ class AppDioService {
       apiCustomers = ApiCustomers(dio, baseUrl: locator<EnvironmentConfig>().baseUrlCustomers);
     }
     return apiCustomers!;
+  }
+
+  static ApiLottery getApiLottery() {
+    if (apiLottery == null) {
+      AppDioService.getInstance();
+      apiLottery = ApiLottery(dio, baseUrl: locator<EnvironmentConfig>().baseUrlLottery);
+    }
+    return apiLottery!;
   }
 
 
@@ -215,7 +225,10 @@ class AppDioService {
         }
 
 
-        final String? authToken = AppServices.instance.authTokenUser;
+        // final String? authToken = AppServices.instance.authTokenUser;
+        final String? authToken = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJCVWxOa0xya1ZyNWZsYXpuTDZjNW9YTnhSdDRRUHpNTDhuc1VPeEJxd2pnIn0.eyJleHAiOjE3Mzg5NzAzOTksImlhdCI6MTczODkzNDM5OSwianRpIjoiZDhjYTk4YmQtODEzNC00MjhhLWFjYmYtNmVjMGRmNjZlMjIyIiwiaXNzIjoiaHR0cHM6Ly9rZXljbG9hay5ieXRlaW5ub3YuY29tL3JlYWxtcy9TSUZFQy1DT1JFIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjQzOGEzNzBkLTI0MDktNDc5NC05NzJjLTQ3ZWE4YzY4MTY5ZiIsInR5cCI6IkJlYXJlciIsImF6cCI6ImxvdHRlcnkiLCJzZXNzaW9uX3N0YXRlIjoiOTY2ZGJiOTctMWY0Yy00OTJjLTg2MzMtOGE1MDFjZjBjZDE4IiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyIvKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy1zaWZlYyIsIkNPUkVfT0ZGSUNFUiIsIkNPUkVfTE9URVJZX01BTkFHRVIiLCJDT1JFX09GRklDRVJfTUFOQUdFUiIsIkNPUkVfREVWRUxPUEVSIiwiQ09SRV9MT1RFUllfT0ZGSUNFUiIsIkNPUkVfQ0VOVEVSX01BTkFHRVIiLCJvZmZsaW5lX2FjY2VzcyIsIkNPUkVfR0VORVJBTF9TVVBFUlZJU09SIiwiQ09SRV9BRE1JTiIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsInZpZXctYXBwbGljYXRpb25zIiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6InByb2ZpbGUgZW1haWwiLCJzaWQiOiI5NjZkYmI5Ny0xZjRjLTQ5MmMtODYzMy04YTUwMWNmMGNkMTgiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmFtZSI6IkNJMDEyMzQ1NjcwMSBDSTAxMjM0NTY3MDEiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJjaTAxMjM0NTY3MDEiLCJnaXZlbl9uYW1lIjoiQ0kwMTIzNDU2NzAxIiwiZmFtaWx5X25hbWUiOiJDSTAxMjM0NTY3MDEiLCJlbWFpbCI6ImNpMDEyMzQ1NjcwMUBieXRlaW5ub3YuY29tIn0.eLF2WD2sdiWuWYd6OlQuPZFLpmVz5Out14uZtZbHrDRnQc6vUvU8lWlZRlk5Qmgmm5Yw0OnBj_dcABfmtgL55BNa9WkDQbT_C3Nslfus6qDVDn5Siu0JNKP01-dg7kz1wZ0Ce9TMBk20S9rr-SHtW0ykerNOvQyPSUMlgaQdTWpVCmAQJyF8EHyL6Z8leWIuMsbb_R9cwD4rQomPe6OlsUn85TvuG0mway8UM4Ns15dZe_5KxeetVU8DQ_D4eqjkhzYcMbTTaBHnsOYEAR65MWGyLaJK21aHLYVXwX82I5yTJu2B5dF8V5bgT2WfKA2K24KS5kp4ZBVtxZAHA8qnWg";
+
+
         if (authToken != null && authToken.isNotEmpty) {
           options.headers['Authorization'] = "Bearer $authToken";
           debugPrint("Requesting with token: $authToken");

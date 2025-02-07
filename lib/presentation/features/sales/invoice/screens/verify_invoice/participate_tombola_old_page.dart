@@ -6,14 +6,14 @@ import '../../../../../_widgets/build_text.dart';
 import '../../../../../res/app_input_styles.dart';
 import '../../../../../res/input_formaters.dart';
 
-class ParticipateTombolaPage extends StatefulWidget {
-  const ParticipateTombolaPage({super.key});
+class ParticipateTombolaOldPage extends StatefulWidget {
+  const ParticipateTombolaOldPage({super.key});
 
   @override
-  State<ParticipateTombolaPage> createState() => _ParticipateTombolaPageState();
+  State<ParticipateTombolaOldPage> createState() => _ParticipateTombolaOldPageState();
 }
 
-class _ParticipateTombolaPageState extends State<ParticipateTombolaPage> {
+class _ParticipateTombolaOldPageState extends State<ParticipateTombolaOldPage> {
 
 
   final formKey = GlobalKey<FormState>();

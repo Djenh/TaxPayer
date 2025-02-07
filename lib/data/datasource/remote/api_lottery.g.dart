@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'api_invoice_sifec.dart';
+part of 'api_lottery.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,8 +8,8 @@ part of 'api_invoice_sifec.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element
 
-class _ApiInvoiceSifec implements ApiInvoiceSifec {
-  _ApiInvoiceSifec(
+class _ApiLottery implements ApiLottery {
+  _ApiLottery(
     this._dio, {
     this.baseUrl,
     this.errorLogger,
@@ -22,19 +22,21 @@ class _ApiInvoiceSifec implements ApiInvoiceSifec {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<HttpResponse<InvoiceResponse>> verifyInvoice(String signature) async {
+  Future<HttpResponse<LotteryDataResponse>> createLotteryForParticipant(
+      Map<String, dynamic> params) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<HttpResponse<InvoiceResponse>>(Options(
-      method: 'GET',
+    final _data = <String, dynamic>{};
+    _data.addAll(params);
+    final _options = _setStreamType<HttpResponse<LotteryDataResponse>>(Options(
+      method: 'POST',
       headers: _headers,
       extra: _extra,
     )
         .compose(
           _dio.options,
-          '/invoice/verify/${signature}',
+          '/stack/invoice/create',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -44,9 +46,9 @@ class _ApiInvoiceSifec implements ApiInvoiceSifec {
           baseUrl,
         )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late InvoiceResponse _value;
+    late LotteryDataResponse _value;
     try {
-      _value = InvoiceResponse.fromJson(_result.data!);
+      _value = LotteryDataResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

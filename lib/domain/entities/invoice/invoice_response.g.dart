@@ -51,7 +51,7 @@ Map<String, dynamic> _$InvoiceResponseToJson(InvoiceResponse instance) =>
 InvoiceEntities _$InvoiceEntitiesFromJson(Map<String, dynamic> json) =>
     InvoiceEntities(
       id: json['id'] as String?,
-      externalInvoiceNo: json['externalInvoiceNo'],
+      externalInvoiceNo: json['externalInvoiceNo'] as String?,
       tin: json['tin'] as String?,
       code: json['code'] as String?,
       posCode: json['posCode'] as String?,
@@ -114,8 +114,8 @@ Map<String, dynamic> _$ItemsEntitiesToJson(ItemsEntities instance) =>
 
 ItemEntities _$ItemEntitiesFromJson(Map<String, dynamic> json) => ItemEntities(
       id: json['id'] as String?,
-      name: json['name'],
-      externalProductNo: json['externalProductNo'],
+      name: json['name'] as String?,
+      externalProductNo: json['externalProductNo'] as String?,
       taxGroup: json['taxGroup'] == null
           ? null
           : TaxGroupEntities.fromJson(json['taxGroup'] as Map<String, dynamic>),
@@ -132,7 +132,7 @@ ItemEntities _$ItemEntitiesFromJson(Map<String, dynamic> json) => ItemEntities(
           : ProductType.fromJson(json['typeProduct'] as Map<String, dynamic>),
       priceDefinitionMode: json['priceDefinitionMode'] as String?,
       taxSpecific: json['taxSpecific'] as num?,
-      price: json['price'],
+      price: json['price'] as num?,
     );
 
 Map<String, dynamic> _$ItemEntitiesToJson(ItemEntities instance) =>

@@ -1,14 +1,12 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:invoice_app/core/errors/request_failures.dart';
-import 'package:invoice_app/domain/entities/company/localities_list_response.dart';
 import 'package:invoice_app/utils/logger_util.dart';
 
 import '../../core/services/toast_service.dart';
 import '../../data/dtos/add_lottery_dto.dart';
-import '../../domain/entities/lottery/lottery_response.dart';
+import '../../domain/entities/lottery/lottery_data_response.dart';
 import '../../domain/usecases/lottery_uc.dart';
 
 class LotteryCtrl extends GetxController {
@@ -17,10 +15,7 @@ class LotteryCtrl extends GetxController {
   final LotteryUc lotteryUc;
 
   RxBool isLoading = false.obs;
-  static const _pageSize = 20;
   var currentPage = 1.obs;
-  PagingController<int, LocalitiesEntities>? pagingLocController;
-
 
   RxBool get ignorePointer => RxBool(isLoading.isTrue);
 
@@ -36,8 +31,8 @@ class LotteryCtrl extends GetxController {
   }
 
 
-  ///func to add pos for company
-  Future<LotteryDataResponse?> addPosForCompany(BuildContext context, AddLotteryDto params) async {
+  ///func to add lottery for participant
+  Future<LotteryDataResponse?> addLotteryForParticipant(BuildContext context, AddLotteryDto params) async {
     LotteryDataResponse? response;
 
     try {

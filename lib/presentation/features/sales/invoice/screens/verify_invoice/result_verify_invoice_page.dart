@@ -4,10 +4,10 @@ import 'package:iconsax/iconsax.dart';
 import 'package:invoice_app/domain/entities/invoice/invoice_response.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
 import 'package:invoice_app/presentation/features/complaint/screens/complaint_create_page.dart';
-import 'package:invoice_app/presentation/features/sales/invoice/screens/verify_invoice/participate_tombola_page.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 
 import '../../../../../_widgets/app_bar_custom.dart';
+import '../../../tombola/screens/participate_tombola_page.dart';
 import '../template_invoice/modern_view_invoice_page.dart';
 
 
@@ -84,7 +84,7 @@ class _ResultVerifyInvoicePageState extends State<ResultVerifyInvoicePage> {
   Widget _buildBtnTombola(){
     return GestureDetector(
       onTap: (){
-        Get.to(() => const ParticipateTombolaPage());
+        Get.to(() => ParticipateTombolaPage(dataInvoice: widget.dataInvoice));
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),

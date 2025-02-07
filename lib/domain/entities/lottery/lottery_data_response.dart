@@ -1,18 +1,18 @@
 import 'package:json_annotation/json_annotation.dart';
 
-
 part 'lottery_data_response.g.dart';
+
 
 @JsonSerializable(explicitToJson: true)
 class LotteryDataResponse {
 
-  String uuid;
-  String signature;
-  int issuedDateTimestamp;
-  String participant;
-  String phone;
+  String? uuid;
+  String? signature;
+  int? issuedDateTimestamp;
+  String? participant;
+  String? phone;
   String? email;
-  int totalInvoice;
+  int? totalInvoice;
 
   LotteryDataResponse({this.uuid, this.signature, this.issuedDateTimestamp,
     this.participant, this.phone, this.email, this.totalInvoice});

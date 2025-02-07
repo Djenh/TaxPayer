@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:invoice_app/core/configs/injection_container.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
+import 'package:invoice_app/presentation/features/complaint/screens/complaint_page.dart';
 import 'package:invoice_app/presentation/features/sales/tombola/screens/participate_tombola_page.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 
@@ -155,7 +156,7 @@ class _TombolaDetailPageState extends State<TombolaDetailPage> {
                     child: ActionBtn(
                       title: "Réclamer le lot gagné",
                       loading: prodCtr.isLoading,
-                      onPressed: ()=> Get.to(() => const ParticipateTombolaPage()),
+                      onPressed: ()=> Get.to(() => const ComplaintPage()),
                     )
                 ),
               ],
