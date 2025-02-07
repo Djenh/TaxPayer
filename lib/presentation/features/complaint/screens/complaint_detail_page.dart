@@ -6,7 +6,7 @@ import 'package:timelines_plus/timelines_plus.dart';
 import '../../../../core/configs/injection_container.dart';
 import '../../../_widgets/app_bar_custom.dart';
 import '../../../_widgets/build_text.dart';
-import '../../../controllers/product_ctrl.dart';
+import '../../../controllers/lottery_ctrl.dart';
 import '../../../res/style/e_style.dart';
 import '../../sales/invoice/screens/verify_invoice/manual_check_page.dart';
 
@@ -22,8 +22,7 @@ class ComplaintDetailPage extends StatefulWidget {
 
 class _ComplaintDetailPageState extends State<ComplaintDetailPage> {
 
-  // final complaintCtr = locator<ComplaintCtrl>();
-  final prodCtr = locator<ProductCtrl>();
+  final lotteryCtrl = locator<LotteryCtrl>();
 
   @override
   void initState() {

@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:invoice_app/core/configs/injection_container.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
 import 'package:invoice_app/presentation/features/complaint/screens/complaint_page.dart';
-import 'package:invoice_app/presentation/features/sales/tombola/screens/participate_tombola_page.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 
 import '../../../../../utils/custom_image_view.dart';
