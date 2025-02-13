@@ -121,30 +121,35 @@ class _ProductPageState extends State<ProductPage> {
                         borderRadius: BorderRadius.circular(padding)),
                   ),
                   const SizedBox(width: 10),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: KStyles.primaryColor.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(4),
+                  Flexible(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: KStyles.primaryColor.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          padding: const EdgeInsets.all(4),
+                          //child: buildText(context, "${typeProduct(ctg.productType!)}/${ctg.category!.name}", 10,
+                          child: buildText(context, Utils.typeProduct(ctg.productType!), 10,
+                              KStyles.primaryColor,
+                              fontWeight: FontWeight.w400),
                         ),
-                        padding: const EdgeInsets.all(4),
-                        //child: buildText(context, "${typeProduct(ctg.productType!)}/${ctg.category!.name}", 10,
-                        child: buildText(context, Utils.typeProduct(ctg.productType!), 10,
-                            KStyles.primaryColor,
-                            fontWeight: FontWeight.w400),
-                      ),
-                      const SizedBox(height: 4),
-                      buildText(context, ctg.name!, 14,
-                          Colors.black, fontWeight: FontWeight.w600),
-                     /* const SizedBox(height: 6),
-                      buildText(context, prod["desc"]!, 14,
-                          Colors.grey, fontWeight: FontWeight.w400),
-                      const SizedBox(height: 4),
-                      buildText(context, prod["stk"]!, 14,
-                          Colors.grey, fontWeight: FontWeight.w400)*/
-                    ],
+                        const SizedBox(height: 4),
+                        buildText(context, ctg.name!, 14,
+                            Colors.black, fontWeight: FontWeight.w600,maxLine: 2),
+                        const SizedBox(height: 4),
+                        buildText(context, "${Utils.getFormattedAmount(ctg.price?.amount??0.00)} Fcfa", 14,
+                            Colors.black, fontWeight: FontWeight.w600),
+                       /* const SizedBox(height: 6),
+                        buildText(context, prod["desc"]!, 14,
+                            Colors.grey, fontWeight: FontWeight.w400),
+                        const SizedBox(height: 4),
+                        buildText(context, prod["stk"]!, 14,
+                            Colors.grey, fontWeight: FontWeight.w400)*/
+                      ],
+                    ),
                   )
                 ],
               ),
@@ -166,7 +171,8 @@ class _ProductPageState extends State<ProductPage> {
 
   Widget _noItem(){
     return (searchController!.text.isNotEmpty)
-        ? Column(
+        ?
+    Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -197,8 +203,28 @@ class _ProductPageState extends State<ProductPage> {
       ],
     )
         : Center(
-      child: buildText(context, "Aucun Produit disponible.", 16, Colors.black,
-          fontWeight: FontWeight.w500, textAlign: TextAlign.center),
+      child: Column(
+        children: [
+          buildText(context, "Aucun Produit disponible.", 16, Colors.black,
+              fontWeight: FontWeight.w500, textAlign: TextAlign.center),
+          const SizedBox(height: 10),
+          SizedBox(
+            width: MediaQuery.of(context).size.width/2+50,
+            child: SimpleBtn(
+              titleBtn: "Créer un produit",
+              sizeFont: 14,
+              onPressed: () async {
+                await Get.to(() => ProductCreatePage(isManage: widget.isManage),
+                    fullscreenDialog: true)?.then((val){
+                  if(val == true){
+                    prodCtr.pagingProdController?.refresh();
+                  }
+                });
+              },
+            ),
+          )
+        ],
+      ),
     );
   }
 

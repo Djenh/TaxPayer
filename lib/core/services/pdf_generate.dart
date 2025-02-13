@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:invoice_app/domain/entities/invoice/invoice_response.dart';
@@ -13,8 +14,12 @@ import 'package:printing/printing.dart';
 
 
 class GeneratePdfService {
-  static Future<void> generateAndPrintPdf(InvoiceResponse invoiceResponse,bool isSaleInvoice) async {
+  static Future<void> generateAndPrintPdf(InvoiceResponse invoiceResponse,bool isSaleInvoice,bool isShared,isSifecModel,{bool? isMailSent,isDownload}) async {
     AppLoaderDialog.show(Get.context!);
+    final img = await rootBundle.load('assets/images/user_tag.png');
+    final imageBytes = img.buffer.asUint8List();
+
+    final pwImage = pw.MemoryImage(imageBytes);
     final pdf = pw.Document();
 
     pdf.addPage(
@@ -32,7 +37,7 @@ class GeneratePdfService {
                     invoiceResponse.invoice?.pos?.contact?.email??"",
                     invoiceResponse.invoice?.pos?.contact?.phoneNumber??"",
                     invoiceResponse.invoice?.pos?.company?.address?.description??"",
-                    invoiceResponse.invoice?.pos?.company?.tradeNo??""),
+                    invoiceResponse.invoice?.pos?.company?.tradeNo??"",pwImage),
               ),
               pw.SizedBox(width: 10),
               pw.Expanded(
@@ -43,7 +48,7 @@ class GeneratePdfService {
                     invoiceResponse.invoice?.client?.contact?.email??"",
                     invoiceResponse.invoice?.client?.contact?.phoneNumber??"",
                     invoiceResponse.invoice?.client?.invoicingAddress?.description??"",
-                    ""),
+                    "",pwImage),
               ),
             ],
           ),
@@ -56,9 +61,9 @@ class GeneratePdfService {
           pw.SizedBox(height: 15),
           pw.Center(
               child: buildTitleInvoice(invoiceResponse.invoice?.typeInvoice?.name??"",
-                  "N° ${invoiceResponse.invoice?.code??""}")),
+                  "N° ${isSifecModel?invoiceResponse.invoice?.externalInvoiceNo??"" :invoiceResponse.invoice?.code??""}")),
           pw.SizedBox(height: 15),
-          buildInvoiceItems(invoiceResponse.invoice?.items),
+          buildInvoiceItems(invoiceResponse.invoice?.items,isSifecModel),
           pw.Padding(
             padding: const pw.EdgeInsets.symmetric(vertical: 8.0),
             child: pw.Row(
@@ -129,12 +134,12 @@ class GeneratePdfService {
               ],
             ),
           ),
-          pw.SizedBox(height: 15),
+          pw.SizedBox(height: 8),
           buildPwText("Arrêté la présente facture à la somme"
               " de ${invoiceResponse.totalInletters?.toString()??""}",
-              8,
+              10,
               PdfColors.black,maxLine: 2),
-          pw.SizedBox(height: 20),
+          pw.SizedBox(height: 100),
         ],
       ),
     );
@@ -147,7 +152,12 @@ class GeneratePdfService {
     await file.writeAsBytes(await pdf.save());
 
     AppLoaderDialog.dismiss(Get.context!);
-    // Print or View the PDF
-    await Printing.sharePdf(bytes: await pdf.save(), filename: '${invoiceResponse.invoice?.typeInvoice?.name??""}_${invoiceResponse.invoice?.code??""}_$formattedDate.pdf');
+    if(isMailSent != null && isMailSent){
+      Utils.sendEmailWithAttachment(file);
+    }else if(isDownload != null && isDownload){
+      Utils.openFile(file);
+    }else{
+      await Printing.sharePdf(bytes: await pdf.save(), filename: '${invoiceResponse.invoice?.typeInvoice?.name??""}_${invoiceResponse.invoice?.code??""}_$formattedDate.pdf');
+    }
   }
 }

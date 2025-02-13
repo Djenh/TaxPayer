@@ -115,7 +115,43 @@ Widget buildItemArticle(BuildContext context,ItemsEntities itemsEntities) {
   );
 }
 
-
+Widget buildItemSifecArticle(BuildContext context,ItemsEntities itemsEntities) {
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.start,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Container(
+        decoration: BoxDecoration(
+          color: KStyles.primaryColor.withOpacity(0.2),
+          borderRadius: BorderRadius.circular(4),
+        ),
+        padding: const EdgeInsets.all(4),
+        child: buildText(
+            context, itemsEntities.item?.typeProduct?.name??"".toUpperCase(), 10, KStyles.primaryColor,
+            fontWeight: FontWeight.w400),
+      ),
+      const SizedBox(height: 3),
+      buildText(context, "${itemsEntities.item?.quantity??1} QTE x ${itemsEntities.item?.price.toString()??""}", 12, Colors.black,
+          fontWeight: FontWeight.w500),
+      const SizedBox(height: 3),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          buildText(context, "${itemsEntities.item?.name??""}  [${itemsEntities.item?.taxGroup?.code??""}]", 12, Colors.black,
+              fontWeight: FontWeight.w500),
+          buildText(context, "*${Utils.getFormattedAmount(itemsEntities.total?.ttc!.toInt() as num)}", 12, Colors.black,
+              fontWeight: FontWeight.w500),
+        ],
+      ),
+      const SizedBox(height: 3),
+      const DottedDashedLine(
+          height: 0,
+          width: double.infinity,
+          axis: Axis.horizontal,
+          strokeWidth: 0.5),
+    ],
+  );
+}
 /*
   Widget _buildItemArticle(ItemsEntities itemsEntities) {
     return Column(

@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:invoice_app/core/configs/injection_container.dart';
+import 'package:invoice_app/core/services/app_service.dart';
 import 'package:invoice_app/core/services/toast_service.dart';
 import 'package:invoice_app/data/dtos/add_invoice_dto.dart';
 import 'package:invoice_app/domain/entities/product/tax_group_response.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
 import 'package:invoice_app/presentation/controllers/invoice_ctrl.dart';
+import 'package:invoice_app/presentation/features/pos/screens/invoice_dialog.dart';
 import 'package:invoice_app/presentation/features/stocks/product/screens/product_page.dart';
 import 'package:invoice_app/utils/logger_util.dart';
+import 'package:invoice_app/utils/utils.dart';
 import '../../../../../domain/entities/product/product_response.dart';
 import '../../../../_widgets/app_bar_custom.dart';
 import '../../../../_widgets/build_dropdown_str.dart';
@@ -193,7 +196,7 @@ class _InvoiceItemPageState extends State<InvoiceItemPage> {
             children: [
               buildText(context, "Total Hors Taxe",
                   14, Colors.black, fontWeight: FontWeight.w300),
-              buildText(context, "${tH.value}", 14, Colors.black,
+              buildText(context, Utils.getFormattedAmount(tH.value), 14, Colors.black,
                   fontWeight: FontWeight.w600),
             ],
           ),
@@ -205,7 +208,7 @@ class _InvoiceItemPageState extends State<InvoiceItemPage> {
             children: [
               buildText(context, "Total appliquées",
                   14, Colors.black, fontWeight: FontWeight.w300),
-              buildText(context, "${tA.value}", 14,
+              buildText(context, Utils.getFormattedAmount(tA.value), 14,
                   Colors.black, fontWeight: FontWeight.w600),
             ],
           ),
@@ -217,7 +220,7 @@ class _InvoiceItemPageState extends State<InvoiceItemPage> {
             children: [
               buildText(context, "Grand total",
                   14, Colors.black, fontWeight: FontWeight.w600),
-              buildText(context, "${gT.value}", 14, Colors.black,
+              buildText(context, Utils.getFormattedAmount(gT.value), 14, Colors.black,
                   fontWeight: FontWeight.w600),
             ],
           ),
@@ -236,20 +239,39 @@ class _InvoiceItemPageState extends State<InvoiceItemPage> {
             titleBtn: "Ajouter",
             sizeFont: 12,
             onPressed:(){
-              if(dataProductSelect != null && qteController!.text.isNotEmpty){
-                invCtr.finalItemInvoice.add(invCtr.addInvoiceDto.value.items.first);
-                invCtr.addInvoiceDto.value.items.clear();
-                Get.back(result: true);
+              final currentPos = AppServices.instance.currentPos.value;
+              if(currentPos == null){
+                gotoSelectPos();
+              }else if(currentPos.code!.isEmpty){
+                gotoSelectPos();
               }else{
-                ToastService.showWarning(context, "Facturation",
-                    description: "Selectionner un produit et sa quantité pour ajouté.");
+                if(dataProductSelect != null && qteController!.text.isNotEmpty){
+                  invCtr.addInvoiceDto.value.posCode = currentPos.code!;
+                  invCtr.finalItemInvoice.add(invCtr.addInvoiceDto.value.items.first);
+                  invCtr.addInvoiceDto.value.items.clear();
+                  Get.back(result: true);
+                }else{
+                  ToastService.showWarning(context, "Facturation",
+                      description: "Selectionner un produit et sa quantité pour ajouté.");
+                }
               }
+
             }),
       ),
     );
   }
 
-
+  gotoSelectPos(){
+    showGeneralDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierLabel: 'FullScreenDialog',
+      transitionDuration: const Duration(milliseconds: 300),
+      pageBuilder: (BuildContext context, Animation animation, Animation secondaryAnimation) {
+        return const PosDialogScreen(goBack: true);
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

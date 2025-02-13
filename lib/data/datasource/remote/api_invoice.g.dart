@@ -75,7 +75,7 @@ class _ApiInvoice implements ApiInvoice {
     )
             .compose(
               _dio.options,
-              '/invoice',
+              '/invoice/tin/${tin}',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -84,6 +84,46 @@ class _ApiInvoice implements ApiInvoice {
               _dio.options.baseUrl,
               baseUrl,
             )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late InvoiceEntitiesListResponse _value;
+    try {
+      _value = InvoiceEntitiesListResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    final httpResponse = HttpResponse(_value, _result);
+    return httpResponse;
+  }
+
+
+  @override
+  Future<HttpResponse<InvoiceEntitiesListResponse>> getInvoiceByTinAndCode(
+      Map<String, dynamic> pageable,
+      String tin,String code,
+      ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.addAll(pageable);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options =
+    _setStreamType<HttpResponse<InvoiceEntitiesListResponse>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+      _dio.options,
+      '/invoice/tin/${tin}/code/${code}',
+      queryParameters: queryParameters,
+      data: _data,
+    )
+        .copyWith(
+        baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
     late InvoiceEntitiesListResponse _value;
     try {

@@ -24,11 +24,13 @@ class InvoiceCtrl extends GetxController {
   final InvoiceUc invoiceUc;
 
   RxBool isLoading = false.obs;
-  static const _pageSize = 20;
+  static const _pageSize = 10;
   PagingController<int, TypeInvoiceEntities>? pagingTypeInvoiceController;
   PagingController<int, InvoiceResponse> pagingIvoiceController = PagingController<int, InvoiceResponse>(firstPageKey: 0);
+  PagingController<int, InvoiceResponse>? pagingIvoiceByCodeAndTinController;
   List<TypeInvoiceEntities> allTypeInvoice = [];
   List<InvoiceResponse> allInvoice = [];
+  List<InvoiceResponse> allInvoiceByCodeAndTin = [];
   PagingController<int, DepositTaxEntities>? pagingDepositTaxController;
   List<DepositTaxEntities> allDepositTax = [];
 
@@ -152,7 +154,38 @@ class InvoiceCtrl extends GetxController {
         },
       );
     } catch (error) {
-      pagingTypeInvoiceController?.error = error.toString();
+      pagingIvoiceController.error = error.toString();
+    }
+  }
+
+  Future<void> getInvoiceByCodeAndTin(String tin,String code,int pageKey) async {
+    try {
+      final result = await invoiceUc.executeAllInvoiceByTinAndCode(tin,code,pageKey, _pageSize);
+
+      result.fold(
+            (failure) {
+              pagingIvoiceByCodeAndTinController?.error = failure.message;
+        },
+            (response) {
+          final List<InvoiceResponse> newItems = response.content ?? [];
+
+          if (pageKey == 0) {
+            allInvoiceByCodeAndTin.clear();
+          }
+
+          allInvoiceByCodeAndTin.addAll(newItems);
+
+          final isLastPage = pageKey >= (response.totalPages ?? 1) - 1;
+          if (isLastPage) {
+            pagingIvoiceByCodeAndTinController?.appendLastPage(newItems);
+          } else {
+            final nextPageKey = pageKey + 1;
+            pagingIvoiceByCodeAndTinController?.appendPage(newItems, nextPageKey);
+          }
+        },
+      );
+    } catch (error) {
+      pagingIvoiceByCodeAndTinController?.error = error.toString();
     }
   }
 

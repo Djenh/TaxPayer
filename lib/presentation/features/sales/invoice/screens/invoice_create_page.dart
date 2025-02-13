@@ -1,7 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:invoice_app/commons/ui/button/kcirclebutton.dart';
 import 'package:invoice_app/core/configs/injection_container.dart';
+import 'package:invoice_app/core/services/app_service.dart';
 import 'package:invoice_app/core/services/toast_service.dart';
 import 'package:invoice_app/domain/entities/customer/customer_list_response.dart';
 import 'package:invoice_app/domain/entities/invoice/deposit_tax_response.dart';
@@ -11,8 +15,11 @@ import 'package:invoice_app/presentation/_widgets/action_btn.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
 import 'package:invoice_app/presentation/controllers/invoice_ctrl.dart';
 import 'package:invoice_app/presentation/features/clients/screens/customer_page.dart';
+import 'package:invoice_app/presentation/features/pos/screens/invoice_dialog.dart';
 import 'package:invoice_app/presentation/features/sales/invoice/screens/invoice_detail_page.dart';
+import 'package:invoice_app/presentation/res/style/e_style.dart';
 import 'package:invoice_app/utils/logger_util.dart';
+import 'package:invoice_app/utils/utils.dart';
 import '../../../../_widgets/app_bar_custom.dart';
 import '../../../../_widgets/build_dropdown_str.dart';
 import '../../../../_widgets/simple_btn.dart';
@@ -87,6 +94,7 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
     invCtr.addInvoiceDto.value.items.clear();
     await Get.to( ()=>const InvoiceItemPage(),
         fullscreenDialog: true )!.then((val) async {
+      log("invoiceDto => ${invCtr.finalItemInvoice.length}");
       if(val == true){
         invCtr.addInvoiceDto.value.items.addAll(invCtr.finalItemInvoice);
         _calculationItems();
@@ -123,7 +131,7 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
             children: [
               buildText(context, "Total Hors Taxes (Total HT)",
                   14, Colors.black, fontWeight: FontWeight.w300),
-              buildText(context, "$tH Fcfa", 14, Colors.black,
+              buildText(context, "${Utils.getFormattedAmount(tH.value)} Fcfa", 14, Colors.black,
                   fontWeight: FontWeight.w300),
             ],
           ),
@@ -136,7 +144,7 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
             children: [
               buildText(context, "Total appliquées",
                   14, Colors.black, fontWeight: FontWeight.w300),
-              buildText(context, "$tA Fcfa", 14,
+              buildText(context, "${Utils.getFormattedAmount(tA.value)} Fcfa", 14,
                   Colors.black, fontWeight: FontWeight.w300),
             ],
           ),
@@ -148,7 +156,7 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
           children: [
             buildText(context, "Grand total",
                 14, Colors.black, fontWeight: FontWeight.w600),
-            buildText(context, "$gT Fcfa", 14, Colors.black,
+            buildText(context, "${Utils.getFormattedAmount(gT.value)} Fcfa", 14, Colors.black,
                 fontWeight: FontWeight.w300),
           ],
         ),
@@ -202,17 +210,37 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
               fontWeight: FontWeight.w400),
           Row(
             children: [
-              Expanded(
-                child: buildText(context, subtitle, 12, Colors.black,
-                    fontWeight: FontWeight.w600, maxLine: 3),
+              Flexible(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: KStyles.primaryColor.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  padding: const EdgeInsets.all(4),
+                  child: buildText(
+                      context, subtitle.toUpperCase(), 12, KStyles.primaryColor,
+                      fontWeight: FontWeight.w400,maxLine: 3),
+                ),
               ),
-              //const SizedBox(width: 8),
+              const SizedBox(width: 10),
+              GestureDetector(
+                onTap: () => _removeItem(index),
+                child: const Icon(Iconsax.trash, color: Colors.redAccent, size: 20),
+              )
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
               Row(
                 children: [
-                  IconButton(
-                    icon: const Icon(Icons.remove, size: 20),
+                  KCircleButton(
+                    color: Colors.transparent,
                     onPressed: () => _decrementQuantity(index),
+                    child: const Icon(Icons.remove,color: KStyles.primaryColor, size: 25),
                   ),
+                  const SizedBox(width: 5),
                   Container(
                     //width: 30,
                     height: 30,
@@ -224,25 +252,26 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
                     ),
                     child: Text(
                       "$quantity",
-                      style: const TextStyle(fontSize: 14),
+                      style: const TextStyle(fontSize: 14,fontWeight: FontWeight.w800),
                     ),
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.add, size: 20),
+                  const SizedBox(width: 5),
+                  KCircleButton(
+                    color: Colors.transparent,
                     onPressed: () => _incrementQuantity(index),
+                    child: const Icon(Icons.add,color: KStyles.primaryColor, size: 25),
                   ),
                 ],
               ),
               const SizedBox(width: 8),
-              buildText(context, "${price * quantity} Fcfa", 12, Colors.black,
-                  fontWeight: FontWeight.w300),
-              const SizedBox(width: 8),
-             GestureDetector(
-               onTap: () => _removeItem(index),
-               child: const Icon(Iconsax.trash, color: Colors.redAccent, size: 20),
-             )
+              Flexible(
+                child: buildText(context, "${Utils.getFormattedAmount(price * quantity)} Fcfa", 12, Colors.black,
+                    fontWeight: FontWeight.w800),
+              ),
+
             ],
-          )
+          ),
+
         ],
       ),
     );
@@ -251,7 +280,8 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
   Widget _itemServiceProd(){
     return (invoiceData == null)
         ? _noItems()
-        : Column(
+        :
+    Column(
       children: [
         ListView.separated(
           shrinkWrap: true,
@@ -261,16 +291,22 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
           const Divider(thickness: 1, height: 1),
           itemBuilder: (context, index){
             final item = invoiceData!.invoice!.items![index];
-            return _buildProductRow(
-              index: index,
-              title: "",
-              subtitle: item.item!.product!.name ?? "",
-              price: item.item!.product!.price!.amount!.toInt(),
-              quantity: invCtr.finalItemInvoice[index].quantity,
-              //quantity: item.item!.quantity!,
+            return GestureDetector(
+              onTap: (){
+
+              },
+              child: _buildProductRow(
+                index: index,
+                title: "",
+                subtitle: item.item!.product!.name ?? "",
+                price: item.item!.product!.price!.amount!.toInt(),
+                quantity: invCtr.finalItemInvoice[index].quantity,
+                //quantity: item.item!.quantity!,
+              )
             );
           },
         ),
+        const Divider(),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Align(
@@ -312,7 +348,19 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
                     title: "Créer une facture",
                     loading: invCtr.isLoading,
                     onPressed: (){
-                      addInvoice();
+                      final currentPos = AppServices.instance.currentPos.value;
+                      if(currentPos == null){
+                        gotoSelectPos();
+                      }else if(currentPos.code!.isEmpty){
+                        gotoSelectPos();
+                      }else if(invCtr.addInvoiceDto.value.typeInvoiceCode.isEmpty){
+                        _showToast('Le code du type de facture est obligatoire');
+                      }else if(invCtr.addInvoiceDto.value.items.isEmpty){
+                        _showToast('La facture doit contenir au moins un item');
+                      }else{
+                        invCtr.addInvoiceDto.value.posCode = currentPos.code!;
+                        addInvoice();
+                      }
                     }),
               ),
               const SizedBox(width: 16),
@@ -338,11 +386,22 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
       ),
     );
   }
-
+  gotoSelectPos(){
+    showGeneralDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierLabel: 'FullScreenDialog',
+      transitionDuration: const Duration(milliseconds: 300),
+      pageBuilder: (BuildContext context, Animation animation, Animation secondaryAnimation) {
+        return const PosDialogScreen(goBack: true);
+      },
+    );
+  }
 
 
   @override
   Widget build(BuildContext context) {
+    final currentPos = AppServices.instance.currentPos.value;
     return PopScope(
       canPop: false,
       onPopInvoked: (bool didPop) async {
@@ -398,7 +457,32 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
+              RichText(textAlign: TextAlign.center,
+                text: TextSpan(
+                  style: DefaultTextStyle.of(context).style,
+                  children: [
+                    TextSpan(
+                      text: "Edition de facture pour l'agence ",
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14
+                      ),
+                    ),
+                    TextSpan(
+                      text: ' ${currentPos?.company?.name??""}/ ${currentPos?.company?.tin??""}',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: KStyles.primaryColor,
+                        fontWeight: FontWeight.w800,
+                          fontSize: 14
+                      ),
+                    ),
+                  ],
+
+                ),
+              ),
+              const SizedBox(height: 30),
               buildText(context, "Facture", 14, Colors.black,
                    fontWeight: FontWeight.w600),
               const SizedBox(height: 20),
@@ -449,7 +533,7 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
                 hint: (dataCustomer != null) ? dataCustomer!.name! : typeCustomer,
                 items: const [],
                 onTap: () async {
-                  await Get.to(() => const CustomerPage(isManage: false),
+                  await Get.to(() => const CustomerPage(isManage: false,isInvoice: true),
                       fullscreenDialog: true)?.then((val){
                         if(val is CustomerEntities){
                           setState(() {

@@ -47,7 +47,9 @@ class SideMenu extends StatelessWidget {
               color: Theme.of(context).primaryColor,
             ),
             title: const Text("Mon entreprise"),
-            onTap: () {},
+            onTap: () {
+              Navigator.pop(context);
+            },
           ),
           ListTile(
             leading: Icon(
@@ -66,7 +68,7 @@ class SideMenu extends StatelessWidget {
             ),
             title: const Text("Clients"),
             onTap: () {
-              Get.to(() => const CustomerPage(isManage: true));
+              Get.to(() => const CustomerPage(isManage: true,isInvoice: false));
             },
           ),
           ListTile(

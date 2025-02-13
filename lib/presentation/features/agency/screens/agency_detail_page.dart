@@ -36,15 +36,17 @@ class _AgencyDetailPageState extends State<AgencyDetailPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    invoiceCtr.pagingIvoiceController.addPageRequestListener((pageKey) {
-      invoiceCtr.allInvoiceData(widget.dataAgency.company?.tin??"",pageKey);
+    invoiceCtr.pagingIvoiceByCodeAndTinController = PagingController<int, InvoiceResponse>(firstPageKey: 0);
+    invoiceCtr.pagingIvoiceByCodeAndTinController?.addPageRequestListener((pageKey) {
+      invoiceCtr.getInvoiceByCodeAndTin(widget.dataAgency.company?.tin??"",widget.dataAgency.code??"",pageKey);
     });
   }
 
   @override
   void dispose() {
     super.dispose();
-    invoiceCtr.pagingIvoiceController.dispose();
+    invoiceCtr.pagingIvoiceByCodeAndTinController?.dispose();
+    invoiceCtr.pagingIvoiceByCodeAndTinController = null;
   }
 
 
@@ -96,7 +98,7 @@ class _AgencyDetailPageState extends State<AgencyDetailPage> {
           ]
       ),
       body: RefreshIndicator(
-        onRefresh: () => Future.sync(() => invoiceCtr.pagingIvoiceController.refresh()),
+        onRefresh: () => Future.sync(() => invoiceCtr.pagingIvoiceByCodeAndTinController?.refresh()),
         child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.only(left: padding15,right: padding15),
@@ -245,7 +247,7 @@ class _AgencyDetailPageState extends State<AgencyDetailPage> {
                   LayoutBuilder(
                     builder: (_, cxs) {
                       return PagedListView<int, InvoiceResponse>.separated(
-                        pagingController: invoiceCtr.pagingIvoiceController,
+                        pagingController: invoiceCtr.pagingIvoiceByCodeAndTinController!,
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         separatorBuilder: (context, index) => Padding(
@@ -263,8 +265,8 @@ class _AgencyDetailPageState extends State<AgencyDetailPage> {
                           firstPageProgressIndicatorBuilder: (_) => const Center(child: CircularProgressIndicator()),
                           newPageProgressIndicatorBuilder: (_) => const Center(child: CircularProgressIndicator()),
                           noItemsFoundIndicatorBuilder: (_) => noItem(),
-                          firstPageErrorIndicatorBuilder: (_) => PagedFirstError(pagingController: invoiceCtr.pagingIvoiceController, cxs: cxs),
-                          newPageErrorIndicatorBuilder: (_) => PagedNewPageError(pagingController: invoiceCtr.pagingIvoiceController),
+                          firstPageErrorIndicatorBuilder: (_) => PagedFirstError(pagingController: invoiceCtr.pagingIvoiceByCodeAndTinController, cxs: cxs),
+                          newPageErrorIndicatorBuilder: (_) => PagedNewPageError(pagingController: invoiceCtr.pagingIvoiceByCodeAndTinController),
                         ),
                       );
                     },

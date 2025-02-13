@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:invoice_app/domain/entities/product/pricing_response.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
 import 'package:invoice_app/presentation/res/money_formatter.dart';
+import 'package:invoice_app/presentation/res/style/e_style.dart';
 import 'package:invoice_app/utils/utils.dart';
 
 class PriceCard extends StatelessWidget {
@@ -51,7 +52,7 @@ class PriceCard extends StatelessWidget {
                     fixedSize: const Size(120, 40)),
                 child: const Text(
                   "Prix courant",
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal,color: KStyles.primaryColor),
                 ),
               ),
             ]

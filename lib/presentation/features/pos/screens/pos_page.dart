@@ -8,6 +8,7 @@ import 'package:invoice_app/core/services/app_storage.dart';
 import 'package:invoice_app/domain/entities/company/pos_data_response.dart';
 import 'package:invoice_app/presentation/_widgets/app_bar_custom.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
+import 'package:invoice_app/presentation/_widgets/simple_btn.dart';
 import 'package:invoice_app/presentation/controllers/company_ctrl.dart';
 import 'package:invoice_app/presentation/features/agency/screens/agency_detail_page.dart';
 import 'package:invoice_app/presentation/features/pos/screens/pos_form_page.dart';
@@ -100,11 +101,23 @@ class _PosPageState extends State<PosPage> {
               children: [
                 const Icon(Iconsax.building_3, color: KStyles.primaryColor),
                 const SizedBox(height: 6),
-                buildText(context, "Aucun points de vente enregistré.", 16, Colors.black)
+                buildText(context, "Aucun points de vente enregistré.", 16, Colors.black),
+                const SizedBox(height: 10),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width/2+50,
+                  child: SimpleBtn(
+                    titleBtn: "Ajouter un point de vente",
+                    sizeFont: 14,
+                    onPressed: () async {
+                      actionPos();
+                    },
+                  ),
+                )
               ],
             )
         )
-            : ListView.builder(
+            :
+        ListView.builder(
           itemCount: dataAgency.length,
           itemBuilder: (BuildContext context, int ps){
             return ListTile(
@@ -124,12 +137,12 @@ class _PosPageState extends State<PosPage> {
       ),
       floatingActionButton: (widget.isManage == true)
           ? FloatingActionButton(
-        backgroundColor: KStyles.primaryColor,
-        onPressed: () async {
-          actionPos();
-        },
-        child: const Icon(Iconsax.location_add, color: Colors.white),
-      )
+            backgroundColor: KStyles.primaryColor,
+            onPressed: () async {
+              actionPos();
+            },
+            child: const Icon(Iconsax.location_add, color: Colors.white),
+          )
           : null,
     );
   }

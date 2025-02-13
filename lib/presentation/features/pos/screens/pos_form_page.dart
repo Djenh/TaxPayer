@@ -100,7 +100,7 @@ class _PosFormPageState extends State<PosFormPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        buildText(context, title, 14, Colors.black, fontWeight: FontWeight.w700),
+        buildText(context, title, 14, Colors.black),
         if(isAction== true)
           Obx(() => customerCtr.isLoadingLoc.isTrue
               ? const CircularProgressIndicator()
@@ -115,7 +115,7 @@ class _PosFormPageState extends State<PosFormPage> {
               });
             },
             child: buildText(context, "Obtenir les données map", 14,
-                Colors.blue, fontWeight: FontWeight.w700),
+                Colors.blue),
           ))
       ],
     );

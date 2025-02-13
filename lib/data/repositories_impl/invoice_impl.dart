@@ -65,14 +65,35 @@ class InvoiceRemoteRepository implements IInvoiceRepository {
 
 
   @override
-  Future<Either<Failure, InvoiceEntitiesListResponse>> allInvoice(String tin,
-      int page, int size) async {
+  Future<Either<Failure, InvoiceEntitiesListResponse>> allInvoice(
+      int page, int size,String tin) async {
     // TODO: implement allTypeInvoice
     final Map<String, dynamic> pageable = {"page": page, "size": size};
 
     try {
       final HttpResponse<InvoiceEntitiesListResponse> httpResponse =
           await apiInvoice.getAllInvoice(pageable,tin);
+      if (httpResponse.response.statusCode == HttpStatus.ok) {
+        return Right(httpResponse.data);
+      }
+    } on DioException catch (e) {
+      return DioErrorHandler.handle(error: e);
+    } catch (e) {
+      return Left(NetworkFailure(message: e.toString()));
+    }
+    return const Left(
+        NetworkFailure(message: 'Une erreur inattendue s\'est produite.'));
+  }
+
+  @override
+  Future<Either<Failure, InvoiceEntitiesListResponse>> getAllInvoiceByTinAndCode(
+      int page, int size,String tin,String posCode) async {
+    // TODO: implement allTypeInvoice
+    final Map<String, dynamic> pageable = {"page": page, "size": size};
+
+    try {
+      final HttpResponse<InvoiceEntitiesListResponse> httpResponse =
+      await apiInvoice.getInvoiceByTinAndCode(pageable,tin,posCode);
       if (httpResponse.response.statusCode == HttpStatus.ok) {
         return Right(httpResponse.data);
       }

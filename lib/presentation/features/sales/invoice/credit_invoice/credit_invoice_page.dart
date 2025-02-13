@@ -14,6 +14,7 @@ import 'package:invoice_app/presentation/features/sales/invoice/credit_invoice/p
 import 'package:invoice_app/presentation/features/sales/invoice/screens/invoice_detail_page.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 import 'package:invoice_app/utils/logger_util.dart';
+import 'package:invoice_app/utils/utils.dart';
 
 class CreditInvoicePage extends StatefulWidget {
   final InvoiceResponse? dataInvoice;
@@ -36,19 +37,24 @@ class _CreditInvoicePageState extends State<CreditInvoicePage> {
 
 
   Widget _buildRefInvoice(){
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        buildText(context, "Ref de la facture originale :", 14, Colors.black,
-            fontWeight: FontWeight.w500),
-        const SizedBox(width: 20),
-        Expanded(
-          child: buildText(context, widget.dataInvoice?.invoice?.code ?? "", 12,
-              KStyles.dcardBusinessColor, fontWeight: FontWeight.w600,
-              maxLine: 3
+    return GestureDetector(
+      onTap: (){
+        Get.off(() => InvoiceDetailPage(invoiceResponse: widget.dataInvoice, isSaleInvoice: true));
+      },
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          buildText(context, "Ref de la facture originale :", 14, Colors.black,
+              fontWeight: FontWeight.w500),
+          const SizedBox(width: 20),
+          Expanded(
+            child: buildText(context, widget.dataInvoice?.invoice?.code ?? "", 12,
+                KStyles.dcardBusinessColor, fontWeight: FontWeight.w600,
+                maxLine: 3
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -126,7 +132,7 @@ class _CreditInvoicePageState extends State<CreditInvoicePage> {
                 ],
               ),
               const SizedBox(width: 8),
-              buildText(context, "${price * quantity} Fcfa", 12, Colors.black,
+              buildText(context, "${Utils.getFormattedAmount(price * quantity)} Fcfa", 12, Colors.black,
                   fontWeight: FontWeight.w300),
               const SizedBox(width: 8),
               GestureDetector(
@@ -335,7 +341,7 @@ class _CreditInvoicePageState extends State<CreditInvoicePage> {
             children: [
               Expanded(
                 child: ActionBtn(
-                    title: "Créer une facture",
+                    title: "Enregistrer la facture",
                     loading: invCtr.isLoading,
                     onPressed: (){
                       addCreditInvoice();
