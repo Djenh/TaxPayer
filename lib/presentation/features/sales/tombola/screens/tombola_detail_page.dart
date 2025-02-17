@@ -5,6 +5,7 @@ import 'package:invoice_app/presentation/_widgets/build_text.dart';
 import 'package:invoice_app/presentation/features/complaint/screens/complaint_page.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 
+import '../../../../../domain/entities/lottery/lottery_participation_response.dart';
 import '../../../../../utils/custom_image_view.dart';
 import '../../../../_widgets/action_btn.dart';
 import '../../../../_widgets/app_bar_custom.dart';
@@ -16,7 +17,7 @@ import '../../../../res/assets/app_assets.dart';
 class TombolaDetailPage extends StatefulWidget {
   const TombolaDetailPage({super.key, required this.tombola});
 
-  final Map<String, dynamic> tombola;
+  final LotteryParticipationResponse tombola;
 
   @override
   State<TombolaDetailPage> createState() => _TombolaDetailPageState();
@@ -63,7 +64,7 @@ class _TombolaDetailPageState extends State<TombolaDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: appBarOther(context, "Tombola / Facture ${widget.tombola["reference"]}",actionList: []),
+      appBar: appBarOther(context, "Tombola / Facture ${widget.tombola.invoice?.uuid??""}",actionList: []),
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: padding, vertical: 20),
         child: Column(
@@ -109,9 +110,9 @@ class _TombolaDetailPageState extends State<TombolaDetailPage> {
                       ),
                       Column(
                         children: [
-                          textTombola("Statut", widget.tombola["statut"]),
+                          textTombola("Statut", widget.tombola.status??""),
                           const SizedBox(height: padding,),
-                          textTombola("Référence", widget.tombola["reference"]),
+                          textTombola("Référence", widget.tombola.invoice?.uuid??""),
                           const SizedBox(height: padding,),
                           textTombola("Lot gagné", "Moto Haoujoue"),
                         ],

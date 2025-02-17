@@ -5,8 +5,9 @@ import 'package:invoice_app/presentation/_widgets/build_text.dart';
 import 'package:invoice_app/presentation/features/sales/tombola/screens/tombola_detail_page.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 
+import '../../../../../domain/entities/lottery/lottery_participation_response.dart';
 import '../../../../_widgets/app_bar_custom.dart';
-import '../../../../controllers/product_ctrl.dart';
+import '../../../../controllers/lottery_ctrl.dart';
 
 
 
@@ -19,70 +20,40 @@ class TombolaPage extends StatefulWidget {
 
 class _TombolaPageState extends State<TombolaPage> {
 
-  // final tombolaCtr = locator<TombolaCtrl>();
-  final prodCtr = locator<ProductCtrl>();
-  List<Map<String, dynamic>>? listParticipation =
-  [
-    {'reference': 'IHok7059642',
-      'type': 'Tombola ABY',
-      'statut': "En attente"
-    },
-    {'reference': 'IHok7059642',
-      'type': 'Tombola ABY',
-      'statut': "Gagnant"
-    },
-    {'reference': 'IHok7059642',
-      'type': 'Tombola ABY',
-      'statut': "Non gagnant"
-    },
-    {'reference': 'IHok7059642',
-      'type': 'Tombola ABY',
-      'statut': "Non gagnant"
-    },
-    {'reference': 'IHok7059642',
-      'type': 'Tombola ABY',
-      'statut': "Gagnant"
-    },
-    {'reference': 'IHok7059642',
-      'type': 'Tombola ABY',
-      'statut': "En attente"
-    },
-    {'reference': 'IHok7059642',
-      'type': 'Tombola ABY',
-      'statut': "En attente"
-    },
-    {'reference': 'IHok7059642',
-      'type': 'Tombola ABY',
-      'statut': "Gagnant"
-    },
-    {'reference': 'IHok7059642',
-      'type': 'Tombola ABY',
-      'statut': "Non gagnant"
-    },
-    {'reference': 'IHok7059642',
-      'type': 'Tombola ABY',
-      'statut': "Non gagnant"
-    },
-    {'reference': 'IHok7059642',
-      'type': 'Tombola ABY',
-      'statut': "Gagnant"
-    },
-    {'reference': 'IHok7059642',
-      'type': 'Tombola ABY',
-      'statut': "En attente"
-    },
-  ];
+  final lotteryCtrl = locator<LotteryCtrl>();
+  List<LotteryParticipationResponse> dataList = [];
 
 
   @override
   void initState() {
     super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _getDataLotteryParticipation();
+    });
   }
+
 
   @override
   void dispose() {
     super.dispose();
   }
+
+  Future<void> _getDataLotteryParticipation() async {
+    await lotteryCtrl.dataListLotteryParticipation().then((val){
+      dataList = val ?? [];
+      setState(() {});
+    });
+  }
+
+  Future<void> _refreshData() async {
+    if(dataList.isNotEmpty){
+      dataList.clear();
+    }
+    _getDataLotteryParticipation();
+    setState(() {});
+  }
+
 
   Widget buildStatutTombola(String statut)
   {
@@ -143,7 +114,7 @@ class _TombolaPageState extends State<TombolaPage> {
   }
 
 
-  Widget buildParticipateTombola(Map<String, dynamic> tombola)
+  Widget buildParticipateTombola(LotteryParticipationResponse tombola)
   {
     return InkWell(
       onTap: () => Get.to(() => TombolaDetailPage(tombola: tombola)),
@@ -159,11 +130,11 @@ class _TombolaPageState extends State<TombolaPage> {
                 flex: 1,
                 child: buildText(context, "Réf facture", 11, KStyles.textSecondaryColor, fontWeight: FontWeight.w400),
               ),
-              Flexible(
+              /*Flexible(
                 flex: 1,
                 fit: FlexFit.tight,
                 child: buildText(context, "Type de tirage", 11, KStyles.textSecondaryColor, fontWeight: FontWeight.w400),
-              ),
+              ),*/
               Flexible(
                 flex: 1,
                 child: buildText(context, "Statut", 11, KStyles.textSecondaryColor, fontWeight: FontWeight.w400),
@@ -176,17 +147,17 @@ class _TombolaPageState extends State<TombolaPage> {
             children: [
               Flexible(
                 flex: 1,
-                child: buildText(context, tombola["reference"]??"", 12,
+                child: buildText(context, tombola.invoice?.uuid??"", 12,
                     KStyles.blackColor, fontWeight: FontWeight.w600),
               ),
-              Flexible(
+              /*Flexible(
                 flex: 1,
                 child: buildText(context, tombola["type"]??"", 12,
                     KStyles.blackColor, fontWeight: FontWeight.w600),
-              ),
+              ),*/
               Flexible(
                 flex: 1,
-                child: buildStatutTombola(tombola["statut"]),
+                child: buildStatutTombola(tombola.status??""),
               ),
             ],
           ),
@@ -207,24 +178,29 @@ class _TombolaPageState extends State<TombolaPage> {
           actionList: [],
           bgColor: Colors.white
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: padding, vertical: padding),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              buildText(context, "Liste de participation", 16, Colors.black, fontWeight: FontWeight.w700),
-              const SizedBox(height: padding20,),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: listParticipation!.length,
-                itemBuilder: (BuildContext context, int idx){
-                  return buildParticipateTombola(listParticipation![idx]);
-                },
-              ),
-            ],
+      body: RefreshIndicator(
+        onRefresh: () => Future.sync(() => _refreshData()),
+        child: SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: padding, vertical: padding),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                buildText(context, "Liste de participation au tombola", 16, Colors.black, fontWeight: FontWeight.w700),
+                const SizedBox(height: padding20,),
+                (dataList.isEmpty)
+                    ? const Center(child: Text("Aucune participation à un tombola !"))
+                    : ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: dataList.length,
+                  itemBuilder: (BuildContext context, int idx){
+                    return buildParticipateTombola(dataList[idx]);
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),

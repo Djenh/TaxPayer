@@ -22,41 +22,6 @@ class _ApiInvoice implements ApiInvoice {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<HttpResponse<List<ItemsEntities>>> allProductsReimbursement(String code) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<HttpResponse<List<ItemsEntities>>>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-      _dio.options,
-      '/invoice/${code}/available-items',
-      queryParameters: queryParameters,
-      data: _data,
-    )
-        .copyWith(
-        baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<ItemsEntities> _value;
-    try {
-      _value = (_result.data!)
-          .map((json) => ItemsEntities.fromJson(json))
-          .toList();
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
-      rethrow;
-    }
-    final httpResponse = HttpResponse(_value, _result);
-    return httpResponse;
-  }
-  @override
   Future<HttpResponse<TypeInvoiceResponse>> getAllTypeInvoice(
       Map<String, dynamic> pageable) async {
     final _extra = <String, dynamic>{};
@@ -131,34 +96,34 @@ class _ApiInvoice implements ApiInvoice {
     return httpResponse;
   }
 
-
   @override
   Future<HttpResponse<InvoiceEntitiesListResponse>> getInvoiceByTinAndCode(
-      Map<String, dynamic> pageable,
-      String tin,String code,
-      ) async {
+    Map<String, dynamic> pageable,
+    String tin,
+    String code,
+  ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.addAll(pageable);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options =
-    _setStreamType<HttpResponse<InvoiceEntitiesListResponse>>(Options(
+        _setStreamType<HttpResponse<InvoiceEntitiesListResponse>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
-        .compose(
-      _dio.options,
-      '/invoice/tin/${tin}/code/${code}',
-      queryParameters: queryParameters,
-      data: _data,
-    )
-        .copyWith(
-        baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
+            .compose(
+              _dio.options,
+              '/invoice/tin/${tin}/code/${code}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
     late InvoiceEntitiesListResponse _value;
     try {
@@ -314,6 +279,43 @@ class _ApiInvoice implements ApiInvoice {
   }
 
   @override
+  Future<HttpResponse<List<ItemsEntities>>> allProductsReimbursement(
+      String code) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<HttpResponse<List<ItemsEntities>>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/invoice/${code}/available-items',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<ItemsEntities> _value;
+    try {
+      _value = _result.data!
+          .map((dynamic i) => ItemsEntities.fromJson(i as Map<String, dynamic>))
+          .toList();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    final httpResponse = HttpResponse(_value, _result);
+    return httpResponse;
+  }
+
+  @override
   Future<HttpResponse<InvoiceResponse>> reimbursementInvoice(
     String action,
     Map<String, dynamic> params,
@@ -395,22 +397,23 @@ class _ApiInvoice implements ApiInvoice {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(params);
-    final _options = _setStreamType<HttpResponse<InvoiceCheckTinRequire>>(Options(
+    final _options =
+        _setStreamType<HttpResponse<InvoiceCheckTinRequire>>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
     )
-        .compose(
-      _dio.options,
-      '/invoice/check-has-tin-required-for-client-to-security',
-      queryParameters: queryParameters,
-      data: _data,
-    )
-        .copyWith(
-        baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
+            .compose(
+              _dio.options,
+              '/invoice/check-has-tin-required-for-client-to-security',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
     late InvoiceCheckTinRequire _value;
     try {

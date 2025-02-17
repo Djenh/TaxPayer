@@ -7,6 +7,7 @@ import 'package:invoice_app/utils/logger_util.dart';
 import '../../core/services/toast_service.dart';
 import '../../data/dtos/add_lottery_dto.dart';
 import '../../domain/entities/lottery/lottery_data_response.dart';
+import '../../domain/entities/lottery/lottery_participation_response.dart';
 import '../../domain/usecases/lottery_uc.dart';
 
 class LotteryCtrl extends GetxController {
@@ -16,6 +17,9 @@ class LotteryCtrl extends GetxController {
 
   RxBool isLoading = false.obs;
   var currentPage = 1.obs;
+  final String _phone = "0195020365";
+  final int _page = 0;
+  final int _pageSize = 0;
 
   RxBool get ignorePointer => RxBool(isLoading.isTrue);
 
@@ -28,6 +32,32 @@ class LotteryCtrl extends GetxController {
     if (isLoading.isFalse) {
       Get.back();
     }
+  }
+
+  ///func to get list lottery participation
+  Future<List<LotteryParticipationResponse>?> dataListLotteryParticipation() async {
+    List<LotteryParticipationResponse>? response;
+
+    try {
+      _setLoading(true);
+
+      final Either<Failure, List<LotteryParticipationResponse>> result =
+            await lotteryUc.executeListLotteryParticipation(_phone, _page, _pageSize);
+
+      result.fold((Failure failure) {
+        AppLogger.error("fetch data failed: ${failure.message}");
+      }, (List<LotteryParticipationResponse> lotteryParticipationData) {
+        AppLogger.info("lotteryParticipationData successful: $lotteryParticipationData");
+        response = lotteryParticipationData;
+      });
+    } catch (e) {
+      AppLogger.error('An error occurred during dataListLotteryParticipation: $e');
+      rethrow;
+    } finally {
+      _setLoading(false);
+    }
+
+    return response;
   }
 
 
@@ -57,4 +87,5 @@ class LotteryCtrl extends GetxController {
 
     return response;
   }
+
 }
