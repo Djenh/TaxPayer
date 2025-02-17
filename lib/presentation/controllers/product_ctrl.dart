@@ -37,6 +37,7 @@ class ProductCtrl extends GetxController {
   List<PricingResponse> productPrices = [];
   PagingController<int, ProductResponse>? pagingProdController;
   List<ProductResponse> allProducts = [];
+
   PagingController<int, TaxGroupEntities>? pagingTaxGroupController;
   List<TaxGroupEntities> allTaxGroup = [];
 

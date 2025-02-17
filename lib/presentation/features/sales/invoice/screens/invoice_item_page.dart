@@ -4,6 +4,8 @@ import 'package:invoice_app/core/configs/injection_container.dart';
 import 'package:invoice_app/core/services/app_service.dart';
 import 'package:invoice_app/core/services/toast_service.dart';
 import 'package:invoice_app/data/dtos/add_invoice_dto.dart';
+import 'package:invoice_app/domain/entities/invoice/invoice_response.dart';
+import 'package:invoice_app/domain/entities/product/pricing_response.dart';
 import 'package:invoice_app/domain/entities/product/tax_group_response.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
 import 'package:invoice_app/presentation/controllers/invoice_ctrl.dart';
@@ -20,7 +22,9 @@ import '../../../../res/input_formaters.dart';
 
 
 class InvoiceItemPage extends StatefulWidget {
-  const InvoiceItemPage({super.key});
+  final ItemsEntities? itemsEntities;
+  final int? index;
+  const InvoiceItemPage({super.key,this.itemsEntities,this.index});
 
   @override
   State<InvoiceItemPage> createState() => _InvoiceItemPageState();
@@ -49,6 +53,10 @@ class _InvoiceItemPageState extends State<InvoiceItemPage> {
     additionalTaxController = TextEditingController();
     qteController = TextEditingController();
     priceController = TextEditingController();
+    if(widget.itemsEntities != null){
+      setData();
+    }
+
   }
 
 
@@ -61,7 +69,57 @@ class _InvoiceItemPageState extends State<InvoiceItemPage> {
     priceController?.dispose();
   }
 
+  Future<void> setData() async{
+    final currentPos = AppServices.instance.currentPos.value;
+    invCtr.addInvoiceDto.value.posCode = currentPos!.code!;
+    invCtr.addInvoiceDto.value.items
+        .add(ItemInvoiceDto(quantity: widget.itemsEntities?.item?.quantity??1,
+        productCode: widget.itemsEntities?.item?.product?.code??""));
+    setState(() {
+      qteController!.text = widget.itemsEntities!.item!.quantity!.toString();
+      priceController!.text =
+          widget.itemsEntities?.item?.product?.price?.amount.toString() ?? "";
+      dataTaxGroup = widget.itemsEntities?.item?.product?.price?.taxGroup;
+      additionalTaxController!.text =
+          widget.itemsEntities?.item?.product?.price?.taxSpecific.toString() ?? "";
 
+      dataProductSelect = ProductResponse(
+        id: widget.itemsEntities!.item!.product!.id,
+        name: widget.itemsEntities!.item!.product!.name,
+        officialProductNo: widget.itemsEntities!.item!.product!.officialProductNo,
+        code: widget.itemsEntities!.item!.product!.code,
+        category: widget.itemsEntities!.item!.product!.category,
+        companyTin: widget.itemsEntities!.item!.product!.companyTin,
+        price: PricingResponse(
+          id: widget.itemsEntities!.item!.product!.price!.id,
+          amount: widget.itemsEntities!.item!.product!.price!.amount,
+          taxGroup: widget.itemsEntities!.item!.product!.price!.taxGroup,
+          taxSpecific: widget.itemsEntities!.item!.product!.price!.taxSpecific,
+          createdAt: widget.itemsEntities!.item!.product!.price!.createdAt.toString(),
+          updatedAt: widget.itemsEntities!.item!.product!.price!.updatedAt.toString(),
+          subTotal: widget.itemsEntities!.item!.product!.price!.subTotal,
+          priceDefinitionMode: widget.itemsEntities!.item!.product!.price!.priceDefinitionMode,
+          enabled: widget.itemsEntities!.item!.product!.price!.enabled
+        ),
+        posCode: widget.itemsEntities!.item!.product!.posCode,
+        productType:widget.itemsEntities!.item!.product!.productType
+      );
+    });
+    if(dataProductSelect != null){
+      AppLogger.info("invoiceDto => ${invCtr.addInvoiceDto.toJson()}");
+      WidgetsBinding.instance.addPostFrameCallback((_) async{
+        await invCtr.invoiceCalculation(invCtr.addInvoiceDto.value,context: context).then((val){
+          if(val != null){
+            tH.value = val.total!.baseTaxable!;
+            tA.value = val.total!.tax!;
+            gT.value = val.total!.ttc!;
+            setState(() {});
+          }
+        });
+      });
+    }
+
+  }
   Widget padChild({required Widget child}){
     return Padding(
       padding: const EdgeInsets.all(4.0).copyWith(bottom: 15, top: 15),
@@ -82,19 +140,23 @@ class _InvoiceItemPageState extends State<InvoiceItemPage> {
             hint: (dataProductSelect != null) ? dataProductSelect!.name! : hintProductSelect,
             items: const [],
             onTap: () async {
-              await Get.to(() => const ProductPage(isManage: false),
-                  fullscreenDialog: true)?.then((val){
-                    if(val is ProductResponse){
-                      setState(() {
-                        dataProductSelect = val;
-                        priceController!.text =
-                            val.price?.amount.toString() ?? "";
-                        dataTaxGroup = val.price!.taxGroup;
-                        additionalTaxController!.text =
-                            val.price?.taxSpecific.toString() ?? "";
-                      });
-                    }
-              });
+              if(widget.itemsEntities != null){
+
+              }else{
+                await Get.to(() => const ProductPage(isManage: false),
+                    fullscreenDialog: true)?.then((val) async{
+                  if(val is ProductResponse){
+                    setState(() {
+                      dataProductSelect = val;
+                      priceController!.text =
+                          val.price?.amount.toString() ?? "";
+                      dataTaxGroup = val.price!.taxGroup;
+                      additionalTaxController!.text =
+                          val.price?.taxSpecific.toString() ?? "";
+                    });
+                  }
+                });
+              }
             }
         ),
         const SizedBox(height: 30),
@@ -107,18 +169,27 @@ class _InvoiceItemPageState extends State<InvoiceItemPage> {
                 keyboardType: TextInputType.number,
                 inputFormatters: noSpaceNoEmoji,
                 onFieldSubmitted: (_) async {
-                  invCtr.addInvoiceDto.value.items
-                      .add(ItemInvoiceDto(quantity: int.parse(_),
-                         productCode: dataProductSelect!.code!));
+
+                  if(widget.itemsEntities != null){
+                    invCtr.addInvoiceDto.value.items.first = ItemInvoiceDto(quantity: int.parse(_),
+                        productCode: dataProductSelect!.code!);
+                  }else{
+                    final currentPos = AppServices.instance.currentPos.value;
+                    invCtr.addInvoiceDto.value.posCode = currentPos!.code!;
+                    invCtr.addInvoiceDto.value.items
+                        .add(ItemInvoiceDto(quantity: int.parse(_),
+                        productCode: dataProductSelect!.code!));
+                  }
+
                   AppLogger.info("invoiceDto => ${invCtr.addInvoiceDto.toJson()}");
-                  await invCtr.invoiceCalculation(context,
-                      invCtr.addInvoiceDto.value).then((val){
-                        if(val != null){
-                          tH.value = val.total!.baseTaxable!;
-                          tA.value = val.total!.tax!;
-                          gT.value = val.total!.ttc!;
-                          setState(() {});
-                        }
+                  await invCtr.invoiceCalculation(
+                      invCtr.addInvoiceDto.value,context: context).then((val){
+                    if(val != null){
+                      tH.value = val.total!.baseTaxable!;
+                      tA.value = val.total!.tax!;
+                      gT.value = val.total!.ttc!;
+                      setState(() {});
+                    }
                   });
                 },
                 decoration: AppInputStyles.defaultInputDecoration(labelText: "Quantité"),
@@ -246,10 +317,17 @@ class _InvoiceItemPageState extends State<InvoiceItemPage> {
                 gotoSelectPos();
               }else{
                 if(dataProductSelect != null && qteController!.text.isNotEmpty){
-                  invCtr.addInvoiceDto.value.posCode = currentPos.code!;
-                  invCtr.finalItemInvoice.add(invCtr.addInvoiceDto.value.items.first);
-                  invCtr.addInvoiceDto.value.items.clear();
-                  Get.back(result: true);
+                  if(widget.itemsEntities != null){
+                    invCtr.finalItemInvoice[widget.index!] = invCtr.addInvoiceDto.value.items.first;
+                    invCtr.addInvoiceDto.value.items.clear();
+                    Get.back(result: true);
+                  }else{
+                    invCtr.addInvoiceDto.value.posCode = currentPos.code!;
+                    invCtr.finalItemInvoice.add(invCtr.addInvoiceDto.value.items.first);
+                    invCtr.addInvoiceDto.value.items.clear();
+                    Get.back(result: true);
+                  }
+
                 }else{
                   ToastService.showWarning(context, "Facturation",
                       description: "Selectionner un produit et sa quantité pour ajouté.");

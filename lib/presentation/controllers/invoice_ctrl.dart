@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,8 +9,10 @@ import 'package:invoice_app/core/services/app_service.dart';
 import 'package:invoice_app/core/services/toast_service.dart';
 import 'package:invoice_app/data/dtos/add_invoice_dto.dart';
 import 'package:invoice_app/data/dtos/reimbursement_invoice_dto.dart';
+import 'package:invoice_app/data/dtos/tin_require_check.dart';
 import 'package:invoice_app/domain/entities/invoice/deposit_tax_response.dart';
 import 'package:invoice_app/domain/entities/invoice/invoice_response.dart';
+import 'package:invoice_app/domain/entities/invoice/tin_require_check.dart';
 import 'package:invoice_app/domain/entities/invoice/type_invoice_response.dart';
 import 'package:invoice_app/domain/usecases/invoice_uc.dart';
 import 'package:invoice_app/presentation/_widgets/app_loader.dart';
@@ -94,6 +98,30 @@ class InvoiceCtrl extends GetxController {
     );
   }
 
+  ///func to get list of all reimbursement products
+  Future<List<ItemsEntities>?> getProductsReimbursement(BuildContext context, String productCode) async {
+    List<ItemsEntities>? response;
+    try {
+      _setLoading(true);
+
+      final Either<Failure, List<ItemsEntities>> result = await invoiceUc.allProductsReimbursement(productCode);
+
+      result.fold((Failure failure) {
+        AppLogger.error("data save failed: ${failure.message}");
+        ToastService.showError(context, 'Produits disponibles à rembourser',
+            description: failure.message);
+      }, (List<ItemsEntities> unitData) {
+        AppLogger.info("ctgData successful: ${unitData.length}");
+        response = unitData;
+      });
+    } catch (e) {
+      AppLogger.error('An error occurred during addUnitM: $e');
+      rethrow;
+    } finally {
+      _setLoading(false);
+    }
+    return response;
+  }
 
   ///func to get all type invoice
   Future<void> allTypeInvoiceData(int pageKey) async {
@@ -222,32 +250,42 @@ class InvoiceCtrl extends GetxController {
   }
 
   ///func to calculate invoice item
-  Future<InvoiceResponse?> invoiceCalculation(BuildContext context, AddInvoiceDto params) async {
+  Future<InvoiceResponse?> invoiceCalculation(AddInvoiceDto params,{BuildContext? context}) async {
     InvoiceResponse? response;
-
+    log("invoiceCalculation invoiceCalculation ${params.toJson()}");
     try {
       //_setLoading(true);
-      AppLoaderDialog.show(context);
+      if(context != null){
+        AppLoaderDialog.show(context);
+      }
+
 
       final Either<Failure, InvoiceResponse> result =
       await invoiceUc.executeCalculationInvoice(params);
 
       result.fold((Failure failure) {
         AppLogger.error("calculation invoice failed: ${failure.message}");
-        ToastService.showError(context, 'Facturation',
-            description: failure.message);
+        log("invoiceCalculation invoiceCalculation ${failure.message}");
+        if(context != null){
+          ToastService.showError(context, 'Facturation',
+              description: failure.message);
+        }
       }, (InvoiceResponse invData) {
         AppLogger.info("calculation invoice successful: ${invData.toJson()}");
         //ToastService.showSuccess(context, 'Facturation', description: "");
         response = invData;
       });
     } catch (e) {
+      log("invoiceCalculation invoiceCalculation ${e.toString()}");
       AppLogger.error('An error occurred during invoiceCalculation: $e');
       rethrow;
     } finally {
-      if(context.mounted) {
-        AppLoaderDialog.dismiss(context);
+      if(context != null){
+        if(context.mounted) {
+          AppLoaderDialog.dismiss(context);
+        }
       }
+
       _setLoading(false);
     }
 
@@ -265,6 +303,7 @@ class InvoiceCtrl extends GetxController {
                await invoiceUc.executeAddInvoice(params);
 
       result.fold((Failure failure) {
+        log("showSuccess showSuccess ${failure.message}");
         AppLogger.error("create invoice failed: ${failure.message}");
         ToastService.showError(context, 'Facturation',
             description: failure.message);
@@ -308,6 +347,29 @@ class InvoiceCtrl extends GetxController {
       if(context.mounted) {
         AppLoaderDialog.dismiss(context);
       }
+      _setLoading(false);
+    }
+
+    return response;
+  }
+
+  Future<InvoiceCheckTinRequire?> invoiceCheckIfTinIsRequire(BuildContext context, TinRequireCheckDto params) async {
+    InvoiceCheckTinRequire? response;
+
+    try {
+      final Either<Failure, InvoiceCheckTinRequire> result = await invoiceUc.executeCheckTinRequire(params);
+
+      result.fold((Failure failure) {
+        AppLogger.error("calculation invoice reimbursement failed: ${failure.message}");
+        ToastService.showError(context, 'Facturation', description: failure.message);
+      }, (InvoiceCheckTinRequire invData) {
+        AppLogger.info("calculation invoice reimbursement successful: ${invData.toJson()}");
+        response = invData;
+      });
+    } catch (e) {
+      AppLogger.error('An error occurred during invoiceCalculationReimbursement: $e');
+      rethrow;
+    } finally {
       _setLoading(false);
     }
 

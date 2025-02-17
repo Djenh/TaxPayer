@@ -58,7 +58,8 @@ Widget buildReferenceCreditInvoice(BuildContext context,String title, String val
     children: [
       buildText(context, title, 12, Colors.black,
           fontWeight: FontWeight.w400),
-      buildText(context, value, 12, Colors.black, fontWeight: FontWeight.w400)
+      const SizedBox(width: 10),
+      Flexible(child: buildText(context, value, 12, Colors.black, fontWeight: FontWeight.w400))
     ],
   );
 }

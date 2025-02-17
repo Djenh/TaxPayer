@@ -9,6 +9,7 @@ import 'package:invoice_app/domain/entities/company/company_tin_response.dart';
 import 'package:invoice_app/domain/entities/company/localities_list_response.dart';
 import 'package:invoice_app/domain/entities/company/pos_data_response.dart';
 import 'package:invoice_app/domain/usecases/company_uc.dart';
+import 'package:invoice_app/presentation/_widgets/app_loader.dart';
 import 'package:invoice_app/utils/logger_util.dart';
 
 import '../../core/services/toast_service.dart';
@@ -64,10 +65,13 @@ class CompanyCtrl extends GetxController {
 
 
   ///func to get info company by tin
-  Future<CompanyTinResponse?> dataCompanyByTin(BuildContext context, String tin) async {
+  Future<CompanyTinResponse?> dataCompanyByTin(BuildContext context, String tin,{bool? showLoader}) async {
     CompanyTinResponse? response;
 
     try {
+      if(showLoader != null && showLoader){
+        AppLoaderDialog.show(context);
+      }
       _setLoading(true);
 
       final Either<Failure, CompanyTinResponse> result = await companyUc.companyInfoByTin(tin);
@@ -85,6 +89,11 @@ class CompanyCtrl extends GetxController {
       AppLogger.error('An error occurred during dataCompanyByTin: $e');
       rethrow;
     } finally {
+      if(showLoader != null && showLoader){
+        if(context.mounted) {
+          AppLoaderDialog.dismiss(context);
+        }
+      }
       _setLoading(false);
     }
 
