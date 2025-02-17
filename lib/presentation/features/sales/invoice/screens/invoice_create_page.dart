@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -7,9 +5,11 @@ import 'package:invoice_app/commons/ui/button/kcirclebutton.dart';
 import 'package:invoice_app/core/configs/injection_container.dart';
 import 'package:invoice_app/core/services/app_service.dart';
 import 'package:invoice_app/core/services/toast_service.dart';
+import 'package:invoice_app/data/dtos/tin_require_check.dart';
 import 'package:invoice_app/domain/entities/customer/customer_list_response.dart';
 import 'package:invoice_app/domain/entities/invoice/deposit_tax_response.dart';
 import 'package:invoice_app/domain/entities/invoice/invoice_response.dart';
+import 'package:invoice_app/domain/entities/invoice/tin_require_check.dart';
 import 'package:invoice_app/domain/entities/invoice/type_invoice_response.dart';
 import 'package:invoice_app/presentation/_widgets/action_btn.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
@@ -44,6 +44,8 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
   DepositTaxEntities? dataTaxDeposit;
   String hintTypeTax = "Choisir...";
   CustomerEntities? dataCustomer;
+  Future<InvoiceCheckTinRequire?>? futureCheck;
+  TinRequireCheckDto tinRequireCheckDto = TinRequireCheckDto(securityTaxCode: "",clientCode: "");
   String typeCustomer = "Choisir un client";
   InvoiceResponse? invoiceData;
   RxNum tH = RxNum(0);
@@ -70,8 +72,8 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
   }
 
   void _calculationItems() async{
-    await invCtr.invoiceCalculation(context,
-        invCtr.addInvoiceDto.value).then((val){
+    await invCtr.invoiceCalculation(
+        invCtr.addInvoiceDto.value,context: context).then((val){
       if(val != null){
         _updateDataInvoice(val);
       }
@@ -92,9 +94,8 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
 
     AppLogger.info("invoiceDto => ${invCtr.addInvoiceDto.toJson()}");
     invCtr.addInvoiceDto.value.items.clear();
-    await Get.to( ()=>const InvoiceItemPage(),
+    await Get.to( ()=>const InvoiceItemPage(itemsEntities: null),
         fullscreenDialog: true )!.then((val) async {
-      log("invoiceDto => ${invCtr.finalItemInvoice.length}");
       if(val == true){
         invCtr.addInvoiceDto.value.items.addAll(invCtr.finalItemInvoice);
         _calculationItems();
@@ -191,7 +192,6 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
       gT.value = 0;
       setState(() {});
     }
-
   }
 
   Widget _buildProductRow({
@@ -200,6 +200,7 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
     required String subtitle,
     required int price,
     required int quantity,
+    required ItemsEntities item,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
@@ -222,7 +223,21 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
                       fontWeight: FontWeight.w400,maxLine: 3),
                 ),
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 15),
+              GestureDetector(
+                onTap: () async{
+                  invCtr.addInvoiceDto.value.items.clear();
+                  await Get.to(() => InvoiceItemPage(itemsEntities: item,index: index),
+                      fullscreenDialog: true )!.then((val) async {
+                    if(val == true){
+                      invCtr.addInvoiceDto.value.items.addAll(invCtr.finalItemInvoice);
+                      _calculationItems();
+                    }
+                  });
+                },
+                child: const Icon(Iconsax.edit, color: KStyles.primaryColor, size: 20),
+              ),
+              const SizedBox(width: 20),
               GestureDetector(
                 onTap: () => _removeItem(index),
                 child: const Icon(Iconsax.trash, color: Colors.redAccent, size: 20),
@@ -292,8 +307,15 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
           itemBuilder: (context, index){
             final item = invoiceData!.invoice!.items![index];
             return GestureDetector(
-              onTap: (){
-
+              onTap: () async{
+                invCtr.addInvoiceDto.value.items.clear();
+                await Get.to(() => InvoiceItemPage(itemsEntities: item,index: index),
+                    fullscreenDialog: true )!.then((val) async {
+                  if(val == true){
+                    invCtr.addInvoiceDto.value.items.addAll(invCtr.finalItemInvoice);
+                    _calculationItems();
+                  }
+                });
               },
               child: _buildProductRow(
                 index: index,
@@ -301,6 +323,7 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
                 subtitle: item.item!.product!.name ?? "",
                 price: item.item!.product!.price!.amount!.toInt(),
                 quantity: invCtr.finalItemInvoice[index].quantity,
+                item: item,
                 //quantity: item.item!.quantity!,
               )
             );
@@ -514,12 +537,17 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
                       items: const [],
                       onTap: () async {
                         await Get.to(() => const SecurityTaxPage(),
-                            fullscreenDialog: true)?.then((val){
+                            fullscreenDialog: true)?.then((val) async{
                              if(val is DepositTaxEntities){
                                setState(() {
                                  dataTaxDeposit = val;
+                                 tinRequireCheckDto.securityTaxCode =  val.code!;
                                  invCtr.addInvoiceDto.value.securityTaxCode = val.code!;
                                });
+                               if(tinRequireCheckDto.clientCode!.isNotEmpty && tinRequireCheckDto.securityTaxCode!.isNotEmpty){
+                                 futureCheck =  invCtr.invoiceCheckIfTinIsRequire(context, tinRequireCheckDto);
+                               }
+
                              }
                         });
                       }
@@ -534,16 +562,75 @@ class _InvoiceCreatePageState extends State<InvoiceCreatePage> {
                 items: const [],
                 onTap: () async {
                   await Get.to(() => const CustomerPage(isManage: false,isInvoice: true),
-                      fullscreenDialog: true)?.then((val){
+                      fullscreenDialog: true)?.then((val) async{
                         if(val is CustomerEntities){
                           setState(() {
                             dataCustomer = val;
+                            tinRequireCheckDto.clientCode =  val.code!;
                             invCtr.addInvoiceDto.value.clientCode = val.code!;
                           });
+
+                          if(tinRequireCheckDto.clientCode!.isNotEmpty && tinRequireCheckDto.securityTaxCode!.isNotEmpty){
+                            futureCheck =  invCtr.invoiceCheckIfTinIsRequire(context, tinRequireCheckDto);
+                          }
                         }
                   });
                 }
               ),
+              const SizedBox(height: 10),
+              (tinRequireCheckDto.securityTaxCode!.isNotEmpty && tinRequireCheckDto.clientCode!.isNotEmpty) ?
+              Padding(
+                  padding: const EdgeInsets.only(top: 5,left: 16, right: 16),
+                  child:FutureBuilder<InvoiceCheckTinRequire?>(
+                      future: futureCheck,
+                      builder: (_, snap) {
+                        if (snap.connectionState == ConnectionState.done) {
+                          if (snap.hasData) {
+                            if (snap.data!.decision != null && snap.data!.decision!) {
+                              return Container(
+                                  padding: const EdgeInsets.only(top: 6, bottom: 6),
+                                  decoration: BoxDecoration(
+                                    borderRadius: const BorderRadius.all(Radius.circular(15),),
+                                    color: Colors.red.withOpacity(0.15),
+                                  ),
+                                  child: Center(
+                                    child: Text("Pour appliquer la taxe de sécurité (${tinRequireCheckDto.securityTaxCode??""}) pour le client ${dataCustomer?.name??""}, veuillez ajouter le TIN aux données du client.",
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.red,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  )
+                              );
+                            } else {
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 10),
+                                child: Container(
+                                  padding: const EdgeInsets.only(top: 6, bottom: 6),
+                                  width: MediaQuery.of(context).size.width,
+                                  decoration: BoxDecoration(
+                                    borderRadius: const BorderRadius.all(Radius.circular(15),),
+                                    color: KStyles.primaryColor.withOpacity(0.15),
+                                  ),
+                                  child: Text("TIN non requis pour le client ${dataCustomer?.name??""} ",
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              );
+                            }
+                          } else {
+                            return const LinearProgressIndicator(color: KStyles.primaryColor);
+                          }
+                        }else{
+                          return const LinearProgressIndicator(color: KStyles.primaryColor);
+                        }
+                      })
+              ):const Text(""),
               const SizedBox(height: 40),
               buildText(context, "Article/service de la facture", 14, Colors.black,
                   fontWeight: FontWeight.w600),

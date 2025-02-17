@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:invoice_app/domain/entities/invoice/deposit_tax_response.dart';
 import 'package:invoice_app/domain/entities/invoice/invoice_entities_list_response.dart';
 import 'package:invoice_app/domain/entities/invoice/invoice_response.dart';
+import 'package:invoice_app/domain/entities/invoice/tin_require_check.dart';
 import 'package:invoice_app/domain/entities/invoice/type_invoice_response.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -41,12 +42,19 @@ abstract class ApiInvoice {
   @GET("/invoice/code/{code}")
   Future<HttpResponse<InvoiceResponse>> getInvoiceByCode(@Path("code") String code);
 
+  @GET("/invoice/{code}/available-items")
+  Future<HttpResponse<List<ItemsEntities>>> allProductsReimbursement(@Path("code") String code);
+
   @POST("/invoice/reimbursement")
   Future<HttpResponse<InvoiceResponse>> reimbursementInvoice(
       @Path("action") String action, @Body() Map<String, dynamic> params);
 
   @POST("/invoice/reimbursement/calculation")
   Future<HttpResponse<InvoiceResponse>> calculationReimbursementInvoice(
+      @Body() Map<String, dynamic> params);
+
+  @POST("/invoice/check-has-tin-required-for-client-to-security")
+  Future<HttpResponse<InvoiceCheckTinRequire>> checkTinRequire(
       @Body() Map<String, dynamic> params);
 
   @GET("/invoice/verify/{signature}")

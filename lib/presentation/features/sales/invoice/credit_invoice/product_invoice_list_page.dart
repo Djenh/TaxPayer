@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -5,31 +7,55 @@ import 'package:invoice_app/core/configs/injection_container.dart';
 import 'package:invoice_app/domain/entities/invoice/invoice_response.dart';
 import 'package:invoice_app/presentation/_widgets/app_bar_custom.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
+import 'package:invoice_app/presentation/controllers/invoice_ctrl.dart';
 import 'package:invoice_app/presentation/controllers/product_ctrl.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 
 class ProductInvoiceListPage extends StatefulWidget {
 
   final List<ItemsEntities>? itemsList;
-  const ProductInvoiceListPage({super.key, required this.itemsList});
+  final InvoiceResponse? dataInvoice;
+  const ProductInvoiceListPage({super.key, required this.itemsList, required this.dataInvoice});
 
   @override
   State<ProductInvoiceListPage> createState() => _ProductInvoiceListPageState();
 }
 
 class _ProductInvoiceListPageState extends State<ProductInvoiceListPage> {
-
+  final invCtr = locator<InvoiceCtrl>();
   final prodCtr = locator<ProductCtrl>();
   TextEditingController? searchController;
+  List<ItemsEntities> allProductsReimbursement = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _fetchProductsReimbursement();
+      //allProductsReimbursement = invCtr.getProductsReimbursement(context, widget.dataInvoice?.invoice?.code??"");
+    });
+  }
 
 
-
+  Future<void> _fetchProductsReimbursement() async {
+    await invCtr.getProductsReimbursement(context, widget.dataInvoice?.invoice?.code??"").then((val){
+      allProductsReimbursement = val ?? [];
+      setState(() {});
+    });
+  }
 
   String typeProduct(String type){
     return (type == "goods") ? "Biens" : "Services";
   }
 
-
+  Future<void> _refreshData() async {
+    if(allProductsReimbursement.isNotEmpty){
+      allProductsReimbursement.clear();
+    }
+    _fetchProductsReimbursement();
+    setState(() {});
+  }
   Widget _noItem(){
     return Center(
       child: buildText(context, "Aucun Produit.", 16, Colors.black,
@@ -101,36 +127,40 @@ class _ProductInvoiceListPageState extends State<ProductInvoiceListPage> {
   }
 
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: appBarOther(context, "Produit sur la facture originale"),
-      body: widget.itemsList!.isEmpty
-          ? _noItem()
-          : Column(
-        children: [
-          //const SizedBox(height: 8),
-          Expanded(
-            child: LayoutBuilder(
-              builder: (_, cxs) {
-                return ListView.separated(
-                    itemBuilder: (BuildContext context, int pd){
-                      final item = widget.itemsList![pd];
-                      return _buildProductList(item);
-                    },
-                    separatorBuilder: (context, index) => Padding(
-                      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                      child: Divider(
-                          height: 1, thickness: 1, color: Colors.grey.shade300),
-                    ),
-                    itemCount: widget.itemsList!.length
-                );
-              },
-            ),
+      body: RefreshIndicator(
+        onRefresh: () => Future.sync(() => _refreshData()),
+        child: SingleChildScrollView(
+          child: Obx(()=>invCtr.isLoading.isTrue
+              ?
+          const SizedBox(
+            height: 550,
+              child: Center(child: CircularProgressIndicator()))
+              : (allProductsReimbursement.isEmpty)
+              ?SizedBox(
+              height: 600,
+              child: _noItem()
           )
-        ],
+              :
+          ListView.separated(
+            itemCount: allProductsReimbursement.length,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (BuildContext ctx, int index) {
+              final item = allProductsReimbursement[index];
+              return _buildProductList(item);
+            },
+            separatorBuilder: (context, index) => Padding(
+              padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+              child: Divider(
+                  height: 1, thickness: 1, color: Colors.grey.shade300),
+            ),
+          ))
+        )
       ),
     );
   }

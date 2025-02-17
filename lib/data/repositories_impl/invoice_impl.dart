@@ -6,9 +6,11 @@ import 'package:invoice_app/core/errors/request_failures.dart';
 import 'package:invoice_app/data/datasource/remote/api_invoice.dart';
 import 'package:invoice_app/data/dtos/add_invoice_dto.dart';
 import 'package:invoice_app/data/dtos/reimbursement_invoice_dto.dart';
+import 'package:invoice_app/data/dtos/tin_require_check.dart';
 import 'package:invoice_app/domain/entities/invoice/deposit_tax_response.dart';
 import 'package:invoice_app/domain/entities/invoice/invoice_entities_list_response.dart';
 import 'package:invoice_app/domain/entities/invoice/invoice_response.dart';
+import 'package:invoice_app/domain/entities/invoice/tin_require_check.dart';
 import 'package:invoice_app/domain/entities/invoice/type_invoice_response.dart';
 import 'package:invoice_app/domain/repositories/i_invoice_repository.dart';
 import 'package:retrofit/retrofit.dart';
@@ -40,7 +42,24 @@ class InvoiceRemoteRepository implements IInvoiceRepository {
         NetworkFailure(message: 'Une erreur inattendue s\'est produite.'));
   }
 
-
+  @override
+  Future<Either<Failure, List<ItemsEntities>>> allProductsReimbursement(String code) async {
+    // TODO: implement addInvoice
+    try {
+      final HttpResponse<List<ItemsEntities>> httpResponse =
+      await apiInvoice.allProductsReimbursement(code);
+      if (httpResponse.response.statusCode == HttpStatus.ok ||
+          httpResponse.response.statusCode == HttpStatus.created) {
+        return Right(httpResponse.data);
+      }
+    } on DioException catch (e) {
+      return DioErrorHandler.handle(error: e);
+    } catch (e) {
+      return Left(NetworkFailure(message: e.toString()));
+    }
+    return const Left(
+        NetworkFailure(message: 'Une erreur inattendue s\'est produite.'));
+  }
 
   @override
   Future<Either<Failure, TypeInvoiceResponse>> allTypeInvoice(
@@ -153,6 +172,27 @@ class InvoiceRemoteRepository implements IInvoiceRepository {
     try {
       final HttpResponse<InvoiceResponse> httpResponse =
           await apiInvoice.calculationReimbursementInvoice(params.toJson());
+      if (httpResponse.response.statusCode == HttpStatus.ok ||
+          httpResponse.response.statusCode == HttpStatus.created) {
+        return Right(httpResponse.data);
+      }
+    } on DioException catch (e) {
+      return DioErrorHandler.handle(error: e);
+    } catch (e) {
+      return Left(NetworkFailure(message: e.toString()));
+    }
+    return const Left(
+        NetworkFailure(message: 'Une erreur inattendue s\'est produite.'));
+  }
+
+
+  @override
+  Future<Either<Failure, InvoiceCheckTinRequire>> checkTinRequire(
+      TinRequireCheckDto params) async {
+    // TODO: implement calculationReimbursement
+    try {
+      final HttpResponse<InvoiceCheckTinRequire> httpResponse =
+      await apiInvoice.checkTinRequire(params.toJson());
       if (httpResponse.response.statusCode == HttpStatus.ok ||
           httpResponse.response.statusCode == HttpStatus.created) {
         return Right(httpResponse.data);

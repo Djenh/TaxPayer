@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:invoice_app/commons/ui/button/kcirclebutton.dart';
 import 'package:invoice_app/core/configs/injection_container.dart';
 import 'package:invoice_app/core/services/toast_service.dart';
 import 'package:invoice_app/data/dtos/add_invoice_dto.dart';
@@ -100,17 +101,37 @@ class _CreditInvoicePageState extends State<CreditInvoicePage> {
               fontWeight: FontWeight.w400),
           Row(
             children: [
-              Expanded(
-                child: buildText(context, subtitle, 12, Colors.black,
-                    fontWeight: FontWeight.w600, maxLine: 3),
+              Flexible(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: KStyles.primaryColor.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  padding: const EdgeInsets.all(4),
+                  child: buildText(
+                      context, subtitle.toUpperCase(), 12, KStyles.primaryColor,
+                      fontWeight: FontWeight.w400,maxLine: 3),
+                ),
               ),
-              //const SizedBox(width: 8),
+              const SizedBox(width: 10),
+              GestureDetector(
+                onTap: () => _removeItem(index),
+                child: const Icon(Iconsax.trash, color: Colors.redAccent, size: 20),
+              )
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
               Row(
                 children: [
-                  IconButton(
-                    icon: const Icon(Icons.remove, size: 20),
+                  KCircleButton(
+                    color: Colors.transparent,
                     onPressed: () => _decrementQuantity(index),
+                    child: const Icon(Icons.remove,color: KStyles.primaryColor, size: 25),
                   ),
+                  const SizedBox(width: 5),
                   Container(
                     //width: 30,
                     height: 30,
@@ -122,25 +143,25 @@ class _CreditInvoicePageState extends State<CreditInvoicePage> {
                     ),
                     child: Text(
                       "$quantity",
-                      style: const TextStyle(fontSize: 14),
+                      style: const TextStyle(fontSize: 14,fontWeight: FontWeight.w800),
                     ),
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.add, size: 20),
+                  const SizedBox(width: 5),
+                  KCircleButton(
+                    color: Colors.transparent,
                     onPressed: () => _incrementQuantity(index),
+                    child: const Icon(Icons.add,color: KStyles.primaryColor, size: 25),
                   ),
                 ],
               ),
               const SizedBox(width: 8),
-              buildText(context, "${Utils.getFormattedAmount(price * quantity)} Fcfa", 12, Colors.black,
-                  fontWeight: FontWeight.w300),
-              const SizedBox(width: 8),
-              GestureDetector(
-                onTap: () => _removeItem(index),
-                child: const Icon(Iconsax.trash, color: Colors.redAccent, size: 20),
-              )
+              Flexible(
+                child: buildText(context, "${Utils.getFormattedAmount(price * quantity)} Fcfa", 12, Colors.black,
+                    fontWeight: FontWeight.w800),
+              ),
+
             ],
-          )
+          ),
         ],
       ),
     );
@@ -203,7 +224,7 @@ class _CreditInvoicePageState extends State<CreditInvoicePage> {
 
           if(presentItemAdd < originalItem){
             await Get.to(() => ProductInvoiceListPage(
-                itemsList: widget.dataInvoice?.invoice?.items ?? []),
+                itemsList: widget.dataInvoice?.invoice?.items ?? [],dataInvoice: widget.dataInvoice),
                 fullscreenDialog: true
             )!.then((val){
               if(val is ItemsEntities){
@@ -229,7 +250,7 @@ class _CreditInvoicePageState extends State<CreditInvoicePage> {
             children: [
               buildText(context, "Total Hors Taxes (Total HT)",
                   14, Colors.black, fontWeight: FontWeight.w300),
-              buildText(context, "$tH Fcfa", 14, Colors.black,
+              buildText(context, "${Utils.getFormattedAmount(tH.value)} Fcfa", 14, Colors.black,
                   fontWeight: FontWeight.w300),
             ],
           ),
@@ -242,7 +263,7 @@ class _CreditInvoicePageState extends State<CreditInvoicePage> {
             children: [
               buildText(context, "Total appliquées",
                   14, Colors.black, fontWeight: FontWeight.w300),
-              buildText(context, "$tA Fcfa", 14,
+              buildText(context, "${Utils.getFormattedAmount(tA.value)} Fcfa", 14,
                   Colors.black, fontWeight: FontWeight.w300),
             ],
           ),
@@ -254,7 +275,7 @@ class _CreditInvoicePageState extends State<CreditInvoicePage> {
           children: [
             buildText(context, "Grand total",
                 14, Colors.black, fontWeight: FontWeight.w600),
-            buildText(context, "$gT Fcfa", 14, Colors.black,
+            buildText(context, "${Utils.getFormattedAmount(gT.value)} Fcfa", 14, Colors.black,
                 fontWeight: FontWeight.w300),
           ],
         ),

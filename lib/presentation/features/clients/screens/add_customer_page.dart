@@ -4,6 +4,7 @@ import 'package:invoice_app/commons/ui/button/kcirclebutton.dart';
 import 'package:invoice_app/core/configs/injection_container.dart';
 import 'package:invoice_app/core/enums/type_customer_enum.dart';
 import 'package:invoice_app/core/services/app_service.dart';
+import 'package:invoice_app/core/services/toast_service.dart';
 import 'package:invoice_app/data/dtos/add_customer_dto.dart';
 import 'package:invoice_app/data/dtos/address_dto.dart';
 import 'package:invoice_app/data/dtos/contact_dto.dart';
@@ -160,7 +161,21 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
             const SizedBox(width: 20),
             KCircleButton(
               color: KStyles.primaryColor,
-              onPressed: () {
+              onPressed: () async{
+                if(tinController!.text.isNotEmpty) {
+                  await companyCtr.dataCompanyByTin(context, tinController!.text.trim(),showLoader: true).then((val){
+                    if(val != null){
+                      setState(() {
+                        fullNameController!.text = val.name??"";
+                        phoneController!.text = val.contact?.phoneNumber??"";
+                        emailController!.text = val.contact?.email??"";
+                        urlWebController!.text = val.contact?.websiteUrl??"";
+                      });
+                    }
+                  });
+                }else{
+                  ToastService.showError(context, 'Attention', description: "Veuillez entrer un Tin");
+                }
 
               },
               child: const Icon(Icons.verified_outlined,color: Colors.white, size: 25),
