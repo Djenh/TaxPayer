@@ -18,15 +18,16 @@ class FullMenu extends StatelessWidget {
 
     final List<Map<String, dynamic>> actions = [
       {"icon": Iconsax.document, "label": "Créer une facture d'avoir", "action": () => _navigateToInvoiceA(context)},
-      {"icon": Iconsax.edit, "label": "Modifier", "action": () => _navigateToEdit(context)},
-      {"icon": Iconsax.eye, "label": "Visualiser", "action": () => _navigateToView(context)},
-      {"icon": Iconsax.refresh, "label": "Recurring", "action": () => _navigateToRecurring(context)},
-      {"icon": Iconsax.edit, "label": "Change Template", "action": () => _navigateToTemplate(context)},
+      {"icon": Icons.upload_outlined, "label": "Télécharger PDF", "action": () => GeneratePdfService.generateAndPrintPdf(invoiceResponse!,isSaleInvoice!,true,false,isDownload: true)},
+      {"icon": Iconsax.eye, "label": "Voir les factures d'avoir associées", "action": () => _navigateToEdit(context)},
+      //{"icon": Iconsax.eye, "label": "Visualiser", "action": () => _navigateToView(context)},
+     // {"icon": Iconsax.refresh, "label": "Recurring", "action": () => _navigateToRecurring(context)},
+     // {"icon": Iconsax.edit, "label": "Change Template", "action": () => _navigateToTemplate(context)},
       {"icon": Iconsax.copy, "label": "Dupliquer la facture", "action": () => _navigateToDuplicate(context)},
-      {"icon": Iconsax.tick_circle, "label": "Marquer comme payer", "action": () => _markAsPaid(context)},
-      {"icon": Iconsax.export, "label": "Exporter PDF", "action": () => GeneratePdfService.generateAndPrintPdf(invoiceResponse!,isSaleInvoice!)},
-      {"icon": Iconsax.sms, "label": "Envoyer par Email", "action": () => _sendEmail(context)},
-      {"icon": Iconsax.save_2, "label": "Savegarder", "action": () => _save(context)},
+      //{"icon": Iconsax.tick_circle, "label": "Marquer comme payer", "action": () => _markAsPaid(context)},
+      {"icon": Iconsax.export, "label": "Exporter PDF", "action": () => GeneratePdfService.generateAndPrintPdf(invoiceResponse!,isSaleInvoice!,true,false)},
+      {"icon": Iconsax.sms, "label": "Envoyer par Email", "action": () => GeneratePdfService.generateAndPrintPdf(invoiceResponse!,isSaleInvoice!,true,false,isMailSent: true)},
+      //{"icon": Iconsax.save_2, "label": "Savegarder", "action": () => _save(context)},
       {"icon": Iconsax.trash, "label": "Supprimer", "action": () => _delete(context)},
     ];
 

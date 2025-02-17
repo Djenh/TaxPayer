@@ -109,12 +109,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     children: [
                       const TabBar(tabs: [
                         Tab(
-                          text: "Stocks",
-                          icon: Icon(Iconsax.archive_2),
-                        ),
-                        Tab(
                           text: "Prix",
                           icon: Icon(Iconsax.money_add),
+                        ),
+                        Tab(
+                          text: "Stocks",
+                          icon: Icon(Iconsax.archive_2),
                         ),
                         Tab(
                           text: "Autre",
@@ -153,7 +153,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                     },
                                     style: ElevatedButton.styleFrom(
                                         elevation: 0,
-                                        backgroundColor: Colors.grey[300],
+                                        backgroundColor: KStyles.primaryColor,
                                         foregroundColor: Colors.black,
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
@@ -164,7 +164,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                       "Ajouter",
                                       style: TextStyle(
                                           fontSize: 12,
-                                          fontWeight: FontWeight.normal),
+                                          fontWeight: FontWeight.normal,color: Colors.white),
                                     ),
                                   ),
                                 ],

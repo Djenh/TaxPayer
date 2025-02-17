@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:invoice_app/domain/entities/invoice/invoice_response.dart';
+import 'package:invoice_app/presentation/features/sales/invoice/widgets/modals/full_menu.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 import 'package:invoice_app/utils/utils.dart';
 
@@ -13,46 +14,58 @@ class InvoiceItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(child: _buildInvoiceDetails(context)),
-            const SizedBox(width: 12),
-            _buildInvoiceStatus(context),
-          ],
-        ),
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: Stack(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(child: _buildInvoiceDetails(context)),
+              const SizedBox(width: 12),
+              _buildInvoiceStatus(context),
+            ],
+          ),
+          Positioned(
+            right: 5,
+            child: GestureDetector(
+                onTap: (){
+                  showMoreMenu(context);
+                },
+                child: const Icon(Icons.more_vert_outlined))
+          )
+        ],
       ),
     );
   }
 
 
   Widget _buildInvoiceDetails(BuildContext context) {
-    return Row(
-      children: [
-        CircleAvatar(
-          radius: 30,
-          backgroundColor: KStyles.primaryColor.withOpacity(0.1),
-          child: const Icon(Iconsax.bill, color: KStyles.primaryColor),
-        ),
-        const SizedBox(width: 12),
-        Flexible(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _buildText(context, invoiceResponse?.invoice?.client?.name??"", 14, Colors.black, FontWeight.w600),
-              const SizedBox(height: 4),
-              _buildText(context, "Facture ${invoiceResponse?.invoice?.code??""}", 12, Colors.black, FontWeight.w300),
-              const SizedBox(height: 4),
-              _buildText(context, "${invoiceResponse!.invoice!.items!.length} articles", 10, Colors.grey, FontWeight.w400),
-            ],
+    return GestureDetector(
+      onTap: onTap,
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: 30,
+            backgroundColor: KStyles.primaryColor.withOpacity(0.1),
+            child: const Icon(Iconsax.bill, color: KStyles.primaryColor),
           ),
-        ),
-      ],
+          const SizedBox(width: 12),
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildText(context, invoiceResponse?.invoice?.client?.name??"", 14, Colors.black, FontWeight.w600),
+                const SizedBox(height: 4),
+                _buildText(context, "Facture ${invoiceResponse?.invoice?.code??""}", 12, Colors.black, FontWeight.w300),
+                const SizedBox(height: 4),
+                _buildText(context, "${invoiceResponse!.invoice!.items!.length} ${invoiceResponse!.invoice!.items!.length <= 1 ? "article" : "articles"}", 10, Colors.grey, FontWeight.w400),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -61,7 +74,7 @@ class InvoiceItem extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        _buildText(context, Utils.getFormattedAmount(invoiceResponse!.total?.ttc??0), 14, Colors.black, FontWeight.w500),
+        _buildText(context, Utils.getFormattedAmount(invoiceResponse!.total?.ttc??0), 14, Colors.black, FontWeight.w500)
         /*const SizedBox(height: 4),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -88,6 +101,20 @@ class InvoiceItem extends StatelessWidget {
         color: color,
         fontWeight: fontWeight,
       ),
+    );
+  }
+  void showMoreMenu(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16),
+          topRight: Radius.circular(16),
+        ),
+      ),
+      builder: (context) => FullMenu(invoiceResponse: invoiceResponse,
+          isSaleInvoice: false),
     );
   }
 }

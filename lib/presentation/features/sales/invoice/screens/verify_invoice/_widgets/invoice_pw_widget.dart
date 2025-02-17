@@ -28,7 +28,7 @@ final pageWidth = PdfPageFormat.a4.width; // Largeur de la page A4 par défaut
 // Calculer la moitié de la largeur de la page
 final halfPageWidth = pageWidth / 2;
 pw.Widget buildPwCompanyInfoCard(bool isCustomer, String rcm, String nameUser,
-    String email, String phone, String adr, String ifu) {
+    String email, String phone, String adr, String ifu,final pwImage) {
   return pw.Container(
     padding: const pw.EdgeInsets.all(8),
     width: halfPageWidth,
@@ -47,7 +47,8 @@ pw.Widget buildPwCompanyInfoCard(bool isCustomer, String rcm, String nameUser,
               color: convertFlutterColorToPdfColor(Colors.grey),
               borderRadius: pw.BorderRadius.circular(4)),
         )
-            :  pw.Icon(const pw.IconData(0xec5b), color: PdfColors.black),//Iconsax.user_tag
+            : pw.Image(pwImage,width: 20,
+            height: 20),//Iconsax.user_tag
         pw.SizedBox(height: 8),
         buildPwText(rcm, 8, PdfColors.black),
         pw.SizedBox(height: 4),
@@ -101,7 +102,7 @@ pw.Widget buildTitleInvoice(String title, String numberInvoice) {
   );
 }
 
-pw.Widget buildItemArticle(ItemsEntities itemsEntities) {
+pw.Widget buildItemArticle(ItemsEntities itemsEntities,bool isSifecModel) {
   return pw.Column(
     mainAxisAlignment: pw.MainAxisAlignment.start,
     crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -112,15 +113,15 @@ pw.Widget buildItemArticle(ItemsEntities itemsEntities) {
           borderRadius: pw.BorderRadius.circular(4),
         ),
         padding: const pw.EdgeInsets.all(4),
-        child: buildPwText(itemsEntities.item?.product?.productType??"".toUpperCase(), 10, convertFlutterColorToPdfColor(KStyles.primaryColor)),
+        child: buildPwText(isSifecModel? itemsEntities.item?.typeProduct?.name??"".toUpperCase() : itemsEntities.item?.product?.productType??"".toUpperCase(), 10, convertFlutterColorToPdfColor(KStyles.primaryColor)),
       ),
       pw.SizedBox(height: 3),
-      buildPwText("${itemsEntities.item?.quantity??1} QTE x ${itemsEntities.item?.product?.price?.amount?.toString()??""}", 12,PdfColors.black),
+      buildPwText("${itemsEntities.item?.quantity??1} QTE x ${itemsEntities.item?.price.toString()??""}", 12,PdfColors.black),
       pw.SizedBox(height: 3),
       pw.Row(
         mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
         children: [
-          buildPwText("${itemsEntities.item?.product?.name??""}  [${itemsEntities.item?.product?.price?.taxGroup?.code??""}]", 12,PdfColors.black),
+          buildPwText("${isSifecModel? itemsEntities.item?.name??"" :itemsEntities.item?.product?.name??""}  [${isSifecModel? itemsEntities.item?.taxGroup?.code??"" :itemsEntities.item?.product?.price?.taxGroup?.code??""}]", 12,PdfColors.black),
           buildPwText("*${Utils.getFormattedAmount(itemsEntities.total?.ttc!.toInt() as num)}", 12,PdfColors.black),
         ],
       ),
@@ -217,7 +218,7 @@ pw.Widget buildRowDataSign(String title, String value) {
   );
 }
 
-pw.Widget buildInvoiceItems(List<dynamic>? items) {
+pw.Widget buildInvoiceItems(List<dynamic>? items,bool isSifecModel) {
   if (items == null || items.isEmpty) {
     return pw.Text("Aucun article trouvé.");
   }
@@ -228,7 +229,7 @@ pw.Widget buildInvoiceItems(List<dynamic>? items) {
       final dynamic article = entry.value;
       return pw.Padding(
         padding: const pw.EdgeInsets.only(bottom: 12.0), // Utilisez pw.EdgeInsets
-        child: buildItemArticle(article), // IMPORTANT : pas de BuildContext Flutter
+        child: buildItemArticle(article,isSifecModel), // IMPORTANT : pas de BuildContext Flutter
       );
     }).toList(),
   );

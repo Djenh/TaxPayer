@@ -9,7 +9,9 @@ import 'package:invoice_app/domain/entities/invoice/invoice_response.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
 import 'package:invoice_app/presentation/_widgets/paged_first_error.dart';
 import 'package:invoice_app/presentation/_widgets/paged_new_page_error.dart';
+import 'package:invoice_app/presentation/_widgets/simple_btn.dart';
 import 'package:invoice_app/presentation/controllers/invoice_ctrl.dart';
+import 'package:invoice_app/presentation/features/pos/screens/invoice_dialog.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 
 import '../../../../_widgets/app_bar_custom.dart';
@@ -91,7 +93,17 @@ class _InvoiceListState extends State<InvoiceList> {
                   Get.to(() => const InvoiceSearchPage());
                 }, icon: const Icon(Iconsax.search_normal)),
             IconButton(
-                onPressed: () => Get.to(() => const InvoiceCreatePage()),
+                onPressed: () async{
+                  showGeneralDialog(
+                    context: context,
+                    barrierDismissible: true,
+                    barrierLabel: 'FullScreenDialog',
+                    transitionDuration: const Duration(milliseconds: 300),
+                    pageBuilder: (BuildContext context, Animation animation, Animation secondaryAnimation) {
+                      return const PosDialogScreen(goBack: false);
+                    },
+                  );
+                },
                 icon: const Icon(CupertinoIcons.add_circled_solid,
                     color: KStyles.primaryColor, size: 32)
             ),
@@ -174,8 +186,25 @@ class _InvoiceListState extends State<InvoiceList> {
 
   Widget noItem(){
     return Center(
-      child: buildText(context, "Aucune facture trouvée.", 16, Colors.black,
-          fontWeight: FontWeight.w500, textAlign: TextAlign.center),
+      child: Column(
+        children: [
+          buildText(context, "Aucune facture trouvée.", 16, Colors.black,
+              fontWeight: FontWeight.w500, textAlign: TextAlign.center),
+          const SizedBox(height: 10),
+          SizedBox(
+            width: MediaQuery.of(context).size.width/2+50,
+            child: SimpleBtn(
+              titleBtn: "Créer une facture",
+              sizeFont: 14,
+              onPressed: () async {
+                await Get.to(() => const InvoiceCreatePage(), fullscreenDialog: true)?.then((val){
+                  Future.sync(() => invoiceCtr.pagingIvoiceController.refresh());
+                });
+              },
+            ),
+          )
+        ],
+      ),
     );
   }
 }

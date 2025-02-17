@@ -20,9 +20,10 @@ import 'add_customer_page.dart';
 
 
 class CustomerPage extends StatefulWidget {
-  const CustomerPage({super.key, required this.isManage});
+  const CustomerPage({super.key, required this.isManage, required this.isInvoice});
 
   final bool isManage;
+  final bool isInvoice;
 
   @override
   State<CustomerPage> createState() => _CustomerPageState();
@@ -60,7 +61,8 @@ class _CustomerPageState extends State<CustomerPage> {
 
   Widget _noItem(){
     return (searchController!.text.isNotEmpty)
-        ? Column(
+        ?
+    Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -79,9 +81,9 @@ class _CustomerPageState extends State<CustomerPage> {
             titleBtn: "Créer un client",
             sizeFont: 14,
             onPressed: () async {
-              await Get.to(() => const AddCustomerPage(), fullscreenDialog: true)?.then((val){
-                if(val == true){
-                  customerCtr.pagingCusController?.refresh();
+              await Get.to(() => const AddCustomerPage(isInvoice: true), fullscreenDialog: true)?.then((val){
+                if(val == null){
+                  Get.back(result: val);
                 }
               });
             },
@@ -89,9 +91,29 @@ class _CustomerPageState extends State<CustomerPage> {
         )
       ],
     )
-        : Center(
-      child: buildText(context, "Pas de client.", 16, Colors.black,
-          fontWeight: FontWeight.w500, textAlign: TextAlign.center),
+        :
+    Center(
+      child: Column(
+        children: [
+          buildText(context, "Pas de client.", 16, Colors.black,
+              fontWeight: FontWeight.w500, textAlign: TextAlign.center),
+          const SizedBox(height: 20),
+          SizedBox(
+            width: MediaQuery.of(context).size.width/2+50,
+            child: SimpleBtn(
+              titleBtn: "Créer un client",
+              sizeFont: 14,
+              onPressed: () async {
+                await Get.to(() => const AddCustomerPage(isInvoice: true), fullscreenDialog: true)?.then((val){
+                  if(val == null){
+                    Get.back(result: val);
+                  }
+                });
+              },
+            ),
+          )
+        ],
+      ),
     );
   }
 
@@ -107,9 +129,9 @@ class _CustomerPageState extends State<CustomerPage> {
             actionList: [
               IconButton(
                   onPressed: () async{
-                    await Get.to(() => const AddCustomerPage(), fullscreenDialog: true)?.then((val){
-                      if(val == true){
-                        customerCtr.pagingCusController?.refresh();
+                    await Get.to(() => const AddCustomerPage(isInvoice: true), fullscreenDialog: true)?.then((val){
+                      if(val == null){
+                        Get.back(result: val);
                       }
                     });
                   },
@@ -169,12 +191,13 @@ class _CustomerPageState extends State<CustomerPage> {
           ),
         ),
         floatingActionButton: widget.isManage
-          ? FloatBtn(
+          ?
+        FloatBtn(
         onAction: () async {
-          await Get.to(() => const AddCustomerPage(),
+          await Get.to(() => const AddCustomerPage(isInvoice: true),
               fullscreenDialog: true)?.then((val){
-            if(val == true){
-              customerCtr.pagingCusController?.refresh();
+            if(val == null){
+              Get.back(result: val);
             }
           });
         },

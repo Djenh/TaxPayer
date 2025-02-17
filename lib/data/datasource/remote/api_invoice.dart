@@ -16,10 +16,14 @@ abstract class ApiInvoice {
   Future<HttpResponse<TypeInvoiceResponse>> getAllTypeInvoice(
       @Queries() Map<String, dynamic> pageable);
 
-  @GET("/invoice")
+  @GET("/invoice/tin/{tin}")
   Future<HttpResponse<InvoiceEntitiesListResponse>> getAllInvoice(
-      @Queries() Map<String, dynamic> pageable,String tin);
+      @Queries() Map<String, dynamic> pageable,@Path("tin") String tin);
 
+  @GET("/invoice/tin/{tin}/code/{code}")
+  Future<HttpResponse<InvoiceEntitiesListResponse>> getInvoiceByTinAndCode(
+      @Queries() Map<String, dynamic> pageable,@Path("tin") String tin,
+      @Path("code") String code);
 
   @GET("/security-tax")
   Future<HttpResponse<DepositTaxResponse>> getAllDepositTax(

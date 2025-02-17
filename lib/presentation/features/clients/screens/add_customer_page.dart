@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:invoice_app/commons/ui/button/kcirclebutton.dart';
 import 'package:invoice_app/core/configs/injection_container.dart';
 import 'package:invoice_app/core/enums/type_customer_enum.dart';
 import 'package:invoice_app/core/services/app_service.dart';
@@ -16,13 +17,15 @@ import 'package:invoice_app/presentation/_widgets/localities_paginated_searchabl
 import 'package:invoice_app/presentation/controllers/company_ctrl.dart';
 import 'package:invoice_app/presentation/controllers/customer_ctrl.dart';
 import 'package:invoice_app/presentation/features/clients/screens/customer_category_page.dart';
+import 'package:invoice_app/presentation/res/style/e_style.dart';
 
 import '../../../_widgets/app_bar_custom.dart';
 import '../../../res/app_input_styles.dart';
 import '../../../res/input_formaters.dart';
 
 class AddCustomerPage extends StatefulWidget {
-  const AddCustomerPage({super.key});
+  final bool isInvoice;
+  const AddCustomerPage({super.key,required this.isInvoice});
 
   @override
   State<AddCustomerPage> createState() => _AddCustomerPageState();
@@ -112,11 +115,12 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        buildText(context, title, 14, Colors.black, fontWeight: FontWeight.w700),
+        buildText(context, title, 14, Colors.black),
         if(isAction== true)
           Obx(() => customerCtr.isLoadingLoc.isTrue
               ? const CircularProgressIndicator()
-              : TextButton(
+              :
+          TextButton(
             onPressed: (){
               customerCtr.getCurrentLocation().then((val){
                 if(val != null){
@@ -127,7 +131,7 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
               });
             },
             child: buildText(context, "Obtenir les données map", 14,
-                Colors.blue, fontWeight: FontWeight.w700),
+                Colors.blue),
           ))
       ],
     );
@@ -137,6 +141,33 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
     return Column(
       children: [
         const SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              child: TextFormField(
+                controller: tinController,
+                textInputAction: TextInputAction.next,
+                keyboardType: TextInputType.text,
+                textCapitalization: TextCapitalization.characters,
+                //onChanged: (String v) => tinError.value = null,
+                decoration: AppInputStyles.defaultInputDecoration(
+                  labelText: "Tin du client",
+                  //errorText: tinError.value
+                ),
+              ),
+            ),
+            const SizedBox(width: 20),
+            KCircleButton(
+              color: KStyles.primaryColor,
+              onPressed: () {
+
+              },
+              child: const Icon(Icons.verified_outlined,color: Colors.white, size: 25),
+            ),
+          ],
+        ),
+        const SizedBox(height: 30),
         TextFormField(
           controller: fullNameController,
           textInputAction: TextInputAction.next,
@@ -150,18 +181,7 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
           ),
         ),
         const SizedBox(height: 30),
-        TextFormField(
-          controller: tinController,
-          textInputAction: TextInputAction.next,
-          keyboardType: TextInputType.text,
-          textCapitalization: TextCapitalization.characters,
-          //onChanged: (String v) => tinError.value = null,
-          decoration: AppInputStyles.defaultInputDecoration(
-              labelText: "Tin du client",
-              //errorText: tinError.value
-          ),
-        ),
-        const SizedBox(height: 30),
+
         DropdownButtonFormField<CustomerType>(
           value: _selectedCustomerType,
           hint: buildText(context, "Sélectionnez un type de client", 14, Colors.black),
@@ -320,7 +340,11 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
 
     await customerCtr.addCustomerForCompany(context, params).then((val) async {
       if(val != null){
-        Get.back(result: true);
+        if(widget.isInvoice){
+          Get.back(result: val);
+        }else{
+          Get.back(result: true);
+        }
       }
     });
 

@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'dart:ui' as ui;
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:open_file/open_file.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Utils{
@@ -86,5 +88,26 @@ class Utils{
         throw 'Could not launch $whatsappURlAndroid';
       }
     }
+  }
+
+  static Future<void> sendEmailWithAttachment(File file) async {
+    final Email email = Email(
+      body: 'Veuillez trouver la facture attachée.',
+      subject: 'Votre facture',
+      recipients: ['example@example.com'],
+      attachmentPaths: [file.path],
+      isHTML: false,
+    );
+
+    try {
+      await FlutterEmailSender.send(email);
+      print("E-mail envoyé avec succès !");
+    } catch (error) {
+      print("Erreur lors de l'envoi de l'e-mail : $error");
+    }
+  }
+
+  static Future<void> openFile(File file) async {
+    await OpenFile.open(file.path);
   }
 }

@@ -6,21 +6,21 @@ import 'package:invoice_app/utils/utils.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import '../../../../../res/style/e_style.dart';
 
-class ModernViewInvoicePage extends StatefulWidget {
+class ModernSifecViewInvoicePage extends StatefulWidget {
 
   final InvoiceResponse? invoiceResponse;
   final bool isSaleInvoice;
 
-  const ModernViewInvoicePage({super.key, required this.isSaleInvoice,
+  const ModernSifecViewInvoicePage({super.key, required this.isSaleInvoice,
     this.invoiceResponse});
 
 
 
   @override
-  State<ModernViewInvoicePage> createState() => _ModernViewInvoicePageState();
+  State<ModernSifecViewInvoicePage> createState() => _ModernSifecViewInvoicePageState();
 }
 
-class _ModernViewInvoicePageState extends State<ModernViewInvoicePage> {
+class _ModernSifecViewInvoicePageState extends State<ModernSifecViewInvoicePage> {
 
 
   @override
@@ -57,13 +57,13 @@ class _ModernViewInvoicePageState extends State<ModernViewInvoicePage> {
         if (!widget.isSaleInvoice) ...[
           const SizedBox(height: 10),
           buildReferenceCreditInvoice(context,
-              "Référence de facture originale", widget.invoiceResponse?.invoice?.code??""),
+              "Référence de facture originale", widget.invoiceResponse?.invoice?.externalInvoiceNo??""),
         ],
         const SizedBox(height: 20),
         Center(
             child: buildTitleInvoice(//(widget.isSaleInvoice ? "FACTURE DE VENTE" : "FACTURE D’AVOIR")
                 context,widget.invoiceResponse?.invoice?.typeInvoice?.name??"",
-                "N° ${widget.invoiceResponse?.invoice?.code??""}")),
+                "N° ${widget.invoiceResponse?.invoice?.externalInvoiceNo??""}")),
         const SizedBox(height: 20),
         ListView.builder(
             itemCount: widget.invoiceResponse?.invoice?.items?.length,
@@ -73,33 +73,8 @@ class _ModernViewInvoicePageState extends State<ModernViewInvoicePage> {
               final article = widget.invoiceResponse?.invoice?.items?[i];
               return Padding(
                 padding: const EdgeInsets.only(bottom: 12.0),
-                child: buildItemArticle(context,article!),
+                child: buildItemSifecArticle(context,article!),
               );
-              /*
-              if (i < 2) {
-                // Articles
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 12.0),
-                  child: _buildItemArticle(),
-                );
-              } else if (i == 2) {
-                // Section TOTAL
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: _buildRecapArticle(
-                      "TOTAL", "*16.000", "REGIME TPS  [E]", "*16.000"),
-                );
-              } else if (i == 3) {
-                // Section ESPECES
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: _buildRecapArticle(
-                      "ESPECES :", "*16.000", "NBR d’articles :", "2"),
-                );
-              } else {
-                return const SizedBox.shrink();
-              }
-               */
             }),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -141,23 +116,23 @@ class _ModernViewInvoicePageState extends State<ModernViewInvoicePage> {
               ),
               Expanded(
                   child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  buildText(context, "Signature", 8, Colors.black,
-                      fontWeight: FontWeight.w300),
-                  const SizedBox(height: 4),
-                  buildText(
-                      context, "${widget.invoiceResponse?.signatureData?.signature?.toString()}", 8, Colors.black,
-                      fontWeight: FontWeight.w700),
-                  const SizedBox(height: 4),
-                  buildRowDataSign(context,"TIN-POS-TI", "1230909-0834"),
-                  const SizedBox(height: 4),
-                  buildRowDataSign(context,"Ref logiciel", "9LEHE"),
-                  const SizedBox(height: 4),
-                  buildRowDataSign(context,"Date, Heure", widget.invoiceResponse?.signatureData?.certifiedDate?.toString()??"")
-                ],
-              ))
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      buildText(context, "Signature", 8, Colors.black,
+                          fontWeight: FontWeight.w300),
+                      const SizedBox(height: 4),
+                      buildText(
+                          context, "${widget.invoiceResponse?.signatureData?.signature?.toString()}", 8, Colors.black,
+                          fontWeight: FontWeight.w700),
+                      const SizedBox(height: 4),
+                      buildRowDataSign(context,"TIN-POS-TI", "1230909-0834"),
+                      const SizedBox(height: 4),
+                      buildRowDataSign(context,"Ref logiciel", "9LEHE"),
+                      const SizedBox(height: 4),
+                      buildRowDataSign(context,"Date, Heure", widget.invoiceResponse?.signatureData?.certifiedDate?.toString()??"")
+                    ],
+                  ))
             ],
           ),
         ),

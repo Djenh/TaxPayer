@@ -21,7 +21,11 @@ class InvoiceUc {
 
   Future<Either<Failure, InvoiceEntitiesListResponse>> executeAllInvoice(
       String tin,int page, int size) async {
-    return await invoiceRepository.allInvoice(tin,page, size);
+    return await invoiceRepository.allInvoice(page, size,tin);
+  }
+  Future<Either<Failure, InvoiceEntitiesListResponse>> executeAllInvoiceByTinAndCode(
+      String tin,String code,int page, int size) async {
+    return await invoiceRepository.getAllInvoiceByTinAndCode(page, size,tin,code);
   }
 
   Future<Either<Failure, DepositTaxResponse>> executeAllDepositTax(

@@ -30,7 +30,7 @@ class _InvoiceDetailPageState extends State<InvoiceDetailPage> {
           "Fature ${widget.invoiceResponse?.invoice?.code??0}",
           actionList: [
         IconButton(
-          onPressed: ()=> GeneratePdfService.generateAndPrintPdf(widget.invoiceResponse!,widget.isSaleInvoice),
+          onPressed: ()=> GeneratePdfService.generateAndPrintPdf(widget.invoiceResponse!,widget.isSaleInvoice,false,false),
           icon: const Icon(Iconsax.document_download),
         ),
         IconButton(

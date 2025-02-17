@@ -46,7 +46,7 @@ class _PriceCreateState extends State<PriceCreate> {
     super.initState();
     priceController = TextEditingController();
     taxGroupController = TextEditingController();
-    taxSpecifController = TextEditingController();
+    taxSpecifController = TextEditingController(text: '0');
   }
 
 
