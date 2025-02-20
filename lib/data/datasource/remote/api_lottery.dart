@@ -13,7 +13,7 @@ abstract class ApiLottery {
 
 
   @GET("/stack/invoice/list/participation-by-phone")
-  Future<HttpResponse<List<LotteryParticipationResponse>>> getListLotteryParticipation(@Queries() Map<String, dynamic> params);
+  Future<HttpResponse<LotteryParticipationResponse>> getListLotteryParticipation(@Queries() Map<String, dynamic> params);
 
   @POST("/stack/invoice/create")
   Future<HttpResponse<LotteryDataResponse>> createLotteryForParticipant(@Body() Map<String, dynamic> params);

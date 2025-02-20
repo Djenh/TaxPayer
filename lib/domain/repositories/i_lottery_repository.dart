@@ -8,7 +8,7 @@ import '../entities/lottery/lottery_participation_response.dart';
 
 abstract class ILotteryRepository {
 
-  Future<Either<Failure, List<LotteryParticipationResponse>>> listLotteryParticipation(String phone, int page, int size);
+  Future<Either<Failure, LotteryParticipationResponse>> listLotteryParticipation(String phone, int page, int size);
   Future<Either<Failure, LotteryDataResponse>> saveLotteryForParticipant(AddLotteryDto params);
 
 }

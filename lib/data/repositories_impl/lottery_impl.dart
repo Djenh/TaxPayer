@@ -19,13 +19,14 @@ class LotteryRemoteRepository implements ILotteryRepository{
 
 
   @override
-  Future<Either<Failure, List<LotteryParticipationResponse>>> listLotteryParticipation(String phone, int page, int size) async {
+  Future<Either<Failure, LotteryParticipationResponse>> listLotteryParticipation(String phone, int page, int size) async {
     // TODO: implement listLotteryParticipation
 
     final Map<String, dynamic> params = {"phone": phone, "page": page, "size": size};
     try {
-      final HttpResponse<List<LotteryParticipationResponse>> httpResponse =
+      final HttpResponse<LotteryParticipationResponse> httpResponse =
               await apiLottery.getListLotteryParticipation(params);
+
       if (httpResponse.response.statusCode == HttpStatus.ok) {
         return Right(httpResponse.data);
       }

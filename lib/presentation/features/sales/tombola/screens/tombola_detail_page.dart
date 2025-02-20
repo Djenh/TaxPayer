@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:invoice_app/core/configs/injection_container.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
-import 'package:invoice_app/presentation/features/complaint/screens/complaint_page.dart';
+import 'package:invoice_app/presentation/features/sales/tombola/screens/tombola_page.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 
 import '../../../../../domain/entities/lottery/lottery_participation_response.dart';
 import '../../../../../utils/custom_image_view.dart';
 import '../../../../_widgets/action_btn.dart';
 import '../../../../_widgets/app_bar_custom.dart';
-import '../../../../controllers/product_ctrl.dart';
+import '../../../../controllers/lottery_ctrl.dart';
 import '../../../../res/assets/app_assets.dart';
 
 
@@ -17,7 +17,7 @@ import '../../../../res/assets/app_assets.dart';
 class TombolaDetailPage extends StatefulWidget {
   const TombolaDetailPage({super.key, required this.tombola});
 
-  final LotteryParticipationResponse tombola;
+  final ParticipationEntities tombola;
 
   @override
   State<TombolaDetailPage> createState() => _TombolaDetailPageState();
@@ -25,8 +25,7 @@ class TombolaDetailPage extends StatefulWidget {
 
 class _TombolaDetailPageState extends State<TombolaDetailPage> {
 
-  // final tombolaCtr = locator<TombolaCtrl>();
-  final prodCtr = locator<ProductCtrl>();
+  final lotteryCtrl = locator<LotteryCtrl>();
 
 
   @override
@@ -155,8 +154,8 @@ class _TombolaDetailPageState extends State<TombolaDetailPage> {
                 Expanded(
                     child: ActionBtn(
                       title: "Réclamer le lot gagné",
-                      loading: prodCtr.isLoading,
-                      onPressed: ()=> Get.to(() => const ComplaintPage()),
+                      loading: lotteryCtrl.isLoading,
+                      onPressed: ()=> Get.offAll(() => const TombolaPage()),
                     )
                 ),
               ],

@@ -13,7 +13,7 @@ class LotteryUc {
 
   LotteryUc(this.lotteryRepository);
 
-  Future<Either<Failure, List<LotteryParticipationResponse>>> executeListLotteryParticipation(String phone, int page, int size) async {
+  Future<Either<Failure, LotteryParticipationResponse>> executeListLotteryParticipation(String phone, int page, int size) async {
     return await lotteryRepository.listLotteryParticipation(phone, page, size);
   }
 

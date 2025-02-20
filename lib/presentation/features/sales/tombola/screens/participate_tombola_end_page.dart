@@ -58,7 +58,7 @@ class _ParticipateTombolaEndPageState extends State<ParticipateTombolaEndPage> {
                     child: ActionBtn(
                       title: 'Quitter',
                       loading: lotteryCtrl.isLoading,
-                      onPressed: ()=> Get.to(() => const TombolaPage()),
+                      onPressed: ()=> Get.offAll(() => const TombolaPage()),
                     )
                 ),
               ],

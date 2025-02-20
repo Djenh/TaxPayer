@@ -35,21 +35,25 @@ class LotteryCtrl extends GetxController {
   }
 
   ///func to get list lottery participation
-  Future<List<LotteryParticipationResponse>?> dataListLotteryParticipation() async {
-    List<LotteryParticipationResponse>? response;
+  Future<List<ParticipationEntities>?> dataListLotteryParticipation() async {
+    List<ParticipationEntities>? myResponse;
 
     try {
       _setLoading(true);
 
-      final Either<Failure, List<LotteryParticipationResponse>> result =
+      final Either<Failure, LotteryParticipationResponse> result =
             await lotteryUc.executeListLotteryParticipation(_phone, _page, _pageSize);
 
-      result.fold((Failure failure) {
-        AppLogger.error("fetch data failed: ${failure.message}");
-      }, (List<LotteryParticipationResponse> lotteryParticipationData) {
-        AppLogger.info("lotteryParticipationData successful: $lotteryParticipationData");
-        response = lotteryParticipationData;
-      });
+      result.fold(
+              (Failure failure) {
+                AppLogger.error("fetch data failed: ${failure.message}");
+              },
+              (LotteryParticipationResponse response) {
+                final List<ParticipationEntities> lotteryParticipationData = response.content??[];
+                AppLogger.info("lotteryParticipationData successful: $lotteryParticipationData");
+                myResponse = lotteryParticipationData;
+              }
+      );
     } catch (e) {
       AppLogger.error('An error occurred during dataListLotteryParticipation: $e');
       rethrow;
@@ -57,7 +61,7 @@ class LotteryCtrl extends GetxController {
       _setLoading(false);
     }
 
-    return response;
+    return myResponse;
   }
 
 

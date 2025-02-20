@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:invoice_app/core/configs/injection_container.dart';
 import 'package:invoice_app/presentation/_widgets/build_text.dart';
 import 'package:invoice_app/presentation/features/sales/tombola/screens/participate_tombola_end_page.dart';
@@ -230,16 +231,32 @@ class _ParticipateTombolaPageState extends State<ParticipateTombolaPage> {
     );
   }
 
+  int convertToDate(String issueDate)
+  {
+    if (issueDate=="") return 0;
+    /*int millis=0;
+    millis = (issueDate=="")?0:int.parse(issueDate);
+    var dt = DateTime.fromMillisecondsSinceEpoch(millis);
+    var d24 = DateFormat('dd/MM/yyyy').format(dt);*/
+
+    var dt = DateFormat('d/M/y').parse(issueDate);
+    int d24 = dt.millisecondsSinceEpoch;
+
+    return d24;
+  }
+
 
   Future<void> _addLottery() async {
     String signatureInvoice = widget.dataInvoice.signatureData?.signature?.toString()??"";
     num numTotalInvoice = widget.dataInvoice.total?.ttc??0;
     int totalInvoice = numTotalInvoice.toInt();
-    // String issuedDate = widget.dataInvoice.signatureData?.certifiedDate?.toString()??"";
+    String issuedDate = widget.dataInvoice.signatureData?.certifiedDate?.toString()??"";
+
+    int milliseconds = convertToDate(issuedDate);
 
     AddLotteryDto params = AddLotteryDto(
       signature: signatureInvoice,
-      issuedDateTimestamp: 0,
+      issuedDateTimestamp: milliseconds,
       participant: nameController!.text.trim(),
       phone: phoneController!.text.trim(),
       email: emailController!.text.trim(),

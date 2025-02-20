@@ -22,7 +22,7 @@ class _ApiLottery implements ApiLottery {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<HttpResponse<List<LotteryParticipationResponse>>>
+  Future<HttpResponse<LotteryParticipationResponse>>
       getListLotteryParticipation(Map<String, dynamic> params) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -30,30 +30,26 @@ class _ApiLottery implements ApiLottery {
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options =
-        _setStreamType<HttpResponse<List<LotteryParticipationResponse>>>(
-            Options(
+        _setStreamType<HttpResponse<LotteryParticipationResponse>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
-                .compose(
-                  _dio.options,
-                  '/stack/invoice/list/participation-by-phone',
-                  queryParameters: queryParameters,
-                  data: _data,
-                )
-                .copyWith(
-                    baseUrl: _combineBaseUrls(
-                  _dio.options.baseUrl,
-                  baseUrl,
-                )));
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<LotteryParticipationResponse> _value;
+            .compose(
+              _dio.options,
+              '/stack/invoice/list/participation-by-phone',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late LotteryParticipationResponse _value;
     try {
-      _value = _result.data!
-          .map((dynamic i) =>
-              LotteryParticipationResponse.fromJson(i as Map<String, dynamic>))
-          .toList();
+      _value = LotteryParticipationResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

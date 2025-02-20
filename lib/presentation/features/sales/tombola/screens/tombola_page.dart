@@ -21,7 +21,7 @@ class TombolaPage extends StatefulWidget {
 class _TombolaPageState extends State<TombolaPage> {
 
   final lotteryCtrl = locator<LotteryCtrl>();
-  List<LotteryParticipationResponse> dataList = [];
+  List<ParticipationEntities> dataList = [];
 
 
   @override
@@ -41,8 +41,10 @@ class _TombolaPageState extends State<TombolaPage> {
 
   Future<void> _getDataLotteryParticipation() async {
     await lotteryCtrl.dataListLotteryParticipation().then((val){
-      dataList = val ?? [];
-      setState(() {});
+      // dataList = val ?? [];
+      setState(() {
+        dataList = val?? [];
+      });
     });
   }
 
@@ -57,7 +59,22 @@ class _TombolaPageState extends State<TombolaPage> {
 
   Widget buildStatutTombola(String statut)
   {
-    if(statut.toLowerCase().startsWith("en"))
+    return Container(
+      padding: const EdgeInsets.all(padding),
+      width: 90,
+      decoration: BoxDecoration(
+          color: KStyles.textLightColor.withOpacity(0.2),
+          border: Border.all(
+              width: 1,
+              color: KStyles.textLightColor,
+              strokeAlign: BorderSide.strokeAlignCenter),
+          borderRadius: BorderRadius.circular(8)
+      ),
+      child: Text(statut, textAlign: TextAlign.center,
+        style: const TextStyle(fontSize: 10, fontWeight: FontWeight.normal,
+            color:KStyles.textLightColor),),
+    );
+    /*if(statut.toLowerCase().startsWith("en"))
     {
       return Container(
           padding: const EdgeInsets.all(padding),
@@ -110,12 +127,14 @@ class _TombolaPageState extends State<TombolaPage> {
           style: TextStyle(fontSize: 10, fontWeight: FontWeight.normal,
               color:KStyles.dangerColor),),
       );
-    }
+    }*/
   }
 
 
-  Widget buildParticipateTombola(LotteryParticipationResponse tombola)
+  Widget buildParticipateTombola(ParticipationEntities tombola)
   {
+    print("**************** TOMBOLA DATA ******");
+    print(tombola.invoice?.uuid);
     return InkWell(
       onTap: () => Get.to(() => TombolaDetailPage(tombola: tombola)),
       child: Column(
@@ -130,11 +149,6 @@ class _TombolaPageState extends State<TombolaPage> {
                 flex: 1,
                 child: buildText(context, "Réf facture", 11, KStyles.textSecondaryColor, fontWeight: FontWeight.w400),
               ),
-              /*Flexible(
-                flex: 1,
-                fit: FlexFit.tight,
-                child: buildText(context, "Type de tirage", 11, KStyles.textSecondaryColor, fontWeight: FontWeight.w400),
-              ),*/
               Flexible(
                 flex: 1,
                 child: buildText(context, "Statut", 11, KStyles.textSecondaryColor, fontWeight: FontWeight.w400),
@@ -147,14 +161,9 @@ class _TombolaPageState extends State<TombolaPage> {
             children: [
               Flexible(
                 flex: 1,
-                child: buildText(context, tombola.invoice?.uuid??"", 12,
+                child: buildText(context, tombola.invoice?.uuid??"0", 12,
                     KStyles.blackColor, fontWeight: FontWeight.w600),
               ),
-              /*Flexible(
-                flex: 1,
-                child: buildText(context, tombola["type"]??"", 12,
-                    KStyles.blackColor, fontWeight: FontWeight.w600),
-              ),*/
               Flexible(
                 flex: 1,
                 child: buildStatutTombola(tombola.status??""),
@@ -181,6 +190,9 @@ class _TombolaPageState extends State<TombolaPage> {
       body: RefreshIndicator(
         onRefresh: () => Future.sync(() => _refreshData()),
         child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(
+            parent: AlwaysScrollableScrollPhysics(),
+          ),
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: padding, vertical: padding),
             child: Column(
