@@ -12,6 +12,7 @@ import '../../core/configs/injection_container.dart';
 import '../../core/services/app_service.dart';
 import '../datasource/remote/api_auth.dart';
 import '../datasource/remote/api_company.dart';
+import '../datasource/remote/api_complaint.dart';
 import '../datasource/remote/api_customers.dart';
 import '../datasource/remote/api_invoice.dart';
 import '../datasource/remote/api_lottery.dart';
@@ -35,6 +36,7 @@ class AppDioService {
   static ApiProducts? apiProducts;
   static ApiCustomers? apiCustomers;
   static ApiLottery? apiLottery;
+  static ApiComplaint? apiComplaint;
 
   // Retry configuration
   static const int maxRetries = 3;
@@ -119,6 +121,14 @@ class AppDioService {
       apiLottery = ApiLottery(dio, baseUrl: locator<EnvironmentConfig>().baseUrlLottery);
     }
     return apiLottery!;
+  }
+
+  static ApiComplaint getApiComplaint() {
+    if (apiComplaint == null) {
+      AppDioService.getInstance();
+      apiComplaint = ApiComplaint(dio, baseUrl: locator<EnvironmentConfig>().baseUrlComplaint);
+    }
+    return apiComplaint!;
   }
 
 

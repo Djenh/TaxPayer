@@ -133,8 +133,8 @@ class _TombolaPageState extends State<TombolaPage> {
 
   Widget buildParticipateTombola(ParticipationEntities tombola)
   {
-    print("**************** TOMBOLA DATA ******");
-    print(tombola.invoice?.uuid);
+    /*print("**************** TOMBOLA DATA ******");
+    print(tombola.invoice?.uuid);*/
     return InkWell(
       onTap: () => Get.to(() => TombolaDetailPage(tombola: tombola)),
       child: Column(

@@ -4,6 +4,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:invoice_app/presentation/features/pos/screens/pos_page.dart';
 import 'package:invoice_app/presentation/res/style/e_style.dart';
 
+import '../../complaint/screens/complaint_page.dart';
 import '../../dashoard/screens/dashboard_page.dart';
 import '../../sales/invoice/screens/verify_invoice/manual_check_page.dart';
 import '../../sales/invoice/widgets/invoice_list.dart';
@@ -29,7 +30,7 @@ class HomePage extends StatelessWidget {
               index: controller.selectedIndex.value,
               children: const [
                 DashboardPage(),
-                TombolaPage(), //InvoiceList(),
+                ComplaintPage(), //InvoiceList(),
                 PosPage(isManage: false),
                 ManualCheckPage(),
                 //Container(),

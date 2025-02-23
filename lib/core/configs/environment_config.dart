@@ -20,6 +20,7 @@ class EnvironmentConfig {
   String get baseUrlInvoices => _getEnvValue('URL_INVOICES');
   String get baseUrlInvoicesSifec => _getEnvValue('URL_INVOICES_SIFEC');
   String get baseUrlLottery => _getEnvValue('URL_LOTTERIES');
+  String get baseUrlComplaint => _getEnvValue('URL_COMPLAINTS');
 
 
   String _getEnvValue(String key) {
