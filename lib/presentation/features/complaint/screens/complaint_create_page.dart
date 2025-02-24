@@ -6,12 +6,14 @@ import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/configs/injection_container.dart';
+import '../../../../core/services/toast_service.dart';
 import '../../../../data/dtos/complaint/add_complainant_dto.dart';
 import '../../../../data/dtos/complaint/add_complaint_dto.dart';
 import '../../../../domain/entities/complaint/category_complaint_entities.dart';
 import '../../../../domain/entities/complaint/complaint_data_response.dart';
 import '../../../../domain/entities/file_data_response.dart';
 import '../../../../domain/entities/invoice/invoice_response.dart';
+import '../../../../domain/value_objects/email_vo.dart';
 import '../../../../domain/value_objects/name_vo.dart';
 import '../../../_widgets/action_btn.dart';
 import '../../../_widgets/app_bar_custom.dart';
@@ -59,6 +61,9 @@ class _ComplaintCreatePageState extends State<ComplaintCreatePage> {
   Rx<String?> nomError = Rx<String?>(null);
   Rx<String?> prenomError = Rx<String?>(null);
   Rx<String?> phoneError = Rx<String?>(null);
+  Rx<String?> emailError = Rx<String?>(null);
+  Rx<String?> tinError = Rx<String?>(null);
+  Rx<String?> contribuableError = Rx<String?>(null);
   Rx<String?> objetError = Rx<String?>(null);
   Rx<String?> descriptionError = Rx<String?>(null);
 
@@ -96,6 +101,9 @@ class _ComplaintCreatePageState extends State<ComplaintCreatePage> {
     nomError.value = NameVo.validate(nomPlaignantController!.text.trim());
     prenomError.value = NameVo.validate(prenomPlaignantController!.text.trim());
     phoneError.value = NameVo.validate(telPlaignantController!.text.trim());
+    emailError.value = EmailVo.validate(emailPlaignantController!.text.trim());
+    tinError.value = NameVo.validate(tinContribuableController!.text.trim());
+    contribuableError.value = NameVo.validate(contribuableController!.text.trim());
     objetError.value = NameVo.validate(objetController!.text.trim());
     descriptionError.value = NameVo.validate(descriptionController!.text.trim());
   }
@@ -106,11 +114,17 @@ class _ComplaintCreatePageState extends State<ComplaintCreatePage> {
     if (NameVo.isValid(nomPlaignantController!.text.trim())
         && NameVo.isValid(prenomPlaignantController!.text.trim())
         && NameVo.isValid(telPlaignantController!.text.trim())
+        && NameVo.isValid(emailPlaignantController!.text.trim())
+        && NameVo.isValid(tinContribuableController!.text.trim())
+        && NameVo.isValid(contribuableController!.text.trim())
         && NameVo.isValid(objetController!.text.trim())
-        && NameVo.isValid(descriptionController!.text.trim()))
+        && NameVo.isValid(descriptionController!.text.trim())
+        && codeCategorie!="")
     {
       return true;
-    } else {
+    }
+    else {
+      ToastService.showError(context, 'Plainte', description: "Champ requis non remplis");
       return false;
     }
   }
@@ -194,7 +208,10 @@ class _ComplaintCreatePageState extends State<ComplaintCreatePage> {
           enabled: true,
           keyboardType: TextInputType.emailAddress,
           inputFormatters: noSpaceNoEmoji,
-          decoration: AppInputStyles.defaultInputDecoration(labelText: "Email"),
+          onChanged: (String v) => emailError.value = null,
+          decoration: AppInputStyles.defaultInputDecoration(
+              labelText: "Email",
+              errorText: emailError.value),
         ),
         const SizedBox(height: 25),
       ],
@@ -236,8 +253,10 @@ class _ComplaintCreatePageState extends State<ComplaintCreatePage> {
                 controller: tinContribuableController,
                 enabled: true,
                 keyboardType: TextInputType.text,
+                onChanged: (String v) => tinError.value = null,
                 decoration: AppInputStyles.defaultInputDecoration(
-                    labelText: "Tin du contribuable"),
+                    labelText: "Tin du contribuable",
+                    errorText: tinError.value),
               ),
             ),
             const SizedBox(width: 15),
@@ -247,8 +266,10 @@ class _ComplaintCreatePageState extends State<ComplaintCreatePage> {
                 enabled: true,
                 keyboardType: TextInputType.text,
                 textCapitalization: TextCapitalization.sentences,
+                onChanged: (String v) => contribuableError.value = null,
                 decoration: AppInputStyles.defaultInputDecoration(
-                    labelText: "Contribuable"),
+                    labelText: "Contribuable",
+                    errorText: contribuableError.value),
               ),
             ),
           ],

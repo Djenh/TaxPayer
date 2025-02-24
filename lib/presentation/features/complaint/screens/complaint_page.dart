@@ -10,6 +10,7 @@ import 'package:invoice_app/presentation/res/style/e_style.dart';
 import '../../../../domain/entities/complaint/complaint_data_response.dart';
 import '../../../_widgets/app_bar_custom.dart';
 import '../../../controllers/complaint_ctrl.dart';
+import '../../home/widgets/menus/side_menu.dart';
 import 'complaint_search_page.dart';
 
 
@@ -106,22 +107,22 @@ class _ComplaintPageState extends State<ComplaintPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
-        appBar: appBarHome(context, "Plaintes",
-          actionList: [
-            IconButton(
-                onPressed: () {
-                  Get.to(() => const ComplaintSearchPage());
-                }, icon: const Icon(Iconsax.search_normal)),
-            IconButton(
-                // onPressed: () => Get.to(() => const ComplaintCreatePage()),
-                onPressed: () {},
-                icon: const Icon(CupertinoIcons.add_circled_solid,
-                    color: KStyles.primaryColor, size: 32)
-            ),
-          ],
-            bgColor: Colors.white
-        ),
+      backgroundColor: Colors.white,
+      appBar: appBarHome(context, "Plaintes",
+        actionList: [
+          IconButton(
+              onPressed: () {
+                Get.to(() => const ComplaintSearchPage());
+              }, icon: const Icon(Iconsax.search_normal)),
+          IconButton(
+              // onPressed: () => Get.to(() => const ComplaintCreatePage()),
+              onPressed: () {},
+              icon: const Icon(CupertinoIcons.add_circled_solid,
+                  color: KStyles.primaryColor, size: 32)
+          ),
+        ],
+          bgColor: Colors.white
+      ),
       body: RefreshIndicator(
         onRefresh: ()=> Future.sync(() => _refreshData()),
         child: SingleChildScrollView(

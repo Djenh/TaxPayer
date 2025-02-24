@@ -49,7 +49,7 @@ class FileManagerCtrl extends GetxController {
           },
               (FileDataResponse fileData) {
             AppLogger.info("fileData successful: ${fileData.toJson()}");
-            ToastService.showSuccess(context, 'Fichier', description: "Fichier enregistrée !");
+            ToastService.showSuccess(context, 'Fichier', description: "Fichier enregistré !");
             response = fileData;
           });
     } catch (e) {

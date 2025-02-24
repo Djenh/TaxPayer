@@ -5,9 +5,9 @@ class AddComplaintDto {
   String subject;
   String content;
   String? upload;
-  String? concernTin;
-  String? concernName;
-  String? concernInvoiceSignature;
+  String concernTin;
+  String concernName;
+  String concernInvoiceSignature;
   AddComplainantDto complainant;
   String categoryCode;
 
@@ -21,21 +21,15 @@ class AddComplaintDto {
     final Map<String, dynamic> data = <String, dynamic>{
       'subject': subject,
       'content': content,
+      'concernTin': concernTin,
+      'concernName': concernName,
+      'concernInvoiceSignature': concernInvoiceSignature,
       'complainant': complainant,
       'categoryCode': categoryCode,
     };
 
     if(upload != null){
       data["upload"] = upload;
-    }
-    if(concernTin != null){
-      data["concernTin"] = concernTin;
-    }
-    if(concernName != null){
-      data["concernName"] = concernName;
-    }
-    if(concernInvoiceSignature != null){
-      data["concernInvoiceSignature"] = concernInvoiceSignature;
     }
 
     return data;
