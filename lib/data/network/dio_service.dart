@@ -14,6 +14,7 @@ import '../datasource/remote/api_auth.dart';
 import '../datasource/remote/api_company.dart';
 import '../datasource/remote/api_complaint.dart';
 import '../datasource/remote/api_customers.dart';
+import '../datasource/remote/api_file_manager.dart';
 import '../datasource/remote/api_invoice.dart';
 import '../datasource/remote/api_lottery.dart';
 import '../datasource/remote/api_products.dart';
@@ -37,6 +38,7 @@ class AppDioService {
   static ApiCustomers? apiCustomers;
   static ApiLottery? apiLottery;
   static ApiComplaint? apiComplaint;
+  static ApiFileManager? apiFileManager;
 
   // Retry configuration
   static const int maxRetries = 3;
@@ -129,6 +131,14 @@ class AppDioService {
       apiComplaint = ApiComplaint(dio, baseUrl: locator<EnvironmentConfig>().baseUrlComplaint);
     }
     return apiComplaint!;
+  }
+
+  static ApiFileManager getApiFileManager() {
+    if (apiFileManager == null) {
+      AppDioService.getInstance();
+      apiFileManager = ApiFileManager(dio, baseUrl: locator<EnvironmentConfig>().baseUrlFileManager);
+    }
+    return apiFileManager!;
   }
 
 

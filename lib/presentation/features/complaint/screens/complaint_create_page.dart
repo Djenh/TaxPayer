@@ -10,12 +10,14 @@ import '../../../../data/dtos/complaint/add_complainant_dto.dart';
 import '../../../../data/dtos/complaint/add_complaint_dto.dart';
 import '../../../../domain/entities/complaint/category_complaint_entities.dart';
 import '../../../../domain/entities/complaint/complaint_data_response.dart';
+import '../../../../domain/entities/file_data_response.dart';
 import '../../../../domain/entities/invoice/invoice_response.dart';
 import '../../../../domain/value_objects/name_vo.dart';
 import '../../../_widgets/action_btn.dart';
 import '../../../_widgets/app_bar_custom.dart';
 import '../../../_widgets/build_text.dart';
 import '../../../controllers/complaint_ctrl.dart';
+import '../../../controllers/file_manager_ctrl.dart';
 import '../../../res/app_input_styles.dart';
 import '../../../res/input_formaters.dart';
 import '../../../res/style/e_style.dart';
@@ -52,6 +54,7 @@ class _ComplaintCreatePageState extends State<ComplaintCreatePage> {
   File? _selectedImage;
   final ImagePicker _picker = ImagePicker();
   final complaintCtrl = locator<ComplaintCtrl>();
+  final fileCtrl = locator<FileManagerCtrl>();
 
   Rx<String?> nomError = Rx<String?>(null);
   Rx<String?> prenomError = Rx<String?>(null);
@@ -346,7 +349,9 @@ class _ComplaintCreatePageState extends State<ComplaintCreatePage> {
   }
 
 
-  Future<void> _addPlainte() async {
+
+
+  Future<void> _sendDataPlainte(String fileUrl) async {
     String signatureInvoice = widget.dataInvoice.signatureData?.signature?.toString()??"";
 
     AddComplainantDto paramsUser = AddComplainantDto(
@@ -357,14 +362,14 @@ class _ComplaintCreatePageState extends State<ComplaintCreatePage> {
     );
 
     AddComplaintDto params = AddComplaintDto(
-      subject: objetController!.text.trim(),
-      content: descriptionController!.text.trim(),
-      upload: "",     //--------------to be implemented
-      concernTin: tinContribuableController!.text.trim(),
-      concernName: contribuableController!.text.trim(),
-      concernInvoiceSignature: signatureInvoice,
-      complainant: paramsUser,
-      categoryCode: codeCategorie
+        subject: objetController!.text.trim(),
+        content: descriptionController!.text.trim(),
+        upload: fileUrl,
+        concernTin: tinContribuableController!.text.trim(),
+        concernName: contribuableController!.text.trim(),
+        concernInvoiceSignature: signatureInvoice,
+        complainant: paramsUser,
+        categoryCode: codeCategorie
     );
 
     await complaintCtrl.addComplaint(context, params).then((val) async {
@@ -373,6 +378,26 @@ class _ComplaintCreatePageState extends State<ComplaintCreatePage> {
         Get.to(() => ComplaintEndCreatePage(complaint: newComplaint));
       }
     });
+  }
+
+
+  Future<void> _addPlainte() async {
+    String fileUrl="";
+
+    if(_selectedImage != null)
+    {
+      await fileCtrl.uploadFile(context, _selectedImage!).then((val) async {
+        if(val != null)
+        {
+          FileDataResponse imageData = val;
+          fileUrl = imageData.data!.url??"";
+          _sendDataPlainte(fileUrl);
+        }
+      });
+    }
+    else{
+      _sendDataPlainte("");
+    }
   }
 
 

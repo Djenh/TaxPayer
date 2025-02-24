@@ -24,14 +24,18 @@ import 'package:invoice_app/presentation/controllers/invoice_ctrl.dart';
 import 'package:invoice_app/presentation/controllers/invoice_sifec_ctrl.dart';
 import 'package:invoice_app/presentation/controllers/product_ctrl.dart';
 import '../../data/datasource/remote/api_complaint.dart';
+import '../../data/datasource/remote/api_file_manager.dart';
 import '../../data/datasource/remote/api_lottery.dart';
 import '../../data/repositories_impl/complaint_impl.dart';
 import '../../data/repositories_impl/customers_impl.dart';
+import '../../data/repositories_impl/file_manager_impl.dart';
 import '../../data/repositories_impl/lottery_impl.dart';
 import '../../data/repositories_impl/products_impl.dart';
 import '../../domain/usecases/complaint_uc.dart';
+import '../../domain/usecases/file_manager_uc.dart';
 import '../../domain/usecases/lottery_uc.dart';
 import '../../presentation/controllers/complaint_ctrl.dart';
+import '../../presentation/controllers/file_manager_ctrl.dart';
 import '../../presentation/controllers/lottery_ctrl.dart';
 import 'environment_config.dart';
 
@@ -100,5 +104,11 @@ void setupLocator() {
   locator.registerLazySingleton(() => ComplaintRemoteRepository(apiComplaint: apiComplaint));
   locator.registerLazySingleton(() => ComplaintUc(locator<ComplaintRemoteRepository>()));
   locator.registerLazySingleton(() => ComplaintCtrl(complaintUc: locator<ComplaintUc>()));
+
+  ///File Manager--- Repositories
+  final ApiFileManager apiFileManager = AppDioService.getApiFileManager();
+  locator.registerLazySingleton(() => FileManagerRemoteRepository(apiFileManager: apiFileManager));
+  locator.registerLazySingleton(() => FileManagerUc(locator<FileManagerRemoteRepository>()));
+  locator.registerLazySingleton(() => FileManagerCtrl(fileManagerUc: locator<FileManagerUc>()));
 
 }

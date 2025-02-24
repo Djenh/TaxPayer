@@ -7,6 +7,7 @@ import '../../../../core/configs/injection_container.dart';
 import '../../../../domain/entities/complaint/complaint_data_response.dart';
 import '../../../_widgets/app_bar_custom.dart';
 import '../../../_widgets/build_text.dart';
+import '../../../controllers/file_manager_ctrl.dart';
 import '../../../controllers/lottery_ctrl.dart';
 import '../../../res/style/e_style.dart';
 import 'complaint_page.dart';
@@ -26,6 +27,7 @@ class ComplaintDetailPage extends StatefulWidget {
 class _ComplaintDetailPageState extends State<ComplaintDetailPage> {
 
   final lotteryCtrl = locator<LotteryCtrl>();
+  final fileCtrl = locator<FileManagerCtrl>();
 
   @override
   void initState() {
@@ -36,6 +38,7 @@ class _ComplaintDetailPageState extends State<ComplaintDetailPage> {
   void dispose() {
     super.dispose();
   }
+
 
 
   Future<bool?> _showBackDialog() {
