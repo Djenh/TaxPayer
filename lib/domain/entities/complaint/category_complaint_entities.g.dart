@@ -1,19 +1,21 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'category_entities.dart';
+part of 'category_complaint_entities.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-CategoryEntities _$CategoryEntitiesFromJson(Map<String, dynamic> json) =>
-    CategoryEntities(
+CategoryComplaintEntities _$CategoryComplaintEntitiesFromJson(
+        Map<String, dynamic> json) =>
+    CategoryComplaintEntities(
       code: json['code'] as String?,
       name: json['name'] as String?,
       description: json['description'] as String?,
     );
 
-Map<String, dynamic> _$CategoryEntitiesToJson(CategoryEntities instance) =>
+Map<String, dynamic> _$CategoryComplaintEntitiesToJson(
+        CategoryComplaintEntities instance) =>
     <String, dynamic>{
       'code': instance.code,
       'name': instance.name,

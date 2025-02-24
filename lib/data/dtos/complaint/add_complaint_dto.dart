@@ -1,3 +1,4 @@
+import 'add_complainant_dto.dart';
 
 class AddComplaintDto {
 
@@ -6,8 +7,8 @@ class AddComplaintDto {
   String? upload;
   String? concernTin;
   String? concernName;
-  String concernInvoiceSignature;
-  ComplainantDto complainant;
+  String? concernInvoiceSignature;
+  AddComplainantDto complainant;
   String categoryCode;
 
 
@@ -20,7 +21,6 @@ class AddComplaintDto {
     final Map<String, dynamic> data = <String, dynamic>{
       'subject': subject,
       'content': content,
-      'concernInvoiceSignature': concernInvoiceSignature,
       'complainant': complainant,
       'categoryCode': categoryCode,
     };
@@ -33,6 +33,9 @@ class AddComplaintDto {
     }
     if(concernName != null){
       data["concernName"] = concernName;
+    }
+    if(concernInvoiceSignature != null){
+      data["concernInvoiceSignature"] = concernInvoiceSignature;
     }
 
     return data;
@@ -48,44 +51,6 @@ class AddComplaintDto {
         concernInvoiceSignature: json['concernInvoiceSignature'],
         complainant: json['complainant'],
         categoryCode: json['categoryCode']
-    );
-  }
-}
-
-
-
-class ComplainantDto {
-
-  String firstName;
-  String lastName;
-  String? email;
-  String? phoneNumber;
-
-  ComplainantDto({required this.firstName, required this.lastName,
-    required this.email, required this.phoneNumber });
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{
-      'firstName': firstName,
-      'lastName': lastName
-    };
-
-    if(email != null){
-      data["email"] = email;
-    }
-    if(phoneNumber != null){
-      data["phoneNumber"] = phoneNumber;
-    }
-
-    return data;
-  }
-
-  factory ComplainantDto.fromJson(Map<String, dynamic> json) {
-    return ComplainantDto(
-        firstName: json['firstName'],
-        lastName: json['lastName'],
-        email: json['email'],
-        phoneNumber: json['phoneNumber']
     );
   }
 }

@@ -2,19 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../core/configs/injection_container.dart';
+import '../../../../domain/entities/complaint/complaint_data_response.dart';
 import '../../../_widgets/action_btn.dart';
 import '../../../_widgets/app_bar_custom.dart';
 import '../../../_widgets/build_text.dart';
+import '../../../controllers/complaint_ctrl.dart';
 import '../../../controllers/product_ctrl.dart';
 import '../../../res/style/e_style.dart';
 import '../../sales/invoice/screens/verify_invoice/manual_check_page.dart';
 import 'complaint_detail_page.dart';
+import 'complaint_page.dart';
 
 
 
 
 class ComplaintEndCreatePage extends StatefulWidget {
-  const ComplaintEndCreatePage({super.key});
+  const ComplaintEndCreatePage({super.key, required this.complaint});
+
+  final ComplaintDataResponse complaint;
 
   @override
   State<ComplaintEndCreatePage> createState() => _ComplaintEndCreatePageState();
@@ -22,8 +27,7 @@ class ComplaintEndCreatePage extends StatefulWidget {
 
 class _ComplaintEndCreatePageState extends State<ComplaintEndCreatePage> {
 
-  // final complaintCtr = locator<ComplaintCtrl>();
-  final prodCtr = locator<ProductCtrl>();
+  final complaintCtrl = locator<ComplaintCtrl>();
 
   @override
   void initState() {
@@ -62,7 +66,7 @@ class _ComplaintEndCreatePageState extends State<ComplaintEndCreatePage> {
               child: const Text('Oui'),
               onPressed: () {
                 // Navigator.pop(context, true);
-                Get.offAll(() => const ManualCheckPage());
+                Get.offAll(() => const ComplaintPage());
               },
             ),
           ],
@@ -84,7 +88,7 @@ class _ComplaintEndCreatePageState extends State<ComplaintEndCreatePage> {
         final bool shouldPop = await _showBackDialog() ?? false;
         if (context.mounted && shouldPop) {
           // Navigator.pop(context);
-          Get.offAll(() => const ManualCheckPage());
+          Get.offAll(() => const ComplaintPage());
         }
       },
       child: Scaffold(
@@ -125,7 +129,7 @@ class _ComplaintEndCreatePageState extends State<ComplaintEndCreatePage> {
                           buildText(context, "N° de la plainte",
                               15, Colors.black, fontWeight: FontWeight.w500),
                           const SizedBox(height: padding),
-                          buildText(context, "1528-252-ZS74",
+                          buildText(context, widget.complaint.code??"",
                               16, Colors.black, fontWeight: FontWeight.w700),
                         ],
                       ),
@@ -139,8 +143,8 @@ class _ComplaintEndCreatePageState extends State<ComplaintEndCreatePage> {
                   Expanded(
                       child: ActionBtn(
                         title: 'Suivre ma plainte',
-                        loading: prodCtr.isLoading,
-                        onPressed: ()=> Get.to(() => const ComplaintDetailPage()),
+                        loading: complaintCtrl.isLoading,
+                        onPressed: ()=> Get.offAll(() => ComplaintDetailPage(complaint : widget.complaint)),
                       )
                   ),
                 ],

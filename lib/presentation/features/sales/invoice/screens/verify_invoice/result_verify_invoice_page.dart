@@ -59,7 +59,7 @@ class _ResultVerifyInvoicePageState extends State<ResultVerifyInvoicePage> {
 
   Widget _buildBtnComplain(){
     return GestureDetector(
-      onTap: () => Get.to(() => const ComplaintCreatePage()),
+      onTap: () => Get.to(() => ComplaintCreatePage(dataInvoice: widget.dataInvoice)),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(

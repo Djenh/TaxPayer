@@ -6,17 +6,21 @@ import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/configs/injection_container.dart';
-import '../../../../core/services/toast_service.dart';
-import '../../../../domain/entities/product/categories_entities.dart';
+import '../../../../data/dtos/complaint/add_complainant_dto.dart';
+import '../../../../data/dtos/complaint/add_complaint_dto.dart';
+import '../../../../domain/entities/complaint/category_complaint_entities.dart';
+import '../../../../domain/entities/complaint/complaint_data_response.dart';
+import '../../../../domain/entities/invoice/invoice_response.dart';
+import '../../../../domain/value_objects/name_vo.dart';
 import '../../../_widgets/action_btn.dart';
 import '../../../_widgets/app_bar_custom.dart';
 import '../../../_widgets/build_text.dart';
-import '../../../controllers/product_ctrl.dart';
+import '../../../controllers/complaint_ctrl.dart';
 import '../../../res/app_input_styles.dart';
 import '../../../res/input_formaters.dart';
 import '../../../res/style/e_style.dart';
 import '../../registration/_strings/register_str.dart';
-import '../../stocks/product/category/screens/category_page.dart';
+import '../category/screens/category_complaint_page.dart';
 import '../widgets/rgpd_card.dart';
 import 'complaint_end_create_page.dart';
 
@@ -24,7 +28,9 @@ import 'complaint_end_create_page.dart';
 
 
 class ComplaintCreatePage extends StatefulWidget {
-  const ComplaintCreatePage({super.key});
+  const ComplaintCreatePage({super.key, required this.dataInvoice});
+
+  final InvoiceResponse dataInvoice;
 
   @override
   State<ComplaintCreatePage> createState() => _ComplaintCreatePageState();
@@ -32,7 +38,6 @@ class ComplaintCreatePage extends StatefulWidget {
 
 class _ComplaintCreatePageState extends State<ComplaintCreatePage> {
 
-  // final complaintCtr = locator<ComplaintCtrl>();
   int activeStep = 0;
   TextEditingController? categorieController;
   TextEditingController? nomPlaignantController;
@@ -43,10 +48,17 @@ class _ComplaintCreatePageState extends State<ComplaintCreatePage> {
   TextEditingController? contribuableController;
   TextEditingController? objetController;
   TextEditingController? descriptionController;
-  String? codeCategorie;
+  String codeCategorie = "";
   File? _selectedImage;
   final ImagePicker _picker = ImagePicker();
-  final prodCtr = locator<ProductCtrl>();
+  final complaintCtrl = locator<ComplaintCtrl>();
+
+  Rx<String?> nomError = Rx<String?>(null);
+  Rx<String?> prenomError = Rx<String?>(null);
+  Rx<String?> phoneError = Rx<String?>(null);
+  Rx<String?> objetError = Rx<String?>(null);
+  Rx<String?> descriptionError = Rx<String?>(null);
+
 
   @override
   void initState() {
@@ -60,8 +72,6 @@ class _ComplaintCreatePageState extends State<ComplaintCreatePage> {
     contribuableController = TextEditingController();
     objetController = TextEditingController();
     descriptionController = TextEditingController();
-
-
   }
 
   @override
@@ -77,6 +87,29 @@ class _ComplaintCreatePageState extends State<ComplaintCreatePage> {
     objetController?.dispose();
     descriptionController?.dispose();
 
+  }
+
+  void getErrorsForm() {
+    nomError.value = NameVo.validate(nomPlaignantController!.text.trim());
+    prenomError.value = NameVo.validate(prenomPlaignantController!.text.trim());
+    phoneError.value = NameVo.validate(telPlaignantController!.text.trim());
+    objetError.value = NameVo.validate(objetController!.text.trim());
+    descriptionError.value = NameVo.validate(descriptionController!.text.trim());
+  }
+
+  bool validateForm() {
+    // final FormState? form = formKey.currentState;
+    getErrorsForm();
+    if (NameVo.isValid(nomPlaignantController!.text.trim())
+        && NameVo.isValid(prenomPlaignantController!.text.trim())
+        && NameVo.isValid(telPlaignantController!.text.trim())
+        && NameVo.isValid(objetController!.text.trim())
+        && NameVo.isValid(descriptionController!.text.trim()))
+    {
+      return true;
+    } else {
+      return false;
+    }
   }
 
 
@@ -114,6 +147,7 @@ class _ComplaintCreatePageState extends State<ComplaintCreatePage> {
     );
   }
 
+
   Widget step1Form(BuildContext ctx){
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -123,18 +157,22 @@ class _ComplaintCreatePageState extends State<ComplaintCreatePage> {
           controller: nomPlaignantController,
           enabled: true,
           keyboardType: TextInputType.text,
-          inputFormatters: noSpaceNoEmoji,
           textCapitalization: TextCapitalization.sentences,
-          decoration: AppInputStyles.defaultInputDecoration(labelText: "Nom du plaignant"),
+          onChanged: (String v) => nomError.value = null,
+          decoration: AppInputStyles.defaultInputDecoration(
+              labelText: "Nom du plaignant",
+              errorText: nomError.value),
         ),
         const SizedBox(height: 15),
         TextFormField(
           controller: prenomPlaignantController,
           enabled: true,
           keyboardType: TextInputType.text,
-          inputFormatters: noSpaceNoEmoji,
           textCapitalization: TextCapitalization.sentences,
-          decoration: AppInputStyles.defaultInputDecoration(labelText: "Prénom du plaignant"),
+          onChanged: (String v) => prenomError.value = null,
+          decoration: AppInputStyles.defaultInputDecoration(
+              labelText: "Prénom du plaignant",
+              errorText: prenomError.value),
         ),
         const SizedBox(height: 15),
         TextFormField(
@@ -142,7 +180,10 @@ class _ComplaintCreatePageState extends State<ComplaintCreatePage> {
           enabled: true,
           keyboardType: TextInputType.phone,
           inputFormatters: noSpaceNoEmoji,
-          decoration: AppInputStyles.defaultInputDecoration(labelText: "Téléphone"),
+          onChanged: (String v) => phoneError.value = null,
+          decoration: AppInputStyles.defaultInputDecoration(
+              labelText: "Téléphone",
+              errorText: phoneError.value),
         ),
         const SizedBox(height: 15),
         TextFormField(
@@ -157,6 +198,7 @@ class _ComplaintCreatePageState extends State<ComplaintCreatePage> {
     );
   }
 
+
   Widget step2Form(BuildContext ctx){
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -168,11 +210,11 @@ class _ComplaintCreatePageState extends State<ComplaintCreatePage> {
           keyboardType: TextInputType.text,
           inputFormatters: noSpaceNoEmoji,
           onTap: () async {
-            await Get.to(() => const CategoryPage(isManage: true))?.then((val){
-              if(val is CategoriesEntities){
+            await Get.to(() => const CategoryComplaintPage(isManage: true))?.then((val){
+              if(val is CategoryComplaintEntities){
                 setState(() {
                   categorieController?.text = val.name!;
-                  codeCategorie = val.code;
+                  codeCategorie = val.code??"";
                 });
               }
             });
@@ -191,8 +233,8 @@ class _ComplaintCreatePageState extends State<ComplaintCreatePage> {
                 controller: tinContribuableController,
                 enabled: true,
                 keyboardType: TextInputType.text,
-                inputFormatters: noSpaceNoEmoji,
-                decoration: AppInputStyles.defaultInputDecoration(labelText: "Tin du contribuable"),
+                decoration: AppInputStyles.defaultInputDecoration(
+                    labelText: "Tin du contribuable"),
               ),
             ),
             const SizedBox(width: 15),
@@ -201,9 +243,9 @@ class _ComplaintCreatePageState extends State<ComplaintCreatePage> {
                 controller: contribuableController,
                 enabled: true,
                 keyboardType: TextInputType.text,
-                inputFormatters: noSpaceNoEmoji,
                 textCapitalization: TextCapitalization.sentences,
-                decoration: AppInputStyles.defaultInputDecoration(labelText: "Contribuable"),
+                decoration: AppInputStyles.defaultInputDecoration(
+                    labelText: "Contribuable"),
               ),
             ),
           ],
@@ -212,9 +254,11 @@ class _ComplaintCreatePageState extends State<ComplaintCreatePage> {
         TextFormField(
           controller: objetController,
           keyboardType: TextInputType.text,
-          inputFormatters: noSpaceNoEmoji,
           textCapitalization: TextCapitalization.sentences,
-          decoration: AppInputStyles.defaultInputDecoration(labelText: "Objet de la plainte"),
+          onChanged: (String v) => objetError.value = null,
+          decoration: AppInputStyles.defaultInputDecoration(
+              labelText: "Objet de la plainte",
+              errorText: objetError.value),
         ),
 
         const SizedBox(height: 15),
@@ -223,9 +267,10 @@ class _ComplaintCreatePageState extends State<ComplaintCreatePage> {
           enabled: true,
           keyboardType: TextInputType.multiline,
           maxLines: 3,
-          inputFormatters: noSpaceNoEmoji,
-          textCapitalization: TextCapitalization.sentences,
-          decoration: AppInputStyles.defaultInputDecoration(labelText: "Description"),
+          onChanged: (String v) => descriptionError.value = null,
+          decoration: AppInputStyles.defaultInputDecoration(
+              labelText: "Description",
+              errorText: descriptionError.value),
         ),
         const SizedBox(height: 15),
         Stack(
@@ -281,6 +326,7 @@ class _ComplaintCreatePageState extends State<ComplaintCreatePage> {
     );
   }
 
+
   Future<void> _pickImage() async {
     final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
@@ -290,6 +336,7 @@ class _ComplaintCreatePageState extends State<ComplaintCreatePage> {
     }
   }
 
+
   void _deleteImage() {
     Future.delayed(const Duration(milliseconds: 300), () {
       setState(() {
@@ -298,35 +345,35 @@ class _ComplaintCreatePageState extends State<ComplaintCreatePage> {
     });
   }
 
-  void _showToast(String description) {
-    ToastService.showWarning(context, 'Plainte', description: description);
+
+  Future<void> _addPlainte() async {
+    String signatureInvoice = widget.dataInvoice.signatureData?.signature?.toString()??"";
+
+    AddComplainantDto paramsUser = AddComplainantDto(
+        firstName: prenomPlaignantController!.text.trim(),
+        lastName: nomPlaignantController!.text.trim(),
+        email: emailPlaignantController!.text.trim(),
+        phoneNumber: telPlaignantController!.text.trim()
+    );
+
+    AddComplaintDto params = AddComplaintDto(
+      subject: objetController!.text.trim(),
+      content: descriptionController!.text.trim(),
+      upload: "",     //--------------to be implemented
+      concernTin: tinContribuableController!.text.trim(),
+      concernName: contribuableController!.text.trim(),
+      concernInvoiceSignature: signatureInvoice,
+      complainant: paramsUser,
+      categoryCode: codeCategorie
+    );
+
+    await complaintCtrl.addComplaint(context, params).then((val) async {
+      if(val != null){
+        ComplaintDataResponse newComplaint = val;
+        Get.to(() => ComplaintEndCreatePage(complaint: newComplaint));
+      }
+    });
   }
-
-  Future<bool> _verifyField() async {
-    // ---to be implemented
-
-    if (nomPlaignantController?.text == null) {
-      _showToast('Veuillez remplir le nom du plaignant');
-      return false;
-    }
-
-    if (prenomPlaignantController?.text == null) {
-      _showToast('Veuillez remplir le prénom du plaignant');
-      return false;
-    }
-    if (telPlaignantController?.text == null) {
-      _showToast('Veuillez remplir le téléphone du plaignant');
-      return false;
-    }
-    if (emailPlaignantController?.text == null) {
-      _showToast("Veuillez remplir l'email du plaignant");
-      return false;
-    }
-    return true;
-    // ---to be implemented
-  }
-
-
 
 
 
@@ -397,17 +444,15 @@ class _ComplaintCreatePageState extends State<ComplaintCreatePage> {
                         activeStep==0
                             ?ActionBtn(
                           title: 'Suivant',
-                          loading: prodCtr.isLoading,
+                          loading: complaintCtrl.isLoading,
                           onPressed: details.onStepContinue,
                         )
                             :ActionBtn(
                             title: 'Valider',
-                            loading: prodCtr.isLoading,
+                            loading: complaintCtrl.isLoading,
                             onPressed: () async {
-                              // bool isFilled = await _verifyField();
-                              bool isFilled = true;
-                              if(isFilled){
-                                Get.to(() => const ComplaintEndCreatePage());
+                              if (validateForm()) {
+                                _addPlainte();
                               }
                             }
                         );

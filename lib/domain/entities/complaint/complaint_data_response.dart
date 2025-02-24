@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import 'category_entities.dart';
+import 'category_complaint_entities.dart';
 import 'complainant_entities.dart';
 import 'officer_entities.dart';
 
@@ -19,7 +19,7 @@ class ComplaintDataResponse {
   String? status;
   String? priority;
   ComplainantEntities? complainant;
-  CategoryEntities? category;
+  CategoryComplaintEntities? category;
   String? upload;
   OfficerEntities? officer;
   String? createdAt;

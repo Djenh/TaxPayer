@@ -23,7 +23,8 @@ ComplaintDataResponse _$ComplaintDataResponseFromJson(
               json['complainant'] as Map<String, dynamic>),
       category: json['category'] == null
           ? null
-          : CategoryEntities.fromJson(json['category'] as Map<String, dynamic>),
+          : CategoryComplaintEntities.fromJson(
+              json['category'] as Map<String, dynamic>),
       upload: json['upload'] as String?,
       officer: json['officer'] == null
           ? null

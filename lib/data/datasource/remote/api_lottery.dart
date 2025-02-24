@@ -12,10 +12,10 @@ abstract class ApiLottery {
   factory ApiLottery(Dio dio, {String baseUrl}) = _ApiLottery;
 
 
-  @GET("/stack/invoice/list/participation-by-phone")
+  @GET("/list/participation-by-phone")
   Future<HttpResponse<LotteryParticipationResponse>> getListLotteryParticipation(@Queries() Map<String, dynamic> params);
 
-  @POST("/stack/invoice/create")
+  @POST("/create")
   Future<HttpResponse<LotteryDataResponse>> createLotteryForParticipant(@Body() Map<String, dynamic> params);
 
 }

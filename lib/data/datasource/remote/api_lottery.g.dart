@@ -37,7 +37,7 @@ class _ApiLottery implements ApiLottery {
     )
             .compose(
               _dio.options,
-              '/stack/invoice/list/participation-by-phone',
+              '/list/participation-by-phone',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -73,7 +73,7 @@ class _ApiLottery implements ApiLottery {
     )
         .compose(
           _dio.options,
-          '/stack/invoice/create',
+          '/create',
           queryParameters: queryParameters,
           data: _data,
         )
